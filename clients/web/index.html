@@ -12,6 +12,7 @@
     <script src="/bower_components/kineticjs/kinetic.min.js"></script>
     <script src='/assets/app.js'></script>
     <script src='/assets/ui/Hero.js'></script>
+    <script src='/assets/ui/Map.js'></script>
     <script src='/assets/main.js'></script>
 
     <!--
@@ -45,43 +46,17 @@
             height: 640
         });
         var layer = new Kinetic.Layer();
-        var maplayer = new Kinetic.Layer();
         var objectlayer = new Kinetic.Layer();
 
-        // // spaceGuy
-        // var spaceGuyImg = new Kinetic.QImage({  //This sprite was 3x4 tiles
-        //     x: 320,
-        //     y: 320,
-        //     image: images.spaceGuy,
-        //     width: 32,
-        //     height: 48,
-        //     name: "image",
-        //     srcx: 32*1, //x source position
-        //     srcy: 48*2, //y source position
-        //     srcwidth: 32, //source width
-        //     srcheight: 48, //source height
-        // });
-        // spaceGuyImg.col = 1; //this is where the default row is
-        // spaceGuyImg.count = 6; //this stores when to move
-        // spaceGuyImg.speed = 2;  //this is how fast the sprite moves
-        // layer.add(spaceGuyImg);
+        var hero = new Nv.Hero({
 
-        // var imageguy = new Kinetic.Image({
-        //     x: 200,
-        //     y: 50,
-        //     image: images.spaceGuy,
-        //     width: 32,
-        //     height: 48
-        //   });
-
-        // layer.add(imageguy);
-
-        var spaceGuyImg = new Nv.Hero({
             position: {
                 x: 320,
                 y: 320
             },
+
             image: images.spaceGuy,
+
             animations: {
                 idle: [
                     [0, 2],
@@ -93,100 +68,26 @@
             name: 'skovachev'
         });
 
-        var text = new Kinetic.Text({
-            x: 320,
-            y: 320,
-            text: 'skovachev',
-            fontSize: 12,
-            fontFamily: 'Calibri',
-            fill: 'black'
-        });
+        layer.add(hero);
 
-        text.setX(text.getX() - text.getTextWidth() / 2 + 16);
-        text.setY(text.getY() - text.getTextHeight() / 2);
+        hero.animate();
 
-        layer.add(spaceGuyImg);
-        layer.add(text);
+        var mapConfig = {
+            tileSize: 32,
+            baseImage: images.tileSet,
+            width: 640,
+            height: 640,
 
-        spaceGuyImg.start();
-
-
-        //Map (background)
-        var tS = 32;
-        var map = new Array();
-        for (var j = 0; j < 20; j++) {
-            map[j] = new Array();
-            for (var i = 0; i < 20; i++) {
-                //   map[j][i] = new Kinetic.QImage({  //This sprite was 3x4 tiles
-                //     x: 32*i,
-                //     y: 32*j,
-                //     image: images.tileSet,
-                //     width: 32,
-                //     height: 32,
-                //     name: "image",
-                //     srcx: tS*Math.floor(Math.random()*2+5), //x source position
-                //     srcy: tS*Math.floor(Math.random()*2+18), //y source position
-                //     srcwidth: 32, //source width
-                //     srcheight: 36 //source height
-                // });
-
-                var poly = new Kinetic.Line({
-                    points: [0, 0, 0, 32, 32, 32, 32, 0],
-                    fillPatternImage: images.tileSet,
-                    strokeWidth: 0,
-                    fillPatternOffset: [0, 0],
-                    closed: true,
-                });
-
-                poly.fillPatternOffsetX(tS * Math.floor(Math.random() * 2 + 5));
-                poly.fillPatternOffsetY(tS * Math.floor(Math.random() * 2 + 18));
-
-                poly.setX(j * tS);
-                poly.setY(i * tS);
-
-                map[j][i] = poly;
-
-                maplayer.add(map[j][i]);
-
+            tilesConfig: {
+                imageX: 5,
+                imageY: 18,
+                stepsHorizontalAllowed: 2,
+                stepsVerticalAllowed: 2,
             }
-        }
+        };
+        var areaMap = new Nv.Map(mapConfig);
 
-        // //Obects (background)
-        // var tS = 32;
-        // var collisions = new Array();
-        // var objects = new Array();
-        // for(var j=0; j<20; j++)
-        // {
-        //   objects[j] = new Array();
-        //   collisions[j] = new Array();
-        //   for(var i=0; i<20; i++)
-        //   {
-        //     if(Math.floor(Math.random()*100)>90) //10%
-        //     {
-        //       objects[j][i] = new Kinetic.QImage({  //This sprite was 3x4 tiles
-        //         x: 32*i,
-        //         y: 32*j,
-        //         image: images.tileSet,
-        //         width: 32,
-        //         height: 32,
-        //         name: "image",
-        //         srcx: tS*(2+2*Math.floor(Math.random()*2)), //x source position
-        //         srcy: tS*35, //y source position
-        //         srcwidth: 32, //source width
-        //         srcheight: 36 //source height
-        //       });
-        //       collisions[j][i] = true;
-        //       //objects[j][i].draggable(true); //drag em? sure...
-        //        // add the shape to the layer
-        //       objectlayer.add(objects[j][i]);
-        //     }
-        //     else
-        //       collisions[j][i] = false;
-        //   } 
-        // }//End Obect Layer
-
-        stage.add(maplayer); //only the order you add them to the stage determines which is on top
-        // stage.add(objectlayer); //rockts,trees for collisions
+        areaMap.addLayersToStage(stage);
         stage.add(layer);
         stage.draw();
 

@@ -19,9 +19,14 @@
             });
         });
 
-        var spriteConfig = {
+        var groupConfig = {
             x: config.position.x,
             y: config.position.y,
+        };
+
+        var spriteConfig = {
+            x: 0,
+            y: 0,
             image: config.image,
             animation: 'idle',
             animations: animations,
@@ -29,13 +34,33 @@
             frameIndex: 0
         };
 
-        Kinetic.Sprite.call(this, spriteConfig);
+        var textConfig = {
+            x: 0,
+            y: 0,
+            text: config.name,
+            fontSize: 12,
+            fontFamily: 'Calibri',
+            fill: 'black'
+        };
+
+        this.sprite = new Kinetic.Sprite(spriteConfig);
+
+        var text = new Kinetic.Text(textConfig);
+        text.setX(text.getX() - text.getTextWidth() / 2 + this.width / 2);
+        text.setY(text.getY() - text.getTextHeight() / 2);
+        this.text = text;
+
+        Kinetic.Group.call(this, groupConfig);
+
+        this.add(this.sprite);
+        this.add(this.text);
     };
 
     Nv.Hero.prototype = {
-        testFunc: function() {}
+        animate: function() {
+            this.sprite.start();
+        }
     };
 
-    Kinetic.Util.extend(Nv.Hero, Kinetic.Sprite);
-
+    Kinetic.Util.extend(Nv.Hero, Kinetic.Group);
 })();
