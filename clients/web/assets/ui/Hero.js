@@ -3,6 +3,8 @@
     Nv.Hero = function(config) {
         this.width = 32;
         this.height = 48;
+        this.channels = config.channels;
+        this.id = config.id;
 
         var hero = this;
 
@@ -57,8 +59,60 @@
     };
 
     Nv.Hero.prototype = {
-        animate: function() {
-            this.sprite.start();
+        emitEvent: function(channel, eventKey, eventData) {
+            this.channels[channel].emit(eventKey, {
+                channel: channel,
+                key: eventKey,
+                data: eventData
+            });
+        },
+
+        animate: function(animationName) {
+            if (!animationName) {
+                this.sprite.start();
+            }
+            else {
+                this.sprite.animation(animationName);
+            }
+        },
+
+        moveTo: function(x, y, map) {
+            if (this.currentAnimation) {
+                this.currentAnimation.pause();
+            }
+
+            // send event
+            this.emitEvent('/movement', 'moveHero', {
+                'hero_id': this.id,
+                'map_id': map.id,
+                'start': {x: this.x, y: this.y},
+                'end': {x: x, y: y},
+            });
+
+            var hero = this;
+
+            var durationToRunThroughMap = 3; // sec
+            var distanceMoved = Math.sqrt(Math.pow(x - this.getX(), 2) + Math.pow(y - this.getY(), 2));
+            var distancePart = distanceMoved / map.width;
+
+            var duration = distancePart * durationToRunThroughMap;
+
+            this.currentAnimation = new Kinetic.Tween({
+                node: this,
+                duration: duration,
+                x: x,
+                y: y,
+                easing: Kinetic.Easings.Linear,
+
+                onFinish: function() {
+                    hero.x = x;
+                    hero.y = y;
+                    hero.animate('idle');
+                }
+            });
+
+            this.animate('walk');
+            this.currentAnimation.play();
         }
     };
 
