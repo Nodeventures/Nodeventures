@@ -1,7 +1,6 @@
 var utils = require('./utils'),
     defaultChannel = '/movement';
 
-
 var onMoveHero = utils.wrapWithPromise(function(gameEvent, deferred){
     // eventData: hero_id, start position, end position
         
