@@ -1,20 +1,276 @@
 <html>
 
-    <head>
-        <title>Web chat client</title>
-        <script src="http://localhost:8080/socket.io/socket.io.js"></script>
-        <script src='/bower_components/jquery/dist/jquery.min.js'></script>
-        <script src='/bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
-        <script src='/assets/main.js'></script>
+<head>
+    <title>Web chat client</title>
+    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+    <!--
+    <script src='/bower_components/jquery/dist/jquery.min.js'></script>
+    <script src='/bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
+    <script src='/assets/main.js'></script>
+    -->
 
-        <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
-    </head>
+    <script src="/bower_components/kineticjs/kinetic.min.js"></script>
+    <script src='/assets/kQuantumImage.js'></script>
+    
+    
+    <!--
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    -->
 
-    <body>
-        
-        <h1>Welcome</h1>
+    <script> 
+        function loadImages(sources, callback){
+            var images = {};
+            var loadedImages = 0;
+            var numImages = 0;
+            for (var src in sources) {
+                numImages++;
+            }
+            for (var src in sources) {
+                images[src] = new Image();
+                images[src].onload = function(){
+                    if (++loadedImages >= numImages) {
+                        callback(images);
+                    }
+                };
+                images[src].src = sources[src];
+            }
+        }
+ 
+        function initStage(images){
+            var stage = new Kinetic.Stage({
+                container: "container", 
+                width: 640,
+                height: 640
+            });
+            var layer = new Kinetic.Layer();
+            var maplayer = new Kinetic.Layer();
+            var objectlayer = new Kinetic.Layer();
+ 
+            // // spaceGuy
+            // var spaceGuyImg = new Kinetic.QImage({  //This sprite was 3x4 tiles
+            //     x: 320,
+            //     y: 320,
+            //     image: images.spaceGuy,
+            //     width: 32,
+            //     height: 48,
+            //     name: "image",
+            //     srcx: 32*1, //x source position
+            //     srcy: 48*2, //y source position
+            //     srcwidth: 32, //source width
+            //     srcheight: 48, //source height
+            // });
+            // spaceGuyImg.col = 1; //this is where the default row is
+            // spaceGuyImg.count = 6; //this stores when to move
+            // spaceGuyImg.speed = 2;  //this is how fast the sprite moves
+            // layer.add(spaceGuyImg);
 
-    </body>
+            // var imageguy = new Kinetic.Image({
+            //     x: 200,
+            //     y: 50,
+            //     image: images.spaceGuy,
+            //     width: 32,
+            //     height: 48
+            //   });
+
+            // layer.add(imageguy);
+
+            var spaceGuyImg = new Kinetic.Sprite({
+              x: 320,
+              y: 320,
+              image: images.spaceGuy,
+              animation: 'idle',
+              animations: {
+                idle: [
+                  // x, y, width, height (4 frames)
+                  0, 96, 32, 48,
+                  32, 96, 32, 48,
+                  64, 96, 32, 48
+                ],
+                punch: [
+                  // x, y, width, height (3 frames)
+                  2,138,74,122,
+                  76,138,84,122,
+                  346,138,120,122
+                ]
+              },
+              frameRate: 7,
+              frameIndex: 0
+            });
+
+            layer.add(spaceGuyImg);
+
+            spaceGuyImg.start();
+
+
+            //Map (background)
+            var tS = 32; 
+            var map = new Array();
+            for(var j=0; j<20; j++)
+            {
+              map[j] = new Array();
+              for(var i=0; i<20; i++)
+              {
+                map[j][i] = new Kinetic.QImage({  //This sprite was 3x4 tiles
+                  x: 32*i,
+                  y: 32*j,
+                  image: images.tileSet,
+                  width: 32,
+                  height: 32,
+                  name: "image",
+                  srcx: tS*Math.floor(Math.random()*2+5), //x source position
+                  srcy: tS*Math.floor(Math.random()*2+18), //y source position
+                  srcwidth: 32, //source width
+                  srcheight: 36 //source height
+              });
+
+                var poly = new Kinetic.Line({
+                    points: [0, 0, 0, 32, 32, 32, 32, 0],
+                    fillPatternImage: images.tileSet,
+                    strokeWidth: 0,
+                    fillPatternOffset: [0, 0],
+                    closed: true,
+                });
+
+                poly.fillPatternOffsetX(tS*Math.floor(Math.random()*2+5));
+                poly.fillPatternOffsetY(tS*Math.floor(Math.random()*2+18));
+
+                console.log(j, i);
+
+                poly.setX(j * tS);
+                poly.setY(i * tS);
+
+                map[j][i] = poly;
+
+                maplayer.add(map[j][i]);
+
+              } 
+            }
+
+            // //Obects (background)
+            // var tS = 32;
+            // var collisions = new Array();
+            // var objects = new Array();
+            // for(var j=0; j<20; j++)
+            // {
+            //   objects[j] = new Array();
+            //   collisions[j] = new Array();
+            //   for(var i=0; i<20; i++)
+            //   {
+            //     if(Math.floor(Math.random()*100)>90) //10%
+            //     {
+            //       objects[j][i] = new Kinetic.QImage({  //This sprite was 3x4 tiles
+            //         x: 32*i,
+            //         y: 32*j,
+            //         image: images.tileSet,
+            //         width: 32,
+            //         height: 32,
+            //         name: "image",
+            //         srcx: tS*(2+2*Math.floor(Math.random()*2)), //x source position
+            //         srcy: tS*35, //y source position
+            //         srcwidth: 32, //source width
+            //         srcheight: 36 //source height
+            //       });
+            //       collisions[j][i] = true;
+            //       //objects[j][i].draggable(true); //drag em? sure...
+            //        // add the shape to the layer
+            //       objectlayer.add(objects[j][i]);
+            //     }
+            //     else
+            //       collisions[j][i] = false;
+            //   } 
+            // }//End Obect Layer
+
+            stage.add(maplayer);  //only the order you add them to the stage determines which is on top
+            // stage.add(objectlayer); //rockts,trees for collisions
+            stage.add(layer); 
+            stage.draw();
+
+            //This allows multiple keys to be pressed at the same time
+            var input = {};
+            document.addEventListener('keydown', function (e) {
+                var keyCode = e.which;
+                input[keyCode] = true;
+                if (keyCode == 38 || keyCode == 40 || keyCode == 32) e.preventDefault(); //disables page viewing
+            });
+            document.addEventListener('keyup', function (e) {
+                var keyCode = e.which;
+                input[keyCode] = false;
+            });
+
+            // stage.onFrame(function(frame){//wasd, arrows
+
+            //     //The order here allows for down+left or right to have down's animation
+            //     moveguy(3, 37, 65, -1,0, input, spaceGuyImg, collisions);//left, a
+            //     moveguy(1, 39, 68, 1,0, input, spaceGuyImg, collisions);//right, d
+            //     moveguy(0, 38, 87, 0,-1, input, spaceGuyImg, collisions);//up, w
+            //     moveguy(2, 40, 83, 0,1, input, spaceGuyImg, collisions);//down, s
+
+            //     defaultdir(spaceGuyImg); //checks to stand still
+            //     spaceGuyImg.count++; //make walk cycle sooner
+            //     layer.draw(); //think this might be faster than stage.draw()? not sure...
+            // });
+
+            // stage.start();
+        }
+
+        function defaultdir(spaceGuyImg){
+          if(spaceGuyImg.count > 10)
+            {
+              spaceGuyImg.srcx = spaceGuyImg.col*spaceGuyImg.srcwidth; //switch to middle column
+              spaceGuyImg.count %= 10;
+            }
+        }
+
+        function moveguy(row, in1,in2, xfac, yfac, input, spaceGuyImg, collisions){
+          if(input[in1] || input[in2]) //these are input values to be checked
+            { tS = 32;
+              spaceGuyImg.srcy = spaceGuyImg.srcheight*row; //this changes the row
+              spaceGuyImg.x += spaceGuyImg.speed*xfac; //-1,1,0 => left, right, stationary
+              spaceGuyImg.y += spaceGuyImg.speed*yfac; //-1,1,0 => up, down, stationary
+              if(spaceGuyImg.x > 20*tS)
+                spaceGuyImg.x -= 21*tS;
+              if(spaceGuyImg.y > 20*tS)
+                spaceGuyImg.y -= 21*tS;
+              if(spaceGuyImg.x < -tS)
+                spaceGuyImg.x += 21*tS;
+              if(spaceGuyImg.y < -tS)
+                spaceGuyImg.y += 21*tS;
+
+              var i = Math.floor((spaceGuyImg.x-16)/tS+1) //collisions were left shifted
+              var j = Math.floor((spaceGuyImg.y+10)/tS+1) //32 is the bG tile size
+              if(collisions[j] && collisions[j][i]) //don't allow movement if true
+              {
+                spaceGuyImg.x -= spaceGuyImg.speed*xfac; //-1,1,0 => left, right, stationary
+                spaceGuyImg.y -= spaceGuyImg.speed*yfac; //-1,1,0 => up, down, stationary
+              }
+
+              if(spaceGuyImg.count > 6) //ready to change walk columns?
+                {
+                  spaceGuyImg.srcx += 2*spaceGuyImg.srcwidth; //first and last column
+                  if(spaceGuyImg.srcx >= spaceGuyImg.srcwidth*3) //overflow? start at srcx=0
+                    spaceGuyImg.srcx = 0;  //bring the walk cycle to the far left column
+                  spaceGuyImg.count %= 6; //start the count for the walk cycle over again
+                }
+            }
+        }
+ 
+        window.onload = function(){
+            var sources = {
+                spaceGuy: "assets/tileset/space_guy.png",
+                //https://github.com/silveira/openpixels/blob/master/open_chars.xcf
+                tileSet: "assets/tileset/free_tileset_CC.png", //CC-By-SA
+                    //http://silveiraneto.net/tag/tileset/
+//                spaceGuy: "/kineticjs/tiletest/ranger_m.png" //32 by 36, ranger
+                    //http://opengameart.org/content/antifareas-rpg-sprite-set-1-enlarged-w-transparent-background
+            };
+            loadImages(sources, initStage);
+        };
+    </script>
+</head>
+
+<body>
+    <div id="container"></div>
+</body>
 
 </html>
