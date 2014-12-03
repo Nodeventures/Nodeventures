@@ -12,5 +12,5 @@ var server = http
 var io = require('socket.io')(server);
 var eventEngine = require('./eventEngine')(io);
 
-// add event mappings
+// add event mappings for movement events
 require('./eventMappings/movement')(eventEngine);

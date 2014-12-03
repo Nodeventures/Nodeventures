@@ -1,3 +1,5 @@
+// This object is responsible for attaching event handlers when a new socket is created
+
 var async = require('async'),
     util = require('util');
 
@@ -42,11 +44,13 @@ module.exports = function(io) {
 
     return {
 
+        // get socket.io namespace
         forChannel: function(channel) {
             var channelSocket = io.of(channel);
 
             return {
 
+                // add mappings for namespace
                 addMappings: function(mappings) {
                     channelSocket.on('connection', function(socket){
                         console.log('Client connected to channel: ' + channel);
