@@ -5,8 +5,8 @@ var app = express();
 
 var server = http
     .createServer(app)
-    .listen(8080, function () {
-        console.log('Express server listening on port ' + server.address().port);
+    .listen(8080, function() {
+        console.log('Game server listening on port ' + server.address().port);
     });
 
 var io = require('socket.io')(server);

@@ -1,4 +1,4 @@
-var MovementHandler = require('./handlers/MovementHandler');
+var MovementHandler = require('../handlers/MovementHandler');
 
 module.exports = function(eventEngine) {
 

@@ -1,0 +1,23 @@
+{
+  "name": "web",
+  "main": "index.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/skovachev/HackBulgaria-NodeJS-1",
+  "authors": [
+    "Stefan Kovachev <stefan.kovachev@gmail.com>"
+  ],
+  "description": "Web client for Nodeventures",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.1",
+    "jquery": "~2.1.1"
+  }
+}

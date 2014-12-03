@@ -25,7 +25,7 @@ function mapHandlersToSocket(io, channelSocket, eventKey, handlers) {
             };
         });
 
-        async.parallel(callbacks, function(eventsToFire){
+        async.parallel(callbacks, function(err, eventsToFire){
             emitEvents(io, eventsToFire);
         });
     });
@@ -48,7 +48,10 @@ module.exports = function(io) {
             return {
 
                 addMappings: function(mappings) {
-                    addMappings(io, channelSocket, mappings);
+                    channelSocket.on('connection', function(socket){
+                        console.log('Client connected to channel: ' + channel);
+                        addMappings(io, socket, mappings);
+                    });
                 }
 
             };
