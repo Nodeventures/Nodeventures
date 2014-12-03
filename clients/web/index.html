@@ -2,7 +2,9 @@
 
 <head>
     <title>Nodeventures</title>
-    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+    <script>
+        document.write('<script src="' + window.location.protocol + '//' + window.location.hostname + ':8080/socket.io/socket.io.js"><\/script>');
+    </script>
 
     <script src='/bower_components/jquery/dist/jquery.min.js'></script>
     <!--

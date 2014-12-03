@@ -1,5 +1,5 @@
 $(function() {
-    var movementSocket = io('http://localhost:8080/movement');
+    var movementSocket = io(window.location.protocol + '//' + window.location.hostname + ':8080/movement');
 
     movementSocket.on('heroMoved', function(data){
         console.log('received', data);
