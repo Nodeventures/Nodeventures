@@ -1,10 +1,14 @@
 "use strict";
 
 var mongoose = require('mongoose');
-var models = require('../models');
+var autoIncrement = require('mongoose-auto-increment');
+var models;
 
 module.exports = function (config) {
     mongoose.connect(config.db);
+    autoIncrement.initialize(mongoose.connection);
+
+    models = require('../models').Hero;
 
     var db = mongoose.connection;
 
