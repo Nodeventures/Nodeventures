@@ -37,7 +37,7 @@
         heroConfig.session = session;
 
         // setup hero
-        var hero = new Nv.Hero(heroConfig);
+        var hero = new Nv.Hero(session.map, heroConfig);
         hero.skipEvents = !protagonist;
         session.map.heroEnter(hero, protagonist);
 
@@ -148,6 +148,10 @@
         logoutHero: function(hero_id) {
             this.map.heroLeave(hero_id);
         }
+    };
+
+    Nv.sessionInstance = function() {
+        return currentSession;
     };
 
     Nv.Session.initStatic = function(options) {

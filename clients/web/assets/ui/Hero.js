@@ -1,10 +1,9 @@
 (function() {
 
-    Nv.Hero = function(config) {
-        this.width = 32;
-        this.height = 48;
-        this.channels = config.channels;
-        this.session = config.session;
+    Nv.Hero = function(map, config) {
+        
+        Nv.MapObject.call(this, map, 32, 48, config.position);
+
         this.name = config.name;
         this.id = config.id;
 
@@ -22,11 +21,6 @@
                 animations[animationName].push(hero.height);
             });
         });
-
-        var groupConfig = {
-            x: config.position.x,
-            y: config.position.y,
-        };
 
         var spriteConfig = {
             x: 0,
@@ -54,8 +48,6 @@
         text.setY(text.getY() - text.getTextHeight() / 2);
         this.text = text;
 
-        Kinetic.Group.call(this, groupConfig);
-
         this.add(this.sprite);
         this.add(this.text);
     };
@@ -74,12 +66,6 @@
             }
             else {
                 this.sprite.animation(animationName);
-            }
-        },
-
-        emitEvent: function(channel, eventKey, eventData) {
-            if (!this.skipEvents) {
-                this.session.emitEvent(channel, eventKey, eventData);
             }
         },
 
@@ -123,5 +109,5 @@
         }
     };
 
-    Kinetic.Util.extend(Nv.Hero, Kinetic.Group);
+    Kinetic.Util.extend(Nv.Hero, Nv.MapObject);
 })();
