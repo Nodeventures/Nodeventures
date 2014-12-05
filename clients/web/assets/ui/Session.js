@@ -33,6 +33,15 @@
                 }
             }
         });
+
+        var systemChannel = Nv.Session.connectToChannel('/system');
+
+        systemChannel.on('userLoggedOut', function(data){
+            console.log('User logged out', data);
+            if (currentSession !== null) {
+                currentSession.logoutHero(data.hero_id);
+            }
+        });
     }
 
     function createHero(session, heroConfig, protagonist) {
@@ -45,6 +54,31 @@
         hero.skipEvents = !protagonist;
 
         return hero;
+    }
+
+    function createProtagonist(session, heroConfig) {
+        heroConfig.image = session.images.heroSprite;
+        var hero = createHero(session, heroConfig, true);
+        session.hero = hero;
+    }
+
+    function enterMap(session, mapConfig) {
+        var stage = new Kinetic.Stage({
+            container: session.container,
+            width: mapConfig.width,
+            height: mapConfig.height
+        });
+
+        mapConfig.baseImage = session.images.tileSet;
+
+        var areaMap = new Nv.Map(mapConfig);
+        areaMap.addLayersToStage(stage);
+        session.map = areaMap;
+
+        stage.add(session.layers['heroLayer']);
+        stage.draw();
+
+        Nv.Interactions.init(session.hero, session.container, session.map);
     }
 
     Nv.Session = function(sessionData) {
@@ -87,35 +121,23 @@
             });
         },
 
+        destroy: function() {
+            this.emitEvent('/system', 'userLogout', {
+                'username': lastUsedUsername,
+                'hero_id': this.hero.id
+            });
+        },
+
         start: function() {
             setupEvents(this);
-
-            var stage = new Kinetic.Stage({
-                container: this.container,
-                width: this.config.map.width,
-                height: this.config.map.height
-            });
 
             this.layers['heroLayer'] = new Kinetic.Layer();
 
             // add main hero
-            var heroConfig = this.config.hero;
-            heroConfig.image = this.images.heroSprite;
-            var isProtagonist = true;
-            var hero = createHero(this, heroConfig, isProtagonist);
-            this.hero = hero;
+            createProtagonist(this, this.config.hero);
 
             // setup map
-            var mapConfig = this.config.map;
-            mapConfig.baseImage = this.images.tileSet;
-            var areaMap = new Nv.Map(mapConfig);
-            areaMap.addLayersToStage(stage);
-            this.map = areaMap;
-
-            stage.add(this.layers['heroLayer']);
-            stage.draw();
-
-            Nv.Interactions.init(hero, this.container, areaMap);
+            enterMap(this, this.config.map);
         },
 
         loginHero: function(heroConfig) {
@@ -130,6 +152,14 @@
                 });
 
                 // trigger event for hud
+            }
+        },
+
+        logoutHero: function(hero_id) {
+            if (typeof this.heroes[hero_id] !== 'undefined') {
+                var hero = this.heroes[hero_id];
+                delete this.heroes[hero_id];
+                hero.logout();
             }
         }
     };
@@ -151,16 +181,6 @@
 
         var systemChannel = Nv.Session.connectToChannel('/system');
 
-        systemChannel.on('userLoggedIn', function(data){
-            console.log('User logged in', data);
-            if (data.user.username === lastUsedUsername) {
-                currentSession = new Nv.Session(data);
-            }
-            else if (currentSession !== null) {
-                currentSession.loginHero(data.hero);
-            }
-        });
-
         var eventData = {
                 'username': usernameInput,
                 'password': passwordInput
@@ -170,6 +190,16 @@
                 key: 'userLogin',
                 data: eventData
             };
+
+        systemChannel.on('userLoggedIn', function(data){
+            console.log('User logged in', data);
+            if (data.user.username === lastUsedUsername) {
+                currentSession = new Nv.Session(data);
+            }
+            else if (currentSession !== null) {
+                currentSession.loginHero(data.hero);
+            }
+        });
 
         systemChannel.emit(loginEvent.key, loginEvent);
     };

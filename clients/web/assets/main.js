@@ -13,7 +13,14 @@ $(function() {
         ioUrl: window.location.protocol + '//' + window.location.hostname + ':8080',
         container: 'container',
         onCreate: function(session) {
+            
             $('#login').remove();
+
+             $(window).bind("beforeunload", function() {
+                if (session) {
+                    session.destroy();
+                }
+            });
         }
     });
 
@@ -35,10 +42,4 @@ $(function() {
         return false;
     });
 
-    $(window).bind("beforeunload", function() {
-        if (session) {
-            session.destroy();
-        }
-    });
-     
 });

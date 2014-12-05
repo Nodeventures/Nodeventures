@@ -62,6 +62,12 @@
 
     Nv.Hero.prototype = {
 
+        logout: function() {
+            console.log('destroy hero: ' + this.id);
+            this.sprite.destroy();
+            this.text.destroy();
+        },
+
         animate: function(animationName) {
             if (!animationName) {
                 this.sprite.start();
