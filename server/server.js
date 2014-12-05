@@ -1,6 +1,9 @@
 var http = require('http');
 var express = require('express');
 
+// database configuration information
+var config = require('../data/config/config')['development'];
+
 var app = express();
 
 var server = http
@@ -8,6 +11,9 @@ var server = http
     .listen(8080, function() {
         console.log('Game server listening on port ' + server.address().port);
     });
+
+// initialize database
+require('../data/config/mongoose')(config);
 
 var io = require('socket.io')(server);
 var eventEngine = require('./eventEngine')(io);
