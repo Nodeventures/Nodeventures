@@ -4,6 +4,8 @@
         this.width = 32;
         this.height = 48;
         this.channels = config.channels;
+        this.session = config.session;
+        this.name = config.name;
         this.id = config.id;
 
         var hero = this;
@@ -39,7 +41,7 @@
         var textConfig = {
             x: 0,
             y: 0,
-            text: config.name,
+            text: this.name,
             fontSize: 12,
             fontFamily: 'Calibri',
             fill: 'black'
@@ -59,13 +61,6 @@
     };
 
     Nv.Hero.prototype = {
-        emitEvent: function(channel, eventKey, eventData) {
-            this.channels[channel].emit(eventKey, {
-                channel: channel,
-                key: eventKey,
-                data: eventData
-            });
-        },
 
         animate: function(animationName) {
             if (!animationName) {
@@ -73,6 +68,12 @@
             }
             else {
                 this.sprite.animation(animationName);
+            }
+        },
+
+        emitEvent: function(channel, eventKey, eventData) {
+            if (!this.skipEvents) {
+                this.session.emitEvent(channel, eventKey, eventData);
             }
         },
 

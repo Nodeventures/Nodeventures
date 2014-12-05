@@ -1,6 +1,8 @@
 var utils = require('./utils'),
     defaultChannel = '/system';
 
+var heroIdCounter = 1;
+
 var onUserLogin = utils.wrapWithPromise(function(gameEvent, deferred){
     // eventData: username, password
         
@@ -8,7 +10,57 @@ var onUserLogin = utils.wrapWithPromise(function(gameEvent, deferred){
 
     // TODO: login or register user and return user/hero data in event
     var data = {
-        // all required user and hero data from database
+        
+        user: {
+            username: gameEvent.data.username
+        },
+
+        // all images that need to be loaded before the scene is initialized
+        images: {
+            heroSprite: "assets/tileset/space_guy.png",
+            tileSet: "assets/tileset/free_tileset_CC.png",
+        },
+
+        // hero information
+        hero: {
+            name: gameEvent.data.username,
+            heroSprite: "assets/tileset/space_guy.png",
+            position: {
+                x: 320,
+                y: 320,
+                map: 'fields'
+            },
+            animations: {
+                idle: [
+                    [1, 2],
+                ],
+
+                walk: [
+                    [0, 2],
+                    [1, 2],
+                    [2, 2]
+                ],
+            },
+
+            id: heroIdCounter++
+        },
+
+        // map object loaded based on hero's position.map field
+        map: {
+            key: 'fields',
+
+            tileSize: 32,
+            tileSet: "assets/tileset/free_tileset_CC.png",
+            width: 640,
+            height: 640,
+
+            tilesConfig: {
+                imageX: 5,
+                imageY: 18,
+                stepsHorizontalAllowed: 2,
+                stepsVerticalAllowed: 2,
+            }
+        }
     };
     
     // send event to clients

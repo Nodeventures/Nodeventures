@@ -14,3 +14,4 @@ var eventEngine = require('./eventEngine')(io);
 
 // add event mappings for movement events
 require('./eventMappings/movement')(eventEngine);
+require('./eventMappings/system')(eventEngine);

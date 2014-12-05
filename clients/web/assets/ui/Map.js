@@ -7,6 +7,7 @@
         this.width = mapConfig.width;
         this.height = mapConfig.height;
         this.baseImage = mapConfig.baseImage;
+        this.key = mapConfig.key;
 
         this.layers = {};
 

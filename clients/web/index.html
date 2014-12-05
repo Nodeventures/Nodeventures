@@ -16,6 +16,7 @@
     <script src='/assets/ui/Hero.js'></script>
     <script src='/assets/ui/Map.js'></script>
     <script src='/assets/ui/Interactions.js'></script>
+    <script src='/assets/ui/Session.js'></script>
     <script src='/assets/main.js'></script>
 
     <!--
@@ -26,6 +27,20 @@
 </head>
 
 <body>
+    <div id="login">
+        <form>
+            <label for="username">
+                Username
+                <input type="text" id='username' placeholder='username'>
+            </label>
+            <label for="password">
+                Password
+                <input type="password" id='password'>
+            </label>
+
+            <input type="submit" value='Login / Register'>
+        </form>
+    </div>
     <div id="container" style='width:640px; height:640px'></div>
 </body>
 
