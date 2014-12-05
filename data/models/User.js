@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var encryption = require('../utils/encryption');
 
 var userSchema = new mongoose.Schema({
-    username: {type: String, required: true, unique: true},
+    username: {type: String, required: true, unique: true, index: true},
     salt: String,
     hashPassword: String
 });

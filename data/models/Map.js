@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 
 var mapSchema = new mongoose.Schema({
-    key: {type: String, unique: true},
+    key: {type: String, unique: true, index: true},
     width: {type: Number, default: 640},
     height: {type: Number, default: 640},
     tileSize: {type: Number, default: 32},

@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var itemSchema = new mongoose.Schema({
     // item has type, for example weapon, and the key will be the item name (example: sword, axe, etc.)
     type: {type: String, required: true},
-    key: {type: String, required: true, unique: true},
+    key: {type: String, required: true, unique: true, index: true},
     description: String,
     // the modifiers for hero stats change after item is picked up
     modifiers: {
