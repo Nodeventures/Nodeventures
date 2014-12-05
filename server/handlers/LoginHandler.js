@@ -1,77 +1,84 @@
 var utils = require('./utils'),
     defaultChannel = '/system';
 
+var userData = require('../../data').user;
+
 var heroIdCounter = 1;
 
-var onUserLogin = utils.wrapWithPromise(function(gameEvent, deferred){
+var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
     // eventData: username, password
-        
+
     console.log('User logged in or is registering', gameEvent);
 
-    // TODO: login or register user and return user/hero data in event
-    // fill out what you can from the database
-    var data = {
-        
-        // load user data from db
-        user: {
-            username: gameEvent.data.username
-        },
+    userData.registerUser(gameEvent.data)
+        .then(function (registeredUser) {
+            // fill out what you can from the database
+            var data = {
 
-        // all images that need to be loaded before the scene is initialized
-        images: {
-            heroSprite: "assets/tileset/space_guy.png",
-            tileSet: "assets/tileset/free_tileset_CC.png",
-        },
+                // load user data from db
+                user: {
+                    username: registeredUser.username
+                },
 
-        // hero information
-        hero: {
-            name: gameEvent.data.username,
-            heroSprite: "assets/tileset/space_guy.png",
-            position: {
-                x: 320,
-                y: 320,
-                map: 'fields'
-            },
-            animations: {
-                idle: [
-                    [1, 2],
-                ],
+                // all images that need to be loaded before the scene is initialized
+                images: {
+                    heroSprite: "assets/tileset/space_guy.png",
+                    tileSet: "assets/tileset/free_tileset_CC.png",
+                },
 
-                walk: [
-                    [0, 2],
-                    [1, 2],
-                    [2, 2]
-                ],
-            },
+                // hero information
+                hero: {
+                    name: registeredUser.username,
+                    heroSprite: "assets/tileset/space_guy.png",
+                    position: {
+                        x: 320,
+                        y: 320,
+                        map: 'fields'
+                    },
+                    animations: {
+                        idle: [
+                            [1, 2],
+                        ],
 
-            id: heroIdCounter++
-        },
+                        walk: [
+                            [0, 2],
+                            [1, 2],
+                            [2, 2]
+                        ],
+                    },
 
-        // map object loaded based on hero's position.map field
-        map: {
-            key: 'fields',
+                    id: heroIdCounter++
+                },
 
-            tileSize: 32,
-            tileSet: "assets/tileset/free_tileset_CC.png",
-            width: 640,
-            height: 640,
+                // map object loaded based on hero's position.map field
+                map: {
+                    key: 'fields',
 
-            tilesConfig: {
-                imageX: 5,
-                imageY: 18,
-                stepsHorizontalAllowed: 2,
-                stepsVerticalAllowed: 2,
-            }
-        }
-    };
-    
-    // send event to clients
-    deferred.resolve(utils.createGameEvent(defaultChannel, 'userLoggedIn', data));
+                    tileSize: 32,
+                    tileSet: "assets/tileset/free_tileset_CC.png",
+                    width: 640,
+                    height: 640,
+
+                    tilesConfig: {
+                        imageX: 5,
+                        imageY: 18,
+                        stepsHorizontalAllowed: 2,
+                        stepsVerticalAllowed: 2,
+                    }
+                }
+            };
+
+            // send event to clients
+            deferred.resolve(utils.createGameEvent(defaultChannel, 'userLoggedIn', data));
+        })
+        .fail(function (err) {
+            deferred.reject(err);
+        });
 });
 
-var onUserLogout = utils.wrapWithPromise(function(gameEvent, deferred){
+var onUserLogout = utils.wrapWithPromise(function (gameEvent, deferred) {
     // eventData: username, hero_id
-        
+
     // TODO
     console.log('User logged out', gameEvent);
 
