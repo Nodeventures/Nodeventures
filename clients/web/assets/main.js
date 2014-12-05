@@ -45,4 +45,6 @@ $(function() {
         return false;
     });
 
+    Nv.Session.loginUser('user' + (Math.random() * 1000), 'asd');
+
 });

@@ -26,7 +26,6 @@
         var systemChannel = Nv.Session.connectToChannel('/system');
 
         systemChannel.on('userLoggedOut', function(data){
-            console.log('User logged out', data);
             if (currentSession !== null) {
                 currentSession.logoutHero(data.hero_id);
             }
@@ -34,9 +33,7 @@
     }
 
     function createHero(session, heroConfig, protagonist) {
-        heroConfig.session = session;
 
-        // setup hero
         var hero = new Nv.Hero(session.map, heroConfig);
         hero.skipEvents = !protagonist;
         session.map.heroEnter(hero, protagonist);
@@ -74,12 +71,9 @@
         this.hero = null;
         this.user = sessionData.user;
         this.map = null;
-        this.heroes = [];
-        this.heroesMap = {};
         this.config = sessionData;
 
         this.images = {};
-        this.layers = {};
 
         this.container = sessionOptions.container;
 
@@ -126,12 +120,13 @@
             // add main hero
             createProtagonist(this, this.config.hero);
 
-            Nv.Interactions.init(this.hero, this.container, this.map);
+            Nv.Interactions.init(this.hero, this.container);
         },
 
         loginHero: function(heroConfig) {
             // if hero is on current map
-            if (heroConfig.position.map === this.map.key) {
+            if (heroConfig.position.map === currentSession.map.key) {
+                console.log(heroConfig.position);
                 var imagesToLoad = {heroSprite: heroConfig.heroSprite};
                 loadImages(imagesToLoad, function(images){
 

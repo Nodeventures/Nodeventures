@@ -1,18 +1,18 @@
 (function() {
 
     MapObject = function(map, width, height, position) {
-        this.skipEvents = false;
-
-        this.width = width;
-        this.height = height;
-        this.map = map;
-
         var groupConfig = {
             x: position.x,
             y: position.y,
         };
 
         Kinetic.Group.call(this, groupConfig);
+
+        this.skipEvents = false;
+
+        this.width = width;
+        this.height = height;
+        this.map = map;
     };
 
     MapObject.prototype = {

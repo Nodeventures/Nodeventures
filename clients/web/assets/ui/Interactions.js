@@ -1,5 +1,5 @@
 Nv.Interactions = {
-    init: function(hero, containerId, areaMap) {
+    init: function(hero, containerId) {
         // setup movement events
         var elem = document.getElementById('container'),
             elemLeft = elem.offsetLeft,
@@ -10,7 +10,7 @@ Nv.Interactions = {
             var x = event.pageX - elemLeft,
                 y = event.pageY - elemTop;
 
-           hero.moveTo(x, y, areaMap);
+           hero.moveToPosition(x, y);
 
         }, false);
     }

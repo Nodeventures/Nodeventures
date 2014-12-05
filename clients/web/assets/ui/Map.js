@@ -8,7 +8,7 @@
             if (typeof map.heroes[data.hero_id] !== 'undefined') {
                 var hero = map.heroes[data.hero_id];
                 if (hero) {
-                    hero.moveTo(data.end.x, data.end.y, map);
+                    hero.moveToPosition(data.end.x, data.end.y);
                 }
             }
         });

@@ -1,7 +1,6 @@
 (function() {
 
     Nv.Hero = function(map, config) {
-        
         Nv.MapObject.call(this, map, 32, 48, config.position);
 
         this.name = config.name;
@@ -46,10 +45,10 @@
         var text = new Kinetic.Text(textConfig);
         text.setX(text.getX() - text.getTextWidth() / 2 + this.width / 2);
         text.setY(text.getY() - text.getTextHeight() / 2);
-        this.text = text;
+        this.textLabel = text;
 
         this.add(this.sprite);
-        this.add(this.text);
+        this.add(this.textLabel);
     };
 
     Nv.Hero.prototype = {
@@ -57,7 +56,7 @@
         leave: function() {
             console.log('hero left: ' + this.id);
             this.sprite.destroy();
-            this.text.destroy();
+            this.textLabel.destroy();
         },
 
         animate: function(animationName) {
@@ -69,7 +68,7 @@
             }
         },
 
-        moveTo: function(x, y, map) {
+        moveToPosition: function(x, y) {
             if (this.currentAnimation) {
                 this.currentAnimation.pause();
             }
@@ -77,7 +76,7 @@
             // send event
             this.emitEvent('/movement', 'moveHero', {
                 'hero_id': this.id,
-                'map_id': map.id,
+                'map_id': this.map.id,
                 'start': {x: this.x, y: this.y},
                 'end': {x: x, y: y},
             });
@@ -86,7 +85,7 @@
 
             var durationToRunThroughMap = 3; // sec
             var distanceMoved = Math.sqrt(Math.pow(x - this.getX(), 2) + Math.pow(y - this.getY(), 2));
-            var distancePart = distanceMoved / map.width;
+            var distancePart = distanceMoved / this.map.width;
 
             var duration = distancePart * durationToRunThroughMap;
 
