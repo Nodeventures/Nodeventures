@@ -23,17 +23,6 @@
     }
 
     function setupEvents(session) {
-        var movementSocket = session.connectToChannel('/movement');
-
-        movementSocket.on('heroMoved', function(data){
-            if (data.hero_id !== session.hero.id) {
-                var hero = session.heroes[data.hero_id];
-                if (hero) {
-                    hero.moveTo(data.end.x, data.end.y, currentSession.map);
-                }
-            }
-        });
-
         var systemChannel = Nv.Session.connectToChannel('/system');
 
         systemChannel.on('userLoggedOut', function(data){
@@ -49,9 +38,8 @@
 
         // setup hero
         var hero = new Nv.Hero(heroConfig);
-        session.layers['heroLayer'].add(hero);
-        hero.animate();
         hero.skipEvents = !protagonist;
+        session.map.heroEnter(hero, protagonist);
 
         return hero;
     }
@@ -69,16 +57,17 @@
             height: mapConfig.height
         });
 
+        delete session.map;
+        session.map = null;
+
         mapConfig.baseImage = session.images.tileSet;
+        mapConfig.session = session;
 
         var areaMap = new Nv.Map(mapConfig);
         areaMap.addLayersToStage(stage);
         session.map = areaMap;
 
-        stage.add(session.layers['heroLayer']);
         stage.draw();
-
-        Nv.Interactions.init(session.hero, session.container, session.map);
     }
 
     Nv.Session = function(sessionData) {
@@ -131,13 +120,13 @@
         start: function() {
             setupEvents(this);
 
-            this.layers['heroLayer'] = new Kinetic.Layer();
+            // setup map
+            enterMap(this, this.config.map);
 
             // add main hero
             createProtagonist(this, this.config.hero);
 
-            // setup map
-            enterMap(this, this.config.map);
+            Nv.Interactions.init(this.hero, this.container, this.map);
         },
 
         loginHero: function(heroConfig) {
@@ -145,10 +134,11 @@
             if (heroConfig.position.map === this.map.key) {
                 var imagesToLoad = {heroSprite: heroConfig.heroSprite};
                 loadImages(imagesToLoad, function(images){
+
                     heroConfig.image = images.heroSprite;
-                    var isProtagonist = false;
-                    var hero = createHero(currentSession, heroConfig, isProtagonist);
-                    currentSession.heroes[hero.id] = hero;
+                    var hero = createHero(currentSession, heroConfig);
+
+                    currentSession.map.heroEnter(hero);
                 });
 
                 // trigger event for hud
@@ -156,11 +146,7 @@
         },
 
         logoutHero: function(hero_id) {
-            if (typeof this.heroes[hero_id] !== 'undefined') {
-                var hero = this.heroes[hero_id];
-                delete this.heroes[hero_id];
-                hero.logout();
-            }
+            this.map.heroLeave(hero_id);
         }
     };
 

@@ -62,8 +62,8 @@
 
     Nv.Hero.prototype = {
 
-        logout: function() {
-            console.log('destroy hero: ' + this.id);
+        leave: function() {
+            console.log('hero left: ' + this.id);
             this.sprite.destroy();
             this.text.destroy();
         },

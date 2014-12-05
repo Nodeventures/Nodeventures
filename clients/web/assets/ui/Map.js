@@ -1,18 +1,23 @@
 (function() {
 
-    Nv.Map = function(mapConfig) {
-        var mapLayer = new Kinetic.Layer();
+    function setupEvents() {
+        var movementSocket = this.session.connectToChannel('/movement'),
+            map = this;
 
-        this.tileSize = mapConfig.tileSize;
-        this.width = mapConfig.width;
-        this.height = mapConfig.height;
-        this.baseImage = mapConfig.baseImage;
-        this.key = mapConfig.key;
+        movementSocket.on('heroMoved', function(data){
+            if (typeof map.heroes[data.hero_id] !== 'undefined') {
+                var hero = map.heroes[data.hero_id];
+                if (hero) {
+                    hero.moveTo(data.end.x, data.end.y, map);
+                }
+            }
+        });
+    }
 
-        this.layers = {};
-
+    function drawMap(mapConfig) {
         var stepsX = this.width / this.tileSize,
-            stepsY = this.height / this.tileSize;
+            stepsY = this.height / this.tileSize,
+            mapLayer = new Kinetic.Layer();
 
         for (var j = 0; j < stepsX; j++) {
 
@@ -37,6 +42,23 @@
         }
 
         this.layers['mapLayer'] = mapLayer;
+
+        this.layers['heroLayer'] = new Kinetic.Layer();
+    }
+
+    Nv.Map = function(mapConfig) {
+        this.tileSize = mapConfig.tileSize;
+        this.width = mapConfig.width;
+        this.height = mapConfig.height;
+        this.baseImage = mapConfig.baseImage;
+        this.key = mapConfig.key;
+        this.session = mapConfig.session;
+
+        this.layers = {};
+
+        this.heroes = {};
+
+        drawMap.call(this, mapConfig);
 
         // //Obects (background)
         // var tS = 32;
@@ -73,16 +95,27 @@
         // }//End Obect Layer
 
         // stage.add(objectlayer); //rockts,trees for collisions
+        
+        // events
+        setupEvents.call(this);
     };
 
     Nv.Map.prototype = {
 
-        heroEnter: function() {
-
+        heroEnter: function(hero, protagonist) {
+            if (!protagonist) {
+                this.heroes[hero.id] = hero;
+            }
+            this.layers['heroLayer'].add(hero);
+            hero.animate();
         },
 
-        heroLeave: function() {
-
+        heroLeave: function(hero_id) {
+            if (typeof this.heroes[hero_id] !== 'undefined') {
+                var hero = this.heroes[hero_id];
+                delete this.heroes[hero_id];
+                hero.leave();
+            }
         },
 
         getLayers: function() {
