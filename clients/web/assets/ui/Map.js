@@ -76,6 +76,15 @@
     };
 
     Nv.Map.prototype = {
+
+        heroEnter: function() {
+
+        },
+
+        heroLeave: function() {
+
+        },
+
         getLayers: function() {
             return this.layers;
         },

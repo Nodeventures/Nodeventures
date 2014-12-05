@@ -10,13 +10,17 @@ $(function() {
     //https://github.com/silveira/openpixels/blob/master/open_chars.xcf
 
     Nv.Session.initStatic({
+
         ioUrl: window.location.protocol + '//' + window.location.hostname + ':8080',
+
         container: 'container',
+
         onCreate: function(session) {
-            
+
             $('#login').remove();
 
-             $(window).bind("beforeunload", function() {
+            // catch logout event
+            $(window).bind("beforeunload", function() {
                 if (session) {
                     session.destroy();
                 }
@@ -25,7 +29,7 @@ $(function() {
     });
 
 
-    $('#login form').on('submit', function(e){
+    $('#login form').on('submit', function(e) {
         e.preventDefault();
 
         var $form = $(this),
@@ -34,8 +38,7 @@ $(function() {
 
         if (!usernameInput || !passwordInput) {
             alert('Please enter your login or registration credentials');
-        }
-        else {
+        } else {
             Nv.Session.loginUser(usernameInput, passwordInput);
         }
 

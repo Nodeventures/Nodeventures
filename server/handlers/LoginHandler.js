@@ -9,8 +9,10 @@ var onUserLogin = utils.wrapWithPromise(function(gameEvent, deferred){
     console.log('User logged in or is registering', gameEvent);
 
     // TODO: login or register user and return user/hero data in event
+    // fill out what you can from the database
     var data = {
         
+        // load user data from db
         user: {
             username: gameEvent.data.username
         },
