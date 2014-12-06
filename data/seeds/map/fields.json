@@ -1,0 +1,45 @@
+{
+    "key": "fields",
+
+    "tileSize": 32,
+    "tileSet": "assets/tileset/free_tileset_CC.png",
+    "width": 640,
+    "height": 640,
+
+    "tilesConfig": {
+        "imageX": 5,
+        "imageY": 18,
+        "stepsHorizontalAllowed": 2,
+        "stepsVerticalAllowed": 2
+    },
+
+    "mapObjects": [
+        {
+            "type": "item",
+            "itemId": "great-sword-of-awesomeness",
+            "position": {
+                "x": 100,
+                "y": 50
+            }
+        },
+
+        {
+            "type": "item",
+            "itemId": "plain-leather-armor",
+            "position": {
+                "x": 500,
+                "y": 240
+            }
+        },
+
+        {
+            "type": "item",
+            "itemId": "sturdy-buckle-of-thorns",
+            "position": {
+                "x": 130,
+                "y": 490
+            }
+        }
+    ]
+
+}
