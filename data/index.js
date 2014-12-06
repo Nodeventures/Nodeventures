@@ -2,5 +2,6 @@
 
 module.exports = {
     user: require('./user'),
-    hero: require('./hero')
+    hero: require('./hero'),
+    map: require('./map')
 };
