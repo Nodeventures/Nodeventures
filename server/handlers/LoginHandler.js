@@ -19,7 +19,8 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
 
             return data.hero.createHero({
                 username: registeredUser.username,
-                name: registeredUser.username
+                name: registeredUser.username,
+                status: 'online'
             });
         })
 
