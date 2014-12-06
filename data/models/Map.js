@@ -13,6 +13,15 @@ var mapSchema = new mongoose.Schema({
         imageY: {type: Number, default: 18},
         stepsHorizontalAllowed: {type: Number, default: 2},
         stepsVerticalAllowed: {type: Number, default: 2}
+    },
+
+    mapObjects: {
+        type: {type: String, default: 'item'}, // in the future in addition to item we will have 'area_entrance/exit'
+        itemId: {type: mongoose.Schema.ObjectId, ref: 'Item'},
+        position: {
+            x: {type: Number, default: 320},
+            y: {type: Number, default: 320},
+        }
     }
 });
 
