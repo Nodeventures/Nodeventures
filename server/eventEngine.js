@@ -33,6 +33,7 @@ function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
         });
 
         async.parallel(callbacks, function(err, eventsToFire){
+            // TODO: flatten eventsToFire
             emitEvents(io, eventsToFire);
         });
     });
