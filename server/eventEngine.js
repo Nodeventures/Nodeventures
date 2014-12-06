@@ -22,12 +22,12 @@ function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
 
                 // call handler function and on success call the async callback
                 handlerFunction(data, clientSocket)
-                    .done(function(responseEvent){
-                        asyncCallback(null, responseEvent);
-                    })
                     // forward error just to the source client
                     .fail(function(error){
                         clientSocket.emit('error', error);
+                    })
+                    .done(function(responseEvent){
+                        asyncCallback(null, responseEvent);
                     });
             };
         });

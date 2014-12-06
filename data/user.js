@@ -68,5 +68,14 @@ module.exports = {
         }
 
         return defer.promise;
+    },
+
+    // TODO
+    setHeroStatus: function(status, eventData) {
+        // eventdata: username, hero_id
+        
+        var defer = q.defer();
+        defer.resolve();
+        return defer.promise;
     }
 };
