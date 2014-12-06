@@ -9,8 +9,8 @@ function emitEvents(io, events) {
     });
 }
 
-function mapHandlersToSocket(io, channelSocket, eventKey, handlers) {
-    channelSocket.on(eventKey, function(data){
+function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
+    clientSocket.on(eventKey, function(data){
         // get arraay of handler functions for this message key
         handlers = util.isArray(handlers) ? handlers : [handlers];
 
@@ -21,9 +21,14 @@ function mapHandlersToSocket(io, channelSocket, eventKey, handlers) {
             return function(asyncCallback) {
 
                 // call handler function and on success call the async callback
-                handlerFunction(data).done(function(responseEvent){
-                    asyncCallback(null, responseEvent);
-                });
+                handlerFunction(data, clientSocket)
+                    .done(function(responseEvent){
+                        asyncCallback(null, responseEvent);
+                    })
+                    // forward error just to the source client
+                    .fail(function(error){
+                        clientSocket.emit('error', error);
+                    });
             };
         });
 
@@ -33,10 +38,10 @@ function mapHandlersToSocket(io, channelSocket, eventKey, handlers) {
     });
 }
 
-function addMappings(io, channelSocket, mappings) {
+function addMappings(io, clientSocket, mappings) {
     Object.keys(mappings).forEach(function(eventKey){
         var eventMappings = mappings[eventKey];
-        mapHandlersToSocket(io, channelSocket, eventKey, eventMappings);
+        mapHandlersToSocket(io, clientSocket, eventKey, eventMappings);
     });
 }
 
