@@ -2,7 +2,8 @@
     var channels = {},
         lastUsedUsername = null,
         sessionOptions = {},
-        currentSession = null;
+        currentSession = null,
+        eventsInitialized = false;
 
     function loadImages(sources, callback) {
         var images = {};
@@ -30,6 +31,7 @@
                 currentSession.logoutHero(data.hero_id);
             }
         });
+
     }
 
     function initializeHUD(session, hero) {
@@ -187,15 +189,23 @@
                 data: eventData
             };
 
-        systemChannel.on('userLoggedIn', function(data){
-            console.log('User logged in', data);
-            if (data.user.username === lastUsedUsername) {
-                currentSession = new Nv.Session(data);
-            }
-            else if (currentSession !== null) {
-                currentSession.loginHero(data.hero);
-            }
-        });
+        if (!eventsInitialized) {
+            systemChannel.on('userLoggedIn', function(data){
+                console.log('User logged in', data);
+                if (data.user.username === lastUsedUsername) {
+                    currentSession = new Nv.Session(data);
+                }
+                else if (currentSession !== null) {
+                    currentSession.loginHero(data.hero);
+                }
+            });
+
+            systemChannel.on('systemError', function(data){
+                alert(data.message);
+            });
+
+            eventsInitialized = true;
+        }
 
         systemChannel.emit(loginEvent.key, loginEvent);
     };
