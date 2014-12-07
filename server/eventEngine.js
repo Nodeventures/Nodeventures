@@ -35,9 +35,10 @@ function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
         });
 
         async.parallel(callbacks, function(err, eventsToFire){
-            // TODO: flatten eventsToFire
             if (eventsToFire) {
-                emitEvents(io, eventsToFire);
+                // flatten array of events -> allows for handlers to send multiple events instead of just one
+                var flattenedEventsArray = [].concat.apply([], eventsToFire);
+                emitEvents(io, flattenedEventsArray);
             }
         });
     });
