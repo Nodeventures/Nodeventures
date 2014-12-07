@@ -12,37 +12,90 @@
      -->
 
     <script src="/bower_components/kineticjs/kinetic.min.js"></script>
+    <script src="/bower_components/handlebars/handlebars.min.js"></script>
     <script src='/assets/app.js'></script>
     <script src='/assets/ui/Session.js'></script>
     <script src='/assets/ui/MapObject.js'></script>
     <script src='/assets/ui/Hero.js'></script>
     <script src='/assets/ui/Map.js'></script>
     <script src='/assets/ui/Interactions.js'></script>
+    <script src='/assets/ui/HUD.js'></script>
     <script src='/assets/main.js'></script>
 
-    <!--
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!--
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
     -->
 
 </head>
 
 <body>
-    <div id="login">
-        <form>
-            <label for="username">
-                Username
-                <input type="text" id='username' placeholder='username'>
-            </label>
-            <label for="password">
-                Password
-                <input type="password" id='password'>
-            </label>
+    <div id="game-ui">
+        <div id="login">
+            <h1>Nodeventures</h1>
+            <form class="form-horizontal">
+                <fieldset>
 
-            <input type="submit" value='Login / Register'>
-        </form>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="username">Username</label>
+                        <div class="col-md-5">
+                            <input id="username" name="username" type="text" placeholder="Username" class="form-control input-md" required="">
+
+                        </div>
+                    </div>
+
+                    <!-- Password input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="password">Password</label>
+                        <div class="col-md-5">
+                            <input id="password" name="password" type="password" placeholder="Password" class="form-control input-md" required="">
+
+                        </div>
+                    </div>
+
+                    <!-- Button -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="login-register"></label>
+                        <div class="col-md-4">
+                            <button id="login-register" name="login-register" class="btn btn-default">Login / Register</button>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+
+        <div id="container" class='game-ui'></div>
+        <div id="hud-container" class='game-ui'></div>
     </div>
-    <div id="container" style='width:640px; height:640px'></div>
+
+    <script id="hud-template" type="text/x-handlebars-template">
+        <div id="hud">
+            <h3>{{ name }}</h3>
+            <h5>Stats</h5>
+            <div id="hero-stats">
+                <div class="attack">Attack: {{ attack }}</div>
+                <div class="defense">Defense: {{ defense }}</div>
+                <div class="health">Health: {{ currentHealth }} / {{ health }}</div>
+            </div>
+            <h5>Inventory</h5>
+            <div id="hero-inventory">
+                {{#each itemsObjects}}
+                    <div class="item">
+                        <img src="/assets/items/{{ image }}" alt="{{ name }}">
+                        {{ name }}
+                    </div>
+                {{/each}}
+            </div>
+            <div id="hud-messages">
+                
+            </div>
+        </div>
+    </script>
+
 </body>
 
 </html>

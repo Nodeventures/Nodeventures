@@ -32,6 +32,14 @@
         });
     }
 
+    function initializeHUD(session, hero) {
+        session.hud = new Nv.HUD({
+            container: '#hud-container',
+            hero: hero,
+            session: session
+        });
+    }
+
     function createHero(session, heroConfig, protagonist) {
 
         var hero = new Nv.Hero(session.map, heroConfig);
@@ -72,6 +80,7 @@
         this.user = sessionData.user;
         this.map = null;
         this.config = sessionData;
+        this.hud = null;
 
         this.images = {};
 
@@ -119,6 +128,8 @@
 
             // add main hero
             createProtagonist(this, this.config.hero);
+
+            initializeHUD(this, this.config.hero);
 
             Nv.Interactions.init(this.hero, this.container);
         },
