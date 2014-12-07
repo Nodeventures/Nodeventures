@@ -3,7 +3,7 @@
     "key": "great-sword-of-awesomeness",
     "name": "Great sword of Awesomeness",
     "description": "The greatest and most awesome sword.",
-    "image": "greatSword.png"
+    "image": "greatSword.png",
 
     "modifiers": {
         "health": 0,

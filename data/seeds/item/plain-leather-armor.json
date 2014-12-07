@@ -3,7 +3,7 @@
     "key": "plain-leather-armor",
     "name": "Plain leather armor",
     "description": "A very simple leather armor. Can barely protect anything.",
-    "image": "leatherArmor.png"
+    "image": "leatherArmor.png",
 
     "modifiers": {
         "health": 10,

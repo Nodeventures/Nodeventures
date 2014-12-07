@@ -3,7 +3,7 @@
     "key": "sturdy-buckle-of-thorns",
     "name": "Sturdy buckle of Thorns",
     "description": "Ouch! That's one sharp buckle.",
-    "image": "buckle.png"
+    "image": "buckle.png",
 
     "modifiers": {
         "health": 0,
