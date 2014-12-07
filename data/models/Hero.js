@@ -15,8 +15,9 @@ var heroSchema = new mongoose.Schema({
         y: {type: Number, default: 320},
         map: {type: String, default: 'fields'}
     },
+    currentHealth: {type: Number, required: true, default: 100},
     health: {type: Number, required: true, default: 100},
-    attack: {type: Number, required: true, default: 0},
+    attack: {type: Number, required: true, default: 1},
     defense: {type: Number, required: true, default: 0},
     userId: {type: mongoose.Schema.ObjectId, ref: 'User'},
     heroSprite: {type: String, default: 'assets/tileset/space_guy.png'},
