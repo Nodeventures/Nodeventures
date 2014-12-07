@@ -44,10 +44,10 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
         .done(function(){
 
             // mark images / assets that need loading
-            eventData.images = [
-                eventData.hero.heroSprite,
-                eventData.map.tileSet
-            ];
+            eventData.images = {
+                "heroSprite": eventData.hero.heroSprite,
+                "tileSet": eventData.map.tileSet
+            };
 
             deferred.resolve(utils.createGameEvent(defaultChannel, 'userLoggedIn', eventData));
         });
@@ -62,13 +62,13 @@ function sendLogoutEvent(gameEvent, deferred) {
 var onUserLogout = utils.wrapWithPromise(function (gameEvent, deferred) {
 
     // eventData: username, hero_id
-    data.user.setHeroStatus('offline', gameEvent.data)
-        .done(function(){
-            // notify other clients that user has logged out
-            sendLogoutEvent(gameEvent, deferred);
-        })
+    data.hero.setHeroStatus(gameEvent.data.hero_id, 'offline')
         .fail(function(err){
             // logout user anyway
+            sendLogoutEvent(gameEvent, deferred);
+        })
+        .done(function(){
+            // notify other clients that user has logged out
             sendLogoutEvent(gameEvent, deferred);
         });
     
