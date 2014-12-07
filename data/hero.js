@@ -10,7 +10,8 @@ function processHeroCreate(heroInfo, defer) {
             var newHero = {
                 userId: user.id,
                 name: heroInfo.name,
-                id: heroInfo.id
+                id: heroInfo.id,
+                status: heroInfo.status
             };
 
             Hero.create(newHero, function (err, createdHero) {
@@ -28,15 +29,19 @@ function processHeroCreate(heroInfo, defer) {
 
 module.exports = {
     createHero: function (heroInfo) {
-        // heroInfo - username, name.
+        // heroInfo - username, name, status.
         var defer = q.defer();
 
+        var self = this;
         // if the hero is already created, return the hero from database
         // either way create new hero
         this.findByName(heroInfo.name)
             .then(function (hero) {
                 if (hero) {
-                    defer.resolve(hero);
+                    self.setHeroStatus(hero.id, heroInfo.status)
+                        .then(function () {
+                            defer.resolve(hero);
+                        });
                 } else {
                     processHeroCreate(heroInfo, defer);
                 }
@@ -69,7 +74,7 @@ module.exports = {
     updateHeroPosition: function (heroId, newPosition) {
         var defer = q.defer();
 
-        Hero.findOneAndUpdate({id: heroId}, {position: newPosition}, function(err, numberAffected, raw){
+        Hero.findOneAndUpdate({id: heroId}, {position: newPosition}, function (err, numberAffected, raw) {
             if (err) {
                 defer.reject(err);
             }
@@ -81,12 +86,12 @@ module.exports = {
         return defer.promise;
     },
 
-    setHeroStatus: function(heroId, status) {
+    setHeroStatus: function (heroId, status) {
         // eventdata: username, hero_id
-        
+
         var defer = q.defer();
 
-        Hero.findOneAndUpdate({id: heroId}, {status: status}, function(err, numberAffected, raw){
+        Hero.findOneAndUpdate({id: heroId}, {status: status}, function (err, numberAffected, raw) {
             if (err) {
                 defer.reject(err);
             }
