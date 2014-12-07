@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 var autoIncrement = require('mongoose-auto-increment');
 var models;
-var itemSeeder = require('../seeds/item');
+var seeds = require('../seeds');
 
 module.exports = function (config) {
     mongoose.connect(config.db);
@@ -19,15 +19,19 @@ module.exports = function (config) {
             return;
         }
 
-        itemSeeder.seedItems(db.collections.items.collection)
-            .then(function (results) {
-                console.log(results);
+        seeds.items.seedItems(db.collections.items.collection)
+            .then(function (items) {
+                console.log('Seeded ' + items.length + ' items.');
+                return seeds.maps.seedMaps(db.collections.maps.collection);
+            })
+            .then(function (maps) {
+                console.log('Seeded ' + maps.length + ' maps.');
             })
             .fail(function (err) {
                 console.log('Error: ' + err);
             })
             .done(function () {
-                console.log('Done seeding items.');
+                console.log('Done seeding.');
             });
 
         console.log('Database up and running...');
