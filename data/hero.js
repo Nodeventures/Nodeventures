@@ -65,5 +65,36 @@ module.exports = {
         }
 
         return defer.promise;
+    },
+    updateHeroPosition: function (heroId, newPosition) {
+        var defer = q.defer();
+
+        Hero.findOneAndUpdate({id: heroId}, {position: newPosition}, function(err, numberAffected, raw){
+            if (err) {
+                defer.reject(err);
+            }
+            else {
+                defer.resolve();
+            }
+        });
+
+        return defer.promise;
+    },
+
+    setHeroStatus: function(heroId, status) {
+        // eventdata: username, hero_id
+        
+        var defer = q.defer();
+
+        Hero.findOneAndUpdate({id: heroId}, {status: status}, function(err, numberAffected, raw){
+            if (err) {
+                defer.reject(err);
+            }
+            else {
+                defer.resolve();
+            }
+        });
+
+        return defer.promise;
     }
 };
