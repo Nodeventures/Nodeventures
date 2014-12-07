@@ -8,7 +8,8 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
 
     console.log('User logged in or is registering', gameEvent);
 
-    var eventData = {};
+    var eventData = {},
+        errorEncountered = null;
     data.user.registerUser(gameEvent.data)
 
         // get user object
@@ -36,20 +37,22 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
         })
 
         // forward any errors back
-        .catch(function(error){
+        .fail(function(error){
+            errorEncountered = error;
             deferred.reject(error);
         })
 
         // return event
         .done(function(){
+            if (!errorEncountered) {
+                // mark images / assets that need loading
+                eventData.images = {
+                    "heroSprite": eventData.hero.heroSprite,
+                    "tileSet": eventData.map.tileSet
+                };
 
-            // mark images / assets that need loading
-            eventData.images = {
-                "heroSprite": eventData.hero.heroSprite,
-                "tileSet": eventData.map.tileSet
-            };
-
-            deferred.resolve(utils.createGameEvent(defaultChannel, 'userLoggedIn', eventData));
+                deferred.resolve(utils.createGameEvent(defaultChannel, 'userLoggedIn', eventData));
+            }
         });
 });
 

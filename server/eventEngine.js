@@ -5,7 +5,9 @@ var async = require('async'),
 
 function emitEvents(io, events) {
     events.forEach(function(gameEvent){
-        io.of(gameEvent.channel).emit(gameEvent.key, gameEvent.data);
+        if (gameEvent) {
+            io.of(gameEvent.channel).emit(gameEvent.key, gameEvent.data);
+        }
     });
 }
 
@@ -24,8 +26,7 @@ function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
                 handlerFunction(data, clientSocket)
                     // forward error just to the source client
                     .fail(function(error){
-                        console.log('error', error);
-                        clientSocket.emit('error', error);
+                        clientSocket.emit('systemError', error);
                     })
                     .done(function(responseEvent){
                         asyncCallback(null, responseEvent);
@@ -35,7 +36,9 @@ function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
 
         async.parallel(callbacks, function(err, eventsToFire){
             // TODO: flatten eventsToFire
-            emitEvents(io, eventsToFire);
+            if (eventsToFire) {
+                emitEvents(io, eventsToFire);
+            }
         });
     });
 }
