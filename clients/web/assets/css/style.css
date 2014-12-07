@@ -1,5 +1,6 @@
 body {
     background: url('../images/ui/bg.jpg');
+    padding-top: 10px;
 }
 
 .clear {
@@ -37,12 +38,14 @@ body {
 }
 
 #hud-messages {
-    background: #e3e3e3;
+    background: rgba(255, 255, 255, 0.7);
     padding: 3px;
 }
 
 #game-ui {
-    width: 890px;
+    width: 900px;
     margin: 0 auto;
     text-align: center;
+    background: #f7e9d7;
+    border: 5px solid rgba(150,103,51,0.3);
 }
