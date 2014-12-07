@@ -18,6 +18,7 @@ $(function() {
         onCreate: function(session) {
 
             $('#login').remove();
+            $('body').addClass('game-started');
 
             // catch logout event
             $(window).bind("beforeunload", function() {
@@ -45,6 +46,7 @@ $(function() {
         return false;
     });
 
-    //Nv.Session.loginUser('user' + (Math.random() * 1000), 'asd');
+    // Nv.Session.loginUser('user' + (Math.random() * 1000), 'asd');
+    // Nv.Session.loginUser('stefan', 'test');
 
 });

@@ -1,0 +1,48 @@
+body {
+    background: url('../images/ui/bg.jpg');
+}
+
+.clear {
+    clear: both;
+}
+
+#container {
+    width: 640px;
+    height: 640px;
+    float: left;
+
+}
+
+#hud-container {
+    height: 640px;
+    width: 250px;
+    float: left;
+    background: #eee;
+
+    padding: 10px;
+    overflow-y: hidden;
+    text-align: left;
+}
+
+.game-ui {
+    display: none;
+}
+
+.game-started .game-ui {
+    display: block;
+}
+
+#hud-container h3 {
+    margin-top: 0;
+}
+
+#hud-messages {
+    background: #e3e3e3;
+    padding: 3px;
+}
+
+#game-ui {
+    width: 890px;
+    margin: 0 auto;
+    text-align: center;
+}
