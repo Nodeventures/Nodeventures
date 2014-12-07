@@ -8,6 +8,7 @@ var mapSchema = new mongoose.Schema({
     height: {type: Number, default: 640},
     tileSize: {type: Number, default: 32},
     tileSet: {type: String, default: 'assets/tileset/free_tileset_CC.png'},
+
     tilesConfig: {
         imageX: {type: Number, default: 5},
         imageY: {type: Number, default: 18},
@@ -15,14 +16,15 @@ var mapSchema = new mongoose.Schema({
         stepsVerticalAllowed: {type: Number, default: 2}
     },
 
-    mapObjects: {
-        type: {type: String, default: 'item'}, // in the future in addition to item we will have 'area_entrance/exit'
-        itemId: {type: mongoose.Schema.ObjectId, ref: 'Item'},
+    mapObjects: [{
+        type: String, // in the future in addition to item we will have 'area_entrance/exit'
+        itemId: String,
         position: {
-            x: {type: Number, default: 320},
-            y: {type: Number, default: 320},
+            x: Number,
+            y: Number
         }
-    }
+    }]
+
 });
 
 var Map = mongoose.model('Map', mapSchema);
