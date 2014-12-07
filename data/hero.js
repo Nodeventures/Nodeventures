@@ -27,6 +27,20 @@ function processHeroCreate(heroInfo, defer) {
         });
 }
 
+function updateHeroStats(hero, statsToAdd, defer) {
+    hero.health += statsToAdd.health;
+    hero.attack += statsToAdd.attack;
+    hero.defense += statsToAdd.defense;
+
+    hero.save(function (err, heroSaved) {
+        if (err) {
+            defer.reject(err);
+        } else {
+            defer.resolve(heroSaved);
+        }
+    });
+}
+
 module.exports = {
     createHero: function (heroInfo) {
         // heroInfo - username, name, status.
@@ -85,7 +99,6 @@ module.exports = {
 
         return defer.promise;
     },
-
     setHeroStatus: function (heroId, status) {
         // eventdata: username, hero_id
 
@@ -99,6 +112,24 @@ module.exports = {
                 defer.resolve();
             }
         });
+
+        return defer.promise;
+    },
+    updateHeroStatsWith: function (heroId, statsToAdd) {
+        // statsToAdd: health, attack, defense
+        var defer = q.defer();
+
+        Hero.findOne()
+            .where('id').equals(heroId)
+            .exec(function (err, hero) {
+                if (err) {
+                    defer.reject(err);
+                } else if (hero) {
+                    updateHeroStats(hero, statsToAdd, defer);
+                } else {
+                    defer.reject({message: 'There is no such hero in the database.'});
+                }
+            });
 
         return defer.promise;
     }
