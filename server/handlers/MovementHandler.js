@@ -1,14 +1,17 @@
 var utils = require('./utils'),
-    defaultChannel = '/movement';
+    defaultChannel = '/movement',
+    data = require('../../data');
 
 var onMoveHero = utils.wrapWithPromise(function(gameEvent, deferred){
     // eventData: hero_id, start position, end position
-        
-    // TODO set new hero position in database
-    console.log('Handle movement event', gameEvent);
     
-    // send event to clients
-    deferred.resolve(utils.createGameEvent(defaultChannel, 'heroMoved', gameEvent.data));
+    data.hero.updateHeroPosition(gameEvent.data.hero_id, gameEvent.data.end)
+        .fail(function(err){
+            deferred.reject(err);
+        })
+        .done(function(){
+            deferred.resolve(utils.createGameEvent(defaultChannel, 'heroMoved', gameEvent.data));
+        });
 });
 
 var onMapChanged = utils.wrapWithPromise(function(gameEvent, deferred){
