@@ -1,8 +1,21 @@
 "use strict";
 
 var q = require('q');
+var Map = require('./models/Map');
 
 module.exports = {
+    createMap: function (mapInfo) {
+        var defer = q.defer();
+        Map.create(mapInfo, function (err, map) {
+            if (err) {
+                defer.reject(err);
+            } else {
+                defer.resolve(map);
+            }
+        });
+
+        return defer.promise;
+    },
     loadMapByKey: function (key) {
 
         var defer = q.defer();
