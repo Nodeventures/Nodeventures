@@ -8,6 +8,7 @@ var itemSchema = new mongoose.Schema({
     key: {type: String, required: true, unique: true, index: true},
     name: String,
     description: String,
+    image: String,
     // the modifiers for hero stats change after item is picked up
     modifiers: {
         health: {type: Number, required: true},
