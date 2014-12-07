@@ -9,7 +9,7 @@ var autoIncrement = require('mongoose-auto-increment');
 // Different heroes will start with different health, attack and defense points.
 var heroSchema = new mongoose.Schema({
     name: {type: String, required: true, unique: true, index: true},
-    status: {type: String, required: true, index: true, default: 'online'},
+    status: {type: String, required: true, index: true, default: 'offline'},
     position: {
         x: {type: Number, default: 320},
         y: {type: Number, default: 320},
