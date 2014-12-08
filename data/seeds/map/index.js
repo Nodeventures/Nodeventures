@@ -26,6 +26,8 @@ module.exports = {
                         defer.resolve(results);
                     }
                 });
+            } else {
+                defer.resolve([]);
             }
         });
 
