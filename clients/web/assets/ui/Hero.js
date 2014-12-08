@@ -54,7 +54,6 @@
     Nv.Hero.prototype = {
 
         leave: function() {
-            console.log('hero left: ' + this.id);
             this.sprite.destroy();
             this.textLabel.destroy();
         },
@@ -69,7 +68,6 @@
         },
 
         moveToPosition: function(x, y, callback) {
-            console.log(this.map.collisions);
             if (!this.map.canMoveToPosition(x, y)) {
                 return;
             }
