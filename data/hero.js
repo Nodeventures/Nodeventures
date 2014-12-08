@@ -113,7 +113,7 @@ module.exports = {
     updateHeroPosition: function (heroId, newPosition) {
         var defer = q.defer();
 
-        Hero.findOneAndUpdate({id: heroId}, {position: newPosition}, function (err, numberAffected, raw) {
+        Hero.findOneAndUpdate({id: heroId}, {'position.x': newPosition.x, 'position.y': newPosition.y}, function (err, numberAffected, raw) {
             if (err) {
                 defer.reject(err);
             }

@@ -55,6 +55,16 @@
         return hero;
     }
 
+    function createOnlineHeroes(session, onlineHeroes) {
+        onlineHeroes = _.chain(onlineHeroes).filter(function(hero){
+            return hero.id !== session.hero.id;
+        }).each(function(hero){
+            hero.image = session.images.heroSprite;
+            hero = createHero(session, hero, false);
+            session.map.heroEnter(hero);
+        });
+    }
+
     function createProtagonist(session, heroConfig) {
         heroConfig.image = session.images.heroSprite;
         var hero = createHero(session, heroConfig, true);
@@ -135,6 +145,8 @@
             // add main hero
             createProtagonist(this, this.config.hero);
 
+            createOnlineHeroes(this, this.config.map.onlineHeroes);
+
             initializeHUD(this, this.config.hero);
 
             Nv.Interactions.init(this.hero, this.container);
@@ -143,7 +155,6 @@
         loginHero: function(heroConfig) {
             // if hero is on current map
             if (heroConfig.position.map === currentSession.map.key) {
-                console.log(heroConfig.position);
                 var imagesToLoad = {heroSprite: heroConfig.heroSprite};
                 loadImages(imagesToLoad, function(images){
 
