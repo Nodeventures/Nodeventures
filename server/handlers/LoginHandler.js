@@ -1,7 +1,54 @@
 var utils = require('./utils'),
-    defaultChannel = '/system';
+    defaultChannel = '/system',
+    Q = require('q'),
+    _ = require('underscore');
 
 var data = require('../../data');
+
+function loadMapByKey(key) {
+    var defer = Q.defer();
+
+    data.map.findMapByKey(key)
+        .then(function(map){
+
+            // load online heroes
+            data.hero.findOnlineHeroesForMap(key)
+                .then(function(heroes){
+
+                    map.onlineHeroes = heroes;
+                    var itemIds = _.chain(map.mapObjects).filter(function(mapObject){
+                        return mapObject.type === 'item';
+                    }).pluck('itemId').value();
+
+                    // load items on map
+                    return data.item.findItemsByKeys(itemIds)
+                        .then(function(items){
+
+                            // load items
+                            map.itemsOnMap = [];
+                            items.forEach(function(item){
+                                var positionData = _.find(map.mapObjects, function(obj){
+                                    return obj.type === 'item' && obj.itemId === item.id;
+                                });
+
+                                item.position = positionData.position;
+
+                                map.itemsOnMap.push(item);
+                            });
+                        });
+                })
+                .fail(function(err){
+                    console.log('error', err);
+                    defer.resolve(err);
+                })
+                .done(function(){
+                    console.log('MAP', map);
+                    defer.resolve(map);
+                });
+        });
+
+    return defer.promise;
+}
 
 var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
     // eventData: username, password
@@ -26,7 +73,7 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
         // get hero
         .then(function(createdHero){
             eventData.hero = createdHero;
-            return data.map.loadMapByKey(createdHero.position.map);
+            return loadMapByKey(createdHero.position.map);
         })
 
         // load map based on hero position
@@ -42,6 +89,7 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
 
         // return event
         .done(function(){
+            // console.log(eventData);
             if (!errorEncountered) {
                 // mark images / assets that need loading
                 eventData.images = {

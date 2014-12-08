@@ -26,6 +26,7 @@ function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
                 handlerFunction(data, clientSocket)
                     // forward error just to the source client
                     .fail(function(error){
+                        console.error('error', error);
                         clientSocket.emit('systemError', error);
                     })
                     .done(function(responseEvent){
