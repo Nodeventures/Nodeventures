@@ -26,12 +26,17 @@ function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
                 handlerFunction(data, clientSocket)
                     // forward error just to the source client
                     .fail(function(error){
-                        console.error('error', error);
-                        clientSocket.emit('systemError', error);
+                        var message = error;
+                        if (error.stack) {
+                            message = error.message;
+                            console.error(message + ': ' + error.stack);
+                        }
+                        clientSocket.emit('systemError', message);
                     })
                     .done(function(responseEvent){
                         asyncCallback(null, responseEvent);
                     });
+
             };
         });
 

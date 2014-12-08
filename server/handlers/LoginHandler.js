@@ -18,7 +18,7 @@ function loadMapByKey(key) {
                     map.onlineHeroes = heroes;
                     var itemIds = _.chain(map.mapObjects).filter(function(mapObject){
                         return true;
-                    }).pluck('itemId').value();
+                    }).pluck('itemId').vlue();
 
                     // load items on map
                     return data.item.findItemsByKeys(itemIds)
@@ -39,6 +39,9 @@ function loadMapByKey(key) {
 
                             map.itemsOnMap = itemsOnMap;
                         });
+                })
+                .fail(function(err){
+                    defer.reject(err);
                 })
                 .done(function(){
                     defer.resolve(map);
