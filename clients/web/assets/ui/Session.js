@@ -40,6 +40,8 @@
             hero: hero,
             session: session
         });
+
+        Nv.Session.showGameError = session.hud.showGameError;
     }
 
     function createHero(session, heroConfig, protagonist) {
@@ -171,8 +173,17 @@
             return channels[channel];
         }
         channels[channel] = io(sessionOptions.ioUrl + channel);
+        channels[channel].on('systemError', Nv.Session.showError);
+        channels[channel].on('gameError', Nv.Session.showGameError);
         return channels[channel];
     };
+
+    Nv.Session.showError = function(error) {
+        var message = error.message ? error.message : error;
+        alert(message);
+    };
+
+    Nv.Session.showGameError = Nv.Session.showError;
 
     Nv.Session.loginUser = function(usernameInput, passwordInput) {
         lastUsedUsername = usernameInput;
@@ -200,10 +211,8 @@
                 }
             });
 
-            systemChannel.on('systemError', function(data){
-                var message = data.message ? data.message : JSON.stringify(data);
-                alert(message);
-            });
+            // systemChannel.on('systemError', Nv.Session.showError);
+            // systemChannel.on('gameError', Nv.Session.showGameError);
 
             eventsInitialized = true;
         }
