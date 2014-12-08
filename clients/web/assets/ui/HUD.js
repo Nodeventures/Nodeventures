@@ -7,7 +7,6 @@
         heroSocket.on('heroStatsChanged', function(data){
             if (data.id === hud.heroId) {
                 $.each(data, function(key, value){
-                    console.log(key, value);
                     hud.data[key] = value;
                 });
                 hud.refreshUI();
@@ -17,6 +16,30 @@
         heroSocket.on('inventoryUpdated', function(data){
             if (data.heroId === hud.heroId) {
                 hud.data.inventory = data.items;
+                hud.refreshUI();
+            }
+        });
+    }
+
+    function setupUIEvents(hud) {
+        $('#hero-inventory .item').on('click', function(){
+            var $item = $(this),
+                key = $item.attr('data-item-key'),
+                item = _.find(hud.data.inventory, function(item){
+                    return item.key === key;
+                }),
+                itemName = item.name;
+
+            if (confirm('Do you want to drop "' + itemName + '"?')) {
+                hud.emitEvent('/items', 'dropItem', {
+                    'heroId': hud.data.id,
+                    'itemKey': key
+                });
+
+                hud.data.inventory = _.filter(hud.data.inventory, function(item){
+                    return item.key !== key;
+                });
+
                 hud.refreshUI();
             }
         });
@@ -33,7 +56,9 @@
         this.data = hudConfig.hero;
 
         this.container.html(html);
-        
+
+        setupUIEvents(this);
+
         // events
         setupEvents.call(this);
     };
@@ -48,10 +73,10 @@
 
         refreshUI: function() {
             this.container.html(this.template(this.data));
+            setupUIEvents(this);
         },
 
         showGameError: function(message) {
-            console.log('gameError', message);
             message = moment().format('hh:mm:ss') + ' - ' + message;
             $("#hud-messages").prepend('<div>'+message+'</div>');
         }

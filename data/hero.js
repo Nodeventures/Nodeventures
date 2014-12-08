@@ -28,13 +28,18 @@ function processHeroCreate(heroInfo, defer) {
 }
 
 function updateHeroStats(hero, statsToAdd, defer) {
-    var heroIsAtFullHealth = hero.health = hero.currentHealth;
+    var heroIsAtFullHealth = hero.health === hero.currentHealth;
+    var heroHealthReduced = hero.health < hero.currentHealth;
+
     hero.health += statsToAdd.health;
     hero.attack += statsToAdd.attack;
     hero.defense += statsToAdd.defense;
 
     if (heroIsAtFullHealth) {
         hero.currentHealth += statsToAdd.health;
+    }
+    else if (heroHealthReduced) {
+        hero.currentHealth = hero.health;
     }
 
     hero.save(function (err, heroSaved) {
@@ -200,4 +205,19 @@ module.exports = {
         return defer.promise;
 
     },
+
+    dropItem: function (heroId, itemKey) {
+        var defer = q.defer();
+
+        Hero.findOneAndUpdate({id: heroId}, {$pull: {inventoryItems: itemKey}}, function (err, numberAffected, raw) {
+            if (err) {
+                defer.reject(err);
+            }
+            else {
+                defer.resolve();
+            }
+        });
+
+        return defer.promise;
+    }
 };

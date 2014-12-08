@@ -14,10 +14,12 @@
     <script src="/bower_components/kineticjs/kinetic.min.js"></script>
     <script src="/bower_components/handlebars/handlebars.min.js"></script>
     <script src="/bower_components/momentjs/min/moment-with-locales.min.js"></script>
+    <script src="/bower_components/underscore/underscore-min.js"></script>
     <script src='/assets/app.js'></script>
     <script src='/assets/ui/Session.js'></script>
     <script src='/assets/ui/MapObject.js'></script>
     <script src='/assets/ui/MapItem.js'></script>
+    <script src='/assets/ui/Obstacle.js'></script>
     <script src='/assets/ui/Hero.js'></script>
     <script src='/assets/ui/Map.js'></script>
     <script src='/assets/ui/Interactions.js'></script>
@@ -88,7 +90,7 @@
             <h5>Inventory</h5>
             <div id="hero-inventory">
                 {{#each inventory}}
-                    <div class="item">
+                    <div class="item" data-item-key="{{ key }}">
                         <img src="/assets/items/{{ image }}" alt="{{ name }}">
                         {{ name }}
                     </div>

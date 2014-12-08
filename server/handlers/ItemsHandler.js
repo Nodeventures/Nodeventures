@@ -3,14 +3,61 @@ var utils = require('./utils'),
     data = require('../../data'),
     _ = require('underscore');
 
+function reverseItemModifiers(modifiers) {
+    var keys = ['attack', 'defense', 'health'];
+    var reversedModifiers = {};
+
+    _.each(keys, function(key){
+        reversedModifiers[key] = -modifiers[key];
+    });
+
+    return reversedModifiers;
+}
+
+
+var onItemDrop = utils.wrapWithPromise(function(gameEvent, deferred){
+    // eventData: heroId, itemKey
+        
+    console.log('Handle item dropped event', gameEvent);
+
+    var events = [];
+
+    data.item.getItemByKey(gameEvent.data.itemKey)
+        .then(function(item){
+            return data.hero.findById(gameEvent.data.heroId)
+                .then(function(hero){
+
+                    return data.hero.dropItem(gameEvent.data.heroId, item.key)
+                        .then(function(hero){
+                            events.push(utils.createGameEvent(defaultChannel, 'itemDropped', gameEvent.data));
+
+                            console.log(item.modifiers);
+                            var modifiers = reverseItemModifiers(item.modifiers);
+                            console.log(modifiers);
+
+                            return data.hero.updateHeroStatsWith(gameEvent.data.heroId, modifiers)
+                                .then(function(hero){
+                                    var newStats = _.pick(hero.toObject(), ['attack', 'defense', 'health', 'currentHealth']);
+                                    newStats.id = hero.id;
+                                    events.push(utils.createGameEvent('/hero', 'heroStatsChanged', newStats));
+                                });
+                        })
+                        .fail(function(err){
+                            deferred.reject(err);
+                        });
+                    });
+        })
+        .fail(function(err){
+            deferred.reject(err);
+        })
+        .done(function(){
+            // send event to clients
+            deferred.resolve(events);
+        });
+});
 
 var onItemPickedUp = utils.wrapWithPromise(function(gameEvent, deferred){
     // eventData: heroId, itemKey
-        
-    console.log('Handle item picked up event', gameEvent);
-    // TODO: if hero has item -> reject
-    // if hero overburdened -> reject
-    // else add item id to hero and modify hero stats
     
     var events = [];
     
@@ -60,4 +107,5 @@ var onItemPickedUp = utils.wrapWithPromise(function(gameEvent, deferred){
 
 module.exports = {
     onItemPickedUp: onItemPickedUp,
+    onItemDrop: onItemDrop
 };

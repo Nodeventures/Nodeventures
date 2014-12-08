@@ -41,7 +41,9 @@
             session: session
         });
 
-        Nv.Session.showGameError = session.hud.showGameError;
+        Nv.Session.showGameError = function(message){
+            return session.hud.showGameError(message);
+        };
     }
 
     function createHero(session, heroConfig, protagonist) {
@@ -174,7 +176,9 @@
         }
         channels[channel] = io(sessionOptions.ioUrl + channel);
         channels[channel].on('systemError', Nv.Session.showError);
-        channels[channel].on('gameError', Nv.Session.showGameError);
+        channels[channel].on('gameError', function(message){
+            Nv.Session.showGameError(message);
+        });
         return channels[channel];
     };
 

@@ -21,6 +21,7 @@
     "jquery": "~2.1.1",
     "kineticjs": "~5.1.0",
     "handlebars": "~2.0.0",
-    "momentjs": "~2.8.4"
+    "momentjs": "~2.8.4",
+    "underscore": "~1.7.0"
   }
 }
