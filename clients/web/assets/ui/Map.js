@@ -126,6 +126,13 @@
             this.collisions.push(mapObject.getCollisionDimentions());
         },
 
+        getHero: function(heroId) {
+            if (Nv.sessionInstance().hero.id === heroId) {
+                return Nv.sessionInstance().hero;
+            }
+            return this.heroes[heroId];
+        },
+
         canMoveToPosition: function(x, y) {
             var collisionsLength = this.collisions.length;
 

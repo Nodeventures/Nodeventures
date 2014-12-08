@@ -48,6 +48,10 @@ body {
     display: none;
 }
 
+#hero-inventory .item {
+    cursor: pointer;
+}
+
 #game-ui {
     width: 900px;
     margin: 0 auto;

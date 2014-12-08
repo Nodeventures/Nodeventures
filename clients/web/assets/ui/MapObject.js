@@ -51,14 +51,10 @@
         if (this.tooltipText) {
             this.on('mouseover', function() {
                 item.showTooltip(item.tooltipText);
-                this.layer.draw();
-                document.body.style.cursor = 'pointer';
             });
 
             this.on('mouseout', function() {
                 item.hideTooltip();
-                this.layer.draw();
-                document.body.style.cursor = 'default';
             });
         }
 
@@ -82,11 +78,17 @@
 
             this.tooltip.show();
             this.rect.show();
+
+            this.layer.draw();
+            document.body.style.cursor = 'pointer';
         },
 
         hideTooltip: function(message) {
             this.tooltip.hide();
             this.rect.hide();
+
+            this.layer.draw();
+            document.body.style.cursor = 'default';
         },
 
         hideFromUI: function() {

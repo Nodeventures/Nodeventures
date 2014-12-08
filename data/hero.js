@@ -41,6 +41,9 @@ function updateHeroStats(hero, statsToAdd, defer) {
     else if (heroHealthReduced) {
         hero.currentHealth = hero.health;
     }
+    else {
+        hero.currentHealth += hero.currentHealth;
+    }
 
     hero.save(function (err, heroSaved) {
         if (err) {

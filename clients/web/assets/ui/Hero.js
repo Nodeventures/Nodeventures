@@ -1,10 +1,11 @@
 (function() {
 
     Nv.Hero = function(map, config) {
-        Nv.MapObject.call(this, map, 32, 48, config.position);
+        Nv.MapObject.call(this, map, 32, 48, config.position, config);
 
         this.name = config.name;
         this.id = config.id;
+        this.inBattle = false;
 
         var hero = this;
 
@@ -49,6 +50,18 @@
 
         this.add(this.sprite);
         this.add(this.textLabel);
+
+        this.on('mouseover', function(){
+            if (hero.id !== Nv.sessionInstance().hero.id){
+                hero.showTooltip('Attack');
+            }
+        });
+
+        this.on('mouseout', function(){
+            hero.hideTooltip();
+        });
+
+        // setupEvents.call(this);
     };
 
     Nv.Hero.prototype = {
@@ -56,6 +69,10 @@
         leave: function() {
             this.sprite.destroy();
             this.textLabel.destroy();
+            if (this.inBattle) {
+                var battle = this.inBattle;
+                battle.heroFled(this);
+            }
         },
 
         animate: function(animationName) {
@@ -67,7 +84,42 @@
             }
         },
 
+        mapObjectClicked: function() {
+            if (this.inBattle) {
+                // player clicked on his own hero
+                if (this.id === Nv.sessionInstance().hero.id) {
+                    Nv.Session.showGameMessage('Oooohh, that tickles!');
+                }
+                // player hero attacks
+                else {
+                    this.inBattle.triggerAttackBy(Nv.sessionInstance().hero);
+                }
+                
+            } else {
+                // start battle with player hero
+                var battle = new Nv.Battle(this, Nv.sessionInstance().hero);
+                battle.start();
+            }
+        },
+
+        animateAttack: function() {
+            // TODO: replace with attack
+            this.animate('walk');
+            var taunts = ['Take that!', 'Raaaawwrr!', 'Pew pew!', 'Have at thee!'];
+            this.showTooltip(_.sample(taunts, 1));
+
+            var attacker = this;
+            setTimeout(function(){
+                attacker.animate('idle');
+                attacker.hideTooltip();
+            }, 1000);
+        },
+
         moveToPosition: function(x, y, callback) {
+            if (this.inBattle) {
+                return;
+            }
+
             if (!this.map.canMoveToPosition(x, y)) {
                 return;
             }
@@ -115,4 +167,8 @@
     };
 
     Kinetic.Util.extend(Nv.Hero, Nv.MapObject);
+
+    function setupEvents() {
+
+    }
 })();

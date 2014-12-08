@@ -32,6 +32,29 @@
             }
         });
 
+        // setup battle events
+        var battleSocket = Nv.sessionInstance().connectToChannel('/battle');
+
+        battleSocket.on('battleStarted', function(data){
+            var attacker = Nv.sessionInstance().map.getHero(data.heroId);
+            var otherHero = Nv.sessionInstance().map.getHero(data.otherHeroId);
+
+            if (!attacker.inBattle) {
+                var battle = new Nv.Battle(otherHero, attacker);
+                battle.firstAttackBy(data.firstAttacker);
+            }
+        });
+
+        battleSocket.on('heroAttacked', function(data){
+            var attacker = Nv.sessionInstance().map.getHero(data.attacker);
+            var defender = Nv.sessionInstance().map.getHero(data.defender);
+
+            if (!attacker.inBattle) {
+                var battle = new Nv.Battle(defender, attacker);
+                battle.firstAttackBy(attacker.id);
+            }
+            attacker.inBattle.performAttackBy(attacker);
+        });
     }
 
     function initializeHUD(session, hero) {
@@ -41,13 +64,14 @@
             session: session
         });
 
-        Nv.Session.showGameError = function(message){
-            return session.hud.showGameError(message);
+        Nv.Session.showGameMessage = function(message){
+            return session.hud.showGameMessage(message);
         };
     }
 
     function createHero(session, heroConfig, protagonist) {
 
+        heroConfig.layer = session.map.layers['heroLayer'];
         var hero = new Nv.Hero(session.map, heroConfig);
         hero.skipEvents = !protagonist;
         session.map.heroEnter(hero, protagonist);
@@ -188,7 +212,7 @@
         channels[channel] = io(sessionOptions.ioUrl + channel);
         channels[channel].on('systemError', Nv.Session.showError);
         channels[channel].on('gameError', function(message){
-            Nv.Session.showGameError(message);
+            Nv.Session.showGameMessage(message);
         });
         return channels[channel];
     };
@@ -198,7 +222,7 @@
         alert(message);
     };
 
-    Nv.Session.showGameError = Nv.Session.showError;
+    Nv.Session.showGameMessage = Nv.Session.showError;
 
     Nv.Session.loginUser = function(usernameInput, passwordInput) {
         lastUsedUsername = usernameInput;
@@ -227,7 +251,7 @@
             });
 
             // systemChannel.on('systemError', Nv.Session.showError);
-            // systemChannel.on('gameError', Nv.Session.showGameError);
+            // systemChannel.on('gameError', Nv.Session.showGameMessage);
 
             eventsInitialized = true;
         }

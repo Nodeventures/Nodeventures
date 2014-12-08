@@ -76,7 +76,7 @@
             setupUIEvents(this);
         },
 
-        showGameError: function(message) {
+        showGameMessage: function(message) {
             message = moment().format('hh:mm:ss') + ' - ' + message;
             $("#hud-messages").prepend('<div>'+message+'</div>');
         }
