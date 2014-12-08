@@ -19,7 +19,7 @@ function loadMapByKey(key) {
 
                     map.onlineHeroes = heroes;
                     var itemIds = _.chain(map.mapObjects).filter(function(mapObject){
-                        return true;
+                        return mapObject.type === 'item';
                     }).pluck('itemId').value();
 
                     // load items on map

@@ -38,6 +38,20 @@
                 "x": 130,
                 "y": 490
             }
+        },
+
+        {
+            "type": "building",
+            "position": {
+                "x": 130,
+                "y": 490
+            },
+            "dimentions": {
+                "width": 150,
+                "height": 109
+            },
+            "mapKey": "house",
+            "image": "house.png"
         }
     ],
 
