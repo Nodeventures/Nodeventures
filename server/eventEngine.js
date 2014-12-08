@@ -11,6 +11,27 @@ function emitEvents(io, events) {
     });
 }
 
+function emitError(clientSocket, error) {
+    var message = error.message ? error.message : error;
+    var errorType = error.errorType ? error.errorType : 'systemError';
+    if (typeof error === 'string') {
+        errorType = 'gameError';
+        error = {
+            message: message
+        };
+    }
+
+    if (error.stack) {
+        errorType = 'systemError';
+        console.error(error.stack);
+        error = {
+            message: message
+        };
+    }
+
+    clientSocket.emit(errorType, message);
+}
+
 function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
     clientSocket.on(eventKey, function(data){
         // get arraay of handler functions for this message key
@@ -26,12 +47,7 @@ function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
                 handlerFunction(data, clientSocket)
                     // forward error just to the source client
                     .fail(function(error){
-                        var message = error;
-                        if (error.stack) {
-                            message = error.message;
-                            console.error(error.stack);
-                        }
-                        clientSocket.emit('systemError', message);
+                        emitError(clientSocket, error);
                     })
                     .done(function(responseEvent){
                         asyncCallback(null, responseEvent);
