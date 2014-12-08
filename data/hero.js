@@ -132,5 +132,22 @@ module.exports = {
             });
 
         return defer.promise;
+    },
+
+    findOnlineHeroesForMap: function (mapKey) {
+        var defer = q.defer();
+
+        Hero.find()
+            .where('status').equals('online')
+            .where('position.map').equals(mapKey)
+            .exec(function (err, heroes) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(heroes);
+                }
+            });
+
+        return defer.promise;
     }
 };
