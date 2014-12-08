@@ -201,7 +201,8 @@
             });
 
             systemChannel.on('systemError', function(data){
-                alert(data.message);
+                var message = data.message ? data.message : JSON.stringify(data);
+                alert(message);
             });
 
             eventsInitialized = true;
