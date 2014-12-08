@@ -28,9 +28,14 @@ function processHeroCreate(heroInfo, defer) {
 }
 
 function updateHeroStats(hero, statsToAdd, defer) {
+    var heroIsAtFullHealth = hero.health = hero.currentHealth;
     hero.health += statsToAdd.health;
     hero.attack += statsToAdd.attack;
     hero.defense += statsToAdd.defense;
+
+    if (heroIsAtFullHealth) {
+        hero.currentHealth += statsToAdd.health;
+    }
 
     hero.save(function (err, heroSaved) {
         if (err) {
