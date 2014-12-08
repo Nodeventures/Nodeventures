@@ -23,3 +23,4 @@ require('./eventMappings/movement')(eventEngine);
 require('./eventMappings/system')(eventEngine);
 require('./eventMappings/items')(eventEngine);
 require('./eventMappings/hero')(eventEngine);
+require('./eventMappings/battle')(eventEngine);
