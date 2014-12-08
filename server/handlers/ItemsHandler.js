@@ -18,9 +18,9 @@ var onItemPickedUp = utils.wrapWithPromise(function(gameEvent, deferred){
         .then(function(item){
             return data.hero.findById(gameEvent.data.heroId)
                 .then(function(hero){
-                    // if (hero.inventoryItems.indexOf(item.key) !== -1) {
-                    //     throw 'You already have this item';
-                    // }
+                    if (hero.inventoryItems.indexOf(item.key) !== -1) {
+                        throw 'You already have this item';
+                    }
 
                     return data.hero.addItemToBackpack(gameEvent.data.heroId, item.key)
                         .then(function(hero){
@@ -28,13 +28,15 @@ var onItemPickedUp = utils.wrapWithPromise(function(gameEvent, deferred){
 
                             return data.hero.updateHeroStatsWith(gameEvent.data.heroId, item.modifiers)
                                 .then(function(hero){
-                                    var newStats = _.pick(hero.toObject(), ['attack', 'defense', 'health']);
+                                    var newStats = _.pick(hero.toObject(), ['attack', 'defense', 'health', 'currentHealth']);
                                     newStats.id = hero.id;
                                     events.push(utils.createGameEvent('/hero', 'heroStatsChanged', newStats));
                                 });
                         })
                         .then(function(){
-                            return data.item.findItemsByKeys(hero.inventoryItems)
+                            var heroItems = hero.inventoryItems;
+                            heroItems.push(item.key);
+                            return data.item.findItemsByKeys(heroItems)
                                 .then(function(items){
                                     events.push(utils.createGameEvent('/hero', 'inventoryUpdated', {
                                         items: items,
@@ -52,7 +54,6 @@ var onItemPickedUp = utils.wrapWithPromise(function(gameEvent, deferred){
         })
         .done(function(){
             // send event to clients
-            console.log('EVENTS', events);
             deferred.resolve(events);
         });
 });
