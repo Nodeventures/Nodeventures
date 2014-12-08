@@ -28,6 +28,7 @@ var mapSchema = new mongoose.Schema({
     },
 
     mapObjects: { type: Object, default: [] },
+    obstacles: { type: Object, default: [] }
 }); 
 
 var Map = mongoose.model('Map', mapSchema);

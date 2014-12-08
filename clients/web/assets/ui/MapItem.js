@@ -21,16 +21,20 @@
 
         this.add(this.image);
 
+        setupEvents.call(this);
+
         map.enableCollisionsFor(this);
     };
 
     Nv.MapItem.prototype = {
-        onClick: function() {
+        mapObjectClicked: function() {
             var hero = Nv.sessionInstance().hero,
-                item = this;
-                
+                item = this,
+                x = this.getX()-1,
+                y = this.getY()-1;
+
             // move hero to item abd pickup item
-            hero.moveToPosition(this.getX()-1, this.getY()-1, function(){
+            hero.moveToPosition(x, y, function(){
                 // pickup item
                 item.emitEvent('/items', 'itemPickedUp', {
                     'heroId': hero.id,
@@ -45,7 +49,7 @@
     Kinetic.Util.extend(Nv.MapItem, Nv.MapObject);
 
     function setupEvents() {
-        var itemsSocket = this.session.connectToChannel('/items'),
+        var itemsSocket = Nv.sessionInstance().connectToChannel('/items'),
             item = this;
 
         itemsSocket.on('itemPickedUp', function(data){

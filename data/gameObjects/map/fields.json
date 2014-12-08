@@ -13,8 +13,7 @@
         "stepsVerticalAllowed": 2
     },
 
-    "mapObjects": [
-        {
+    "mapObjects": [{
             "type": "item",
             "itemId": "great-sword-of-awesomeness",
             "position": {
@@ -38,6 +37,76 @@
             "position": {
                 "x": 130,
                 "y": 490
+            }
+        }
+    ],
+
+    "obstacles": [{
+            "name": "bush",
+            "position": {
+                "x": 100,
+                "y": 100
+            },
+            "tilesConfig": {
+                "imageX": 0,
+                "imageY": 18,
+                "horizontalTiles": 2,
+                "verticalTiles": 2
+            }
+        },
+
+        {
+            "name": "tree",
+            "position": {
+                "x": 360,
+                "y": 450
+            },
+            "tilesConfig": {
+                "imageX": 0,
+                "imageY": 15,
+                "horizontalTiles": 3,
+                "verticalTiles": 3
+            }
+        },
+
+        {
+            "name": "tree-trunk",
+            "position": {
+                "x": 150,
+                "y": 300
+            },
+            "tilesConfig": {
+                "imageX": 12,
+                "imageY": 16,
+                "horizontalTiles": 3,
+                "verticalTiles": 2
+            }
+        },
+
+        {
+            "name": "river-1",
+            "position": {
+                "x": 0,
+                "y": 580
+            },
+            "tilesConfig": {
+                "imageX": 9,
+                "imageY": 18,
+                "horizontalTiles": 3,
+                "verticalTiles": 3
+            }
+        }, {
+            "name": "river-2",
+            "position": {
+                "x": 96,
+                "y": 580
+            },
+            "tilesConfig": {
+                "imageX": 9,
+                "imageY": 18,
+                "horizontalTiles": 1,
+                "verticalTiles": 2,
+                "repeatX": 20
             }
         }
     ]

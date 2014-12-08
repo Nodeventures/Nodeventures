@@ -47,6 +47,18 @@
         this.layers['itemsLayer'] = new Kinetic.Layer();
 
         this.layers['heroLayer'] = new Kinetic.Layer();
+
+        this.layers['obstaclesLayer'] = new Kinetic.Layer();
+    }
+
+    function addObstaclesLayer(obstacles) {
+        var map = this;
+        $.each(obstacles, function(index, obstacle){
+            obstacle.session = map.session;
+            obstacle.map = map;
+            obstacle.layer = map.layers['obstaclesLayer'];
+            var mapObstacle = new Nv.Obstacle(map, obstacle);
+        });
     }
 
     function addItemsLayer(mapItems) {
@@ -67,53 +79,17 @@
         this.baseImage = mapConfig.baseImage;
         this.key = mapConfig.key;
         this.session = mapConfig.session;
+        this.config = mapConfig;
 
         this.layers = {};
-
         this.heroes = {};
-
         this.collisions = [];
 
         drawMap.call(this, mapConfig);
 
         addItemsLayer.call(this, mapConfig.itemsOnMap);
+        addObstaclesLayer.call(this, mapConfig.obstacles);
 
-        // //Obects (background)
-        // var tS = 32;
-        // var collisions = new Array();
-        // var objects = new Array();
-        // for(var j=0; j<20; j++)
-        // {
-        //   objects[j] = new Array();
-        //   collisions[j] = new Array();
-        //   for(var i=0; i<20; i++)
-        //   {
-        //     if(Math.floor(Math.random()*100)>90) //10%
-        //     {
-        //       objects[j][i] = new Kinetic.QImage({  //This sprite was 3x4 tiles
-        //         x: 32*i,
-        //         y: 32*j,
-        //         image: images.tileSet,
-        //         width: 32,
-        //         height: 32,
-        //         name: "image",
-        //         srcx: tS*(2+2*Math.floor(Math.random()*2)), //x source position
-        //         srcy: tS*35, //y source position
-        //         srcwidth: 32, //source width
-        //         srcheight: 36 //source height
-        //       });
-        //       collisions[j][i] = true;
-        //       //objects[j][i].draggable(true); //drag em? sure...
-        //        // add the shape to the layer
-        //       objectlayer.add(objects[j][i]);
-        //     }
-        //     else
-        //       collisions[j][i] = false;
-        //   } 
-        // }//End Obect Layer
-
-        // stage.add(objectlayer); //rockts,trees for collisions
-        
         // events
         setupEvents.call(this);
     };
@@ -147,12 +123,7 @@
         },
 
         enableCollisionsFor: function(mapObject) {
-            this.collisions.push({
-                x: mapObject.getX(),
-                y: mapObject.getY(),
-                width: mapObject.width,
-                height: mapObject.height
-            });
+            this.collisions.push(mapObject.getCollisionDimentions());
         },
 
         canMoveToPosition: function(x, y) {

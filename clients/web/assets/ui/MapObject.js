@@ -62,7 +62,7 @@
             });
         }
 
-        this.on('click', this.onClick);
+        this.on('click', this.mapObjectClicked);
     };
 
     MapObject.prototype = {
@@ -92,6 +92,19 @@
         hideFromUI: function() {
             this.hide();
             this.layer.draw();
+        },
+
+        getCollisionDimentions: function(){
+            return {
+                x: this.getX(),
+                y: this.getY(),
+                width: this.width,
+                height: this.height
+            };
+        },
+
+        mapObjectClicked: function() {
+            
         }
 
     };
