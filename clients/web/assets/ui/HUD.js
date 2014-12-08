@@ -1,30 +1,36 @@
 (function() {
 
     function setupEvents() {
-        var movementSocket = this.session.connectToChannel('/movement'),
-            map = this;
+        var heroSocket = this.session.connectToChannel('/hero'),
+            hud = this;
 
-        // movementSocket.on('heroMoved', function(data){
-        //     if (typeof map.heroes[data.hero_id] !== 'undefined') {
-        //         var hero = map.heroes[data.hero_id];
-        //         if (hero) {
-        //             hero.moveToPosition(data.end.x, data.end.y);
-        //         }
-        //     }
-        // });
-    }
+        heroSocket.on('heroStatsChanged', function(data){
+            if (data.id === hud.heroId) {
+                $.each(data, function(key, value){
+                    console.log(key, value);
+                    hud.data[key] = value;
+                });
+                hud.refreshUI();
+            }
+        });
 
-    function updateHeroStats(newStats) {
-
+        heroSocket.on('inventoryUpdated', function(data){
+            if (data.heroId === hud.heroId) {
+                hud.data.inventory = data.items;
+                hud.refreshUI();
+            }
+        });
     }
 
     Nv.HUD = function(hudConfig) {
         this.template = Handlebars.compile($("#hud-template").html());
         this.container = $(hudConfig.container);
+        this.heroId = Nv.sessionInstance().hero.id;
 
         this.session = hudConfig.session;
 
         var html = this.template(hudConfig.hero);
+        this.data = hudConfig.hero;
 
         this.container.html(html);
         
@@ -40,8 +46,12 @@
             }
         },
 
-        refreshUI: function(data) {
-            this.container.html(this.template(data));
+        refreshUI: function() {
+            this.container.html(this.template(this.data));
+        },
+
+        showGameError: function(message) {
+            console.log('gameError', message);
         }
 
     };
