@@ -10,15 +10,13 @@ function loadMapByKey(key) {
 
     data.map.findMapByKey(key)
         .then(function(map){
-
             // load online heroes
             data.hero.findOnlineHeroesForMap(key)
                 .then(function(heroes){
-
                     map.onlineHeroes = heroes;
                     var itemIds = _.chain(map.mapObjects).filter(function(mapObject){
                         return true;
-                    }).pluck('itemId').vlue();
+                    }).pluck('itemId').value();
 
                     // load items on map
                     return data.item.findItemsByKeys(itemIds)
