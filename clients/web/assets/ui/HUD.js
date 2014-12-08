@@ -52,6 +52,8 @@
 
         showGameError: function(message) {
             console.log('gameError', message);
+            message = moment().format('hh:mm:ss') + ' - ' + message;
+            $("#hud-messages").prepend('<div>'+message+'</div>');
         }
 
     };
