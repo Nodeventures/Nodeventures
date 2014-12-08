@@ -25,7 +25,8 @@ var heroSchema = new mongoose.Schema({
         idle: {type: [[Number]], default: [[1, 2], [1, 2]]},
         walk: {type: [[Number]], default: [[0, 2], [1, 2], [2, 2]]}
     },
-    id: Number
+    id: Number,
+    items: [String]
 }, {
     collection: 'heroes',
     id: false

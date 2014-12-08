@@ -6,8 +6,6 @@ var data = require('../../data');
 var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
     // eventData: username, password
 
-    console.log('User logged in or is registering', gameEvent);
-
     var eventData = {},
         errorEncountered = null;
     data.user.registerUser(gameEvent.data)
