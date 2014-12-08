@@ -133,7 +133,6 @@ module.exports = {
 
         return defer.promise;
     },
-
     findOnlineHeroesForMap: function (mapKey) {
         var defer = q.defer();
 
@@ -149,5 +148,20 @@ module.exports = {
             });
 
         return defer.promise;
+    },
+    setHeroMapPosition: function (heroId, newMapKey) {
+        var defer = q.defer();
+
+        Hero.findOneAndUpdate({id: heroId}, {'position.map': newMapKey}, function (err, numberAffected, raw) {
+            if (err) {
+                defer.reject(err);
+            }
+            else {
+                defer.resolve();
+            }
+        });
+
+        return defer.promise;
+
     }
 };

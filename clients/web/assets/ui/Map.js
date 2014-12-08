@@ -54,7 +54,9 @@
         $.each(mapItems, function(index, item){
             item.session = map.session;
             item.map = map;
-            map.layers['itemsLayer'].add(new Nv.MapItem(map, item));
+            var mapItem = new Nv.MapItem(map, item);
+            mapItem.layer = map.layers['itemsLayer'];
+            map.layers['itemsLayer'].add(mapItem);
         });
     }
 

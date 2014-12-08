@@ -1,7 +1,9 @@
 (function() {
 
     Nv.MapItem = function(map, config) {
-        Nv.MapObject.call(this, map, 34, 34, config.position);
+        config.tooltipText = config.name;
+
+        Nv.MapObject.call(this, map, 34, 34, config.position, config);
 
         this.name = config.name;
         this.key = config.key;
@@ -15,6 +17,7 @@
         });
 
         this.image = image;
+        this.config = config;
 
         this.add(this.image);
 
@@ -22,7 +25,21 @@
     };
 
     Nv.MapItem.prototype = {
-        
+        onClick: function() {
+            var hero = Nv.sessionInstance().hero,
+                item = this;
+                
+            // move hero to item abd pickup item
+            hero.moveToPosition(this.getX()-1, this.getY()-1, function(){
+                item.hideFromUI();
+            });
+
+            // pickup item
+            this.emitEvent('/items', 'itemPickedUp', {
+                'heroId': hero.id,
+                'itemKey': this.key,
+            });
+        }
     };
 
     Kinetic.Util.extend(Nv.MapItem, Nv.MapObject);

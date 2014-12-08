@@ -68,7 +68,7 @@
             }
         },
 
-        moveToPosition: function(x, y) {
+        moveToPosition: function(x, y, callback) {
             console.log(this.map.collisions);
             if (!this.map.canMoveToPosition(x, y)) {
                 return;
@@ -105,6 +105,9 @@
                     hero.x = x;
                     hero.y = y;
                     hero.animate('idle');
+                    if (callback) {
+                        callback();
+                    }
                 }
             });
 
