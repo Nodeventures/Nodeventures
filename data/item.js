@@ -46,5 +46,22 @@ module.exports = {
             });
 
         return defer.promise;
+    },
+
+    findItemsByKeys: function(keys) {
+        var defer = q.defer();
+
+        Item.find()
+            .where('key')
+            .in(keys)
+            .exec(function(err, items) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(items);
+                }
+            });
+
+        return defer.promise;
     }
 };
