@@ -18,20 +18,28 @@ module.exports = function (config) {
             console.log('Error: ' + err);
             return;
         }
-
+        var seededCount = 0;
         seeds.items.seedItems(db.collections.items.collection)
             .then(function (items) {
-                console.log('Seeded ' + items.length + ' items.');
+                seededCount += items.length;
+                if (items.length > 0) {
+                    console.log('Seeded ' + items.length + ' items.');
+                }
                 return seeds.maps.seedMaps(db.collections.maps.collection);
             })
             .then(function (maps) {
-                console.log('Seeded ' + maps.length + ' maps.');
+                seededCount += maps.length;
+                if (maps.length > 0) {
+                    console.log('Seeded ' + maps.length + ' maps.');
+                }
             })
             .fail(function (err) {
                 console.log('Error: ' + err);
             })
             .done(function () {
-                console.log('Done seeding.');
+                if (seededCount > 0) {
+                    console.log('Done seeding.');    
+                }
             });
 
         console.log('Database up and running...');
