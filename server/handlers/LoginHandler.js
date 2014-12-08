@@ -75,8 +75,13 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
 
         // get hero
         .then(function(createdHero){
-            eventData.hero = createdHero;
-            return loadMapByKey(createdHero.position.map);
+            eventData.hero = createdHero.toObject();
+            return data.item.findItemsByKeys(eventData.hero.inventoryItems);
+        })
+
+        .then(function(items){
+            eventData.hero.inventory = items;
+            return loadMapByKey(eventData.hero.position.map);
         })
 
         // load map based on hero position
