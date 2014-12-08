@@ -85,6 +85,21 @@ module.exports = {
 
         return defer.promise;
     },
+    findById: function (heroId) {
+        var defer = q.defer();
+
+         Hero.findOne()
+            .where('id').equals(heroId)
+            .exec(function (err, hero) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(hero);
+                }
+            });
+
+        return defer.promise;
+    },
     updateHeroPosition: function (heroId, newPosition) {
         var defer = q.defer();
 
@@ -163,5 +178,21 @@ module.exports = {
 
         return defer.promise;
 
-    }
+    },
+
+    addItemToBackpack: function (heroId, itemKey) {
+        var defer = q.defer();
+
+        Hero.findOneAndUpdate({id: heroId}, {$addToSet: {inventoryItems: itemKey}}, function (err, numberAffected, raw) {
+            if (err) {
+                defer.reject(err);
+            }
+            else {
+                defer.resolve();
+            }
+        });
+
+        return defer.promise;
+
+    },
 };
