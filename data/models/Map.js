@@ -2,6 +2,17 @@
 
 var mongoose = require('mongoose');
 
+var mapObjectSchema = new mongoose.Schema({
+    type: String,
+    itemId: String,
+    position: {
+        x: Number,
+        y: Number
+    }
+});
+
+var MapObject = mongoose.model('MapObject', mapObjectSchema)
+
 var mapSchema = new mongoose.Schema({
     key: {type: String, unique: true, index: true},
     width: {type: Number, default: 640},
@@ -16,16 +27,9 @@ var mapSchema = new mongoose.Schema({
         stepsVerticalAllowed: {type: Number, default: 2}
     },
 
-    mapObjects: [{
-        type: String, // in the future in addition to item we will have 'area_entrance/exit'
-        itemId: String,
-        position: {
-            x: Number,
-            y: Number
-        }
-    }]
+    mapObjects: [MapObject]
 
-});
+}); 
 
 var Map = mongoose.model('Map', mapSchema);
 
