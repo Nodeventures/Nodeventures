@@ -39,7 +39,13 @@ body {
 
 #hud-messages {
     background: rgba(255, 255, 255, 0.7);
-    padding: 3px;
+    padding: 5px;
+    font-size: 0.8em;
+    margin-top: 10px;
+}
+
+#hud-messages:empty {
+    display: none;
 }
 
 #game-ui {
