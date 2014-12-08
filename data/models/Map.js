@@ -28,13 +28,6 @@ var mapSchema = new mongoose.Schema({
     },
 
     mapObjects: { type: Object, default: [] },
-
-    // filled at runtime
-    // need to be added because Mongoose does not allow to add properties on runtime
-    // schema is compiled much before that
-    onlineHeroes: [{}],
-    itemsOnMap: [{}],
-
 }); 
 
 var Map = mongoose.model('Map', mapSchema);

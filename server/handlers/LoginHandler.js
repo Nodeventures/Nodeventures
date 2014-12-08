@@ -11,6 +11,8 @@ function loadMapByKey(key) {
     data.map.findMapByKey(key)
         .then(function(map){
 
+            map = map.toObject();
+
             // load online heroes
             data.hero.findOnlineHeroesForMap(key)
                 .then(function(heroes){
@@ -18,7 +20,7 @@ function loadMapByKey(key) {
                     map.onlineHeroes = heroes;
                     var itemIds = _.chain(map.mapObjects).filter(function(mapObject){
                         return true;
-                    }).pluck('itemId').vlue();
+                    }).pluck('itemId').value();
 
                     // load items on map
                     return data.item.findItemsByKeys(itemIds)
@@ -31,7 +33,7 @@ function loadMapByKey(key) {
                                     return obj.type === 'item' && obj.itemId === item.key;
                                 });
 
-                                var builtItem = _.omit(item, []);
+                                var builtItem = item.toObject();
                                 builtItem.position = positionData.position;
 
                                 itemsOnMap.push(builtItem);
@@ -79,6 +81,7 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
 
         // load map based on hero position
         .then(function(map){
+            // copy object so that we can attach and access attached properties
             eventData.map = map;
         })
 
@@ -90,13 +93,17 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
 
         // return event
         .done(function(){
-            // console.log(eventData);
+
             if (!errorEncountered) {
                 // mark images / assets that need loading
                 eventData.images = {
                     "heroSprite": eventData.hero.heroSprite,
                     "tileSet": eventData.map.tileSet
                 };
+
+                eventData.map.itemsOnMap.forEach(function(item){
+                    eventData.images[item.key] = 'assets/items/' + item.image;
+                });
 
                 deferred.resolve(utils.createGameEvent(defaultChannel, 'userLoggedIn', eventData));
             }

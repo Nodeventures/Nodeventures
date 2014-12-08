@@ -69,6 +69,11 @@
         },
 
         moveToPosition: function(x, y) {
+            console.log(this.map.collisions);
+            if (!this.map.canMoveToPosition(x, y)) {
+                return;
+            }
+
             if (this.currentAnimation) {
                 this.currentAnimation.pause();
             }

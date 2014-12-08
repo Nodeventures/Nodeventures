@@ -47,6 +47,6 @@ $(function() {
     });
 
     // Nv.Session.loginUser('user' + (Math.random() * 1000), 'asd');
-    // Nv.Session.loginUser('stefan', 'test');
+    Nv.Session.loginUser('stefan', 'test');
 
 });

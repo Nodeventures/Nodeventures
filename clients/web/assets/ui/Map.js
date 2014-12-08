@@ -15,6 +15,7 @@
     }
 
     function drawMap(mapConfig) {
+        console.log("mapConfig", mapConfig);
         var stepsX = this.width / this.tileSize,
             stepsY = this.height / this.tileSize,
             mapLayer = new Kinetic.Layer();
@@ -43,7 +44,18 @@
 
         this.layers['mapLayer'] = mapLayer;
 
+        this.layers['itemsLayer'] = new Kinetic.Layer();
+
         this.layers['heroLayer'] = new Kinetic.Layer();
+    }
+
+    function addItemsLayer(mapItems) {
+        var map = this;
+        $.each(mapItems, function(index, item){
+            item.session = map.session;
+            item.map = map;
+            map.layers['itemsLayer'].add(new Nv.MapItem(map, item));
+        });
     }
 
     Nv.Map = function(mapConfig) {
@@ -58,7 +70,11 @@
 
         this.heroes = {};
 
+        this.collisions = [];
+
         drawMap.call(this, mapConfig);
+
+        addItemsLayer.call(this, mapConfig.itemsOnMap);
 
         // //Obects (background)
         // var tS = 32;
@@ -126,6 +142,31 @@
             $.each(this.layers, function(layerKey, layer){
                 stage.add(layer);
             });
+        },
+
+        enableCollisionsFor: function(mapObject) {
+            this.collisions.push({
+                x: mapObject.getX(),
+                y: mapObject.getY(),
+                width: mapObject.width,
+                height: mapObject.height
+            });
+        },
+
+        canMoveToPosition: function(x, y) {
+            var collisionsLength = this.collisions.length;
+
+            for (var i = 0; i < collisionsLength; i++) {
+                var collision = this.collisions[i];
+                var xCollides = x >= collision.x && x <= collision.x + collision.width;
+                var yCollides = y >= collision.y && y <= collision.y + collision.height;
+
+                if (xCollides && yCollides) {
+                    return false;
+                }
+            };
+
+            return true;
         }
     };
 

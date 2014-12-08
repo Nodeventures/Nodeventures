@@ -29,7 +29,7 @@ function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
                         var message = error;
                         if (error.stack) {
                             message = error.message;
-                            console.error(message + ': ' + error.stack);
+                            console.error(error.stack);
                         }
                         clientSocket.emit('systemError', message);
                     })
