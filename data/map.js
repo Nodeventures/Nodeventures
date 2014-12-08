@@ -2,6 +2,7 @@
 
 var q = require('q');
 var Map = require('./models/Map');
+var _ = require('underscore');
 
 module.exports = {
     createMap: function (mapInfo) {
@@ -16,9 +17,22 @@ module.exports = {
 
         return defer.promise;
     },
-    loadMapByKey: function (key) {
+    findMapByKey: function (key) {
 
-        var defer = q.defer();
+        var defer = q.defer(),
+            foundMap = null;
+
+        Map.findOne()
+            .where('key').equals(key)
+            .exec(function (err, map) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(map);
+                }
+            });
+
+        return defer.promise;
 
         // TODO: load data from maps collection
         defer.resolve({
