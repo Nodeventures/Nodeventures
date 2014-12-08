@@ -31,16 +31,27 @@
                 
             // move hero to item abd pickup item
             hero.moveToPosition(this.getX()-1, this.getY()-1, function(){
-                item.hideFromUI();
+                // pickup item
+                item.emitEvent('/items', 'itemPickedUp', {
+                    'heroId': hero.id,
+                    'itemKey': item.key,
+                });
             });
+            
+        },
 
-            // pickup item
-            this.emitEvent('/items', 'itemPickedUp', {
-                'heroId': hero.id,
-                'itemKey': this.key,
-            });
-        }
     };
 
     Kinetic.Util.extend(Nv.MapItem, Nv.MapObject);
+
+    function setupEvents() {
+        var itemsSocket = this.session.connectToChannel('/items'),
+            item = this;
+
+        itemsSocket.on('itemPickedUp', function(data){
+            if (data.itemKey === item.key) {
+                item.hideFromUI();
+            }
+        });
+    }
 })();
