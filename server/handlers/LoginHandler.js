@@ -17,7 +17,7 @@ function loadMapByKey(key) {
 
                     map.onlineHeroes = heroes;
                     var itemIds = _.chain(map.mapObjects).filter(function(mapObject){
-                        return mapObject.type === 'item';
+                        return true;
                     }).pluck('itemId').value();
 
                     // load items on map
@@ -25,24 +25,22 @@ function loadMapByKey(key) {
                         .then(function(items){
 
                             // load items
-                            map.itemsOnMap = [];
+                            var itemsOnMap = [];
                             items.forEach(function(item){
                                 var positionData = _.find(map.mapObjects, function(obj){
-                                    return obj.type === 'item' && obj.itemId === item.id;
+                                    return obj.type === 'item' && obj.itemId === item.key;
                                 });
 
-                                item.position = positionData.position;
+                                var builtItem = _.omit(item, []);
+                                builtItem.position = positionData.position;
 
-                                map.itemsOnMap.push(item);
+                                itemsOnMap.push(builtItem);
                             });
+
+                            map.itemsOnMap = itemsOnMap;
                         });
                 })
-                .fail(function(err){
-                    console.log('error', err);
-                    defer.resolve(err);
-                })
                 .done(function(){
-                    console.log('MAP', map);
                     defer.resolve(map);
                 });
         });

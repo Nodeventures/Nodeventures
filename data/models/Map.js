@@ -11,7 +11,7 @@ var mapObjectSchema = new mongoose.Schema({
     }
 });
 
-var MapObject = mongoose.model('MapObject', mapObjectSchema)
+var MapObject = mongoose.model('MapObject', mapObjectSchema);
 
 var mapSchema = new mongoose.Schema({
     key: {type: String, unique: true, index: true},
@@ -27,7 +27,13 @@ var mapSchema = new mongoose.Schema({
         stepsVerticalAllowed: {type: Number, default: 2}
     },
 
-    mapObjects: [MapObject]
+    mapObjects: { type: Object, default: [] },
+
+    // filled at runtime
+    // need to be added because Mongoose does not allow to add properties on runtime
+    // schema is compiled much before that
+    onlineHeroes: [{}],
+    itemsOnMap: [{}],
 
 }); 
 
