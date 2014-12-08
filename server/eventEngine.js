@@ -73,6 +73,14 @@ function addMappings(io, clientSocket, mappings) {
     });
 }
 
+function forwardEvents(io, clientSocket, events) {
+    events.forEach(function(eventKey){
+        clientSocket.on(eventKey, function(data){
+           emitEvents(io, [data]);
+        });
+    });
+}
+
 module.exports = function(io) {
 
     return {
@@ -81,7 +89,7 @@ module.exports = function(io) {
         forChannel: function(channel) {
             var channelSocket = io.of(channel);
 
-            return {
+            var eventEngine = {
 
                 // add mappings for namespace
                 addMappings: function(mappings) {
@@ -89,9 +97,22 @@ module.exports = function(io) {
                         console.log('Client connected to channel: ' + channel);
                         addMappings(io, socket, mappings);
                     });
+
+                    return eventEngine;
+                },
+
+                forwardEvents: function(events) {
+                    channelSocket.on('connection', function(socket){
+                        console.log('Client connected to channel: ' + channel);
+                        forwardEvents(io, socket, events);
+                    });
+
+                    return eventEngine;
                 }
 
             };
+
+            return eventEngine;
 
         }
 
