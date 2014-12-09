@@ -1,10 +1,18 @@
 body {
-    background: url('../images/ui/bg.jpg');
+    background: url('../images/website_bg.jpg') center top repeat-x #b8a991;
     padding-top: 10px;
 }
 
 .clear {
     clear: both;
+}
+
+#login {
+    padding-top: 20px;
+}
+
+#login .form-horizontal {
+    margin-bottom: 0px;
 }
 
 #container {
@@ -68,8 +76,7 @@ body {
 
 #game-ui {
     width: 900px;
-    margin: 0 auto;
-    text-align: center;
+    margin: 150px auto 0;
     background: #D9C0A5;
     border: 5px solid rgba(150,103,51,0.3);
 }
