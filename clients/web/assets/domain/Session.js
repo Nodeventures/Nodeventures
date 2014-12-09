@@ -121,6 +121,25 @@
         session.hero = hero;
     }
 
+    function loadAreaEntrances(session, areas) {
+        _.each(areas, function(areaConfig){
+            areaConfig.key = areaConfig.image;
+            areaConfig.width = areaConfig.dimentions.width;
+            areaConfig.height = areaConfig.dimentions.height;
+            areaConfig.layer = 'areasLayer';
+
+            var areaEntrance = this;
+            areaConfig.onClickHandler = function(){
+                alert('going to ' + areaEntrance.leadsToMap);
+            };
+
+            areaConfig.tooltipText = 'Enter area';
+
+            var area = new Nv.AreaEntrance(session.map, areaConfig);
+            session.map.addToLayer(area, 'areasLayer');
+        });
+    }
+
     function enterMap(session, mapConfig) {
         var stage = new Kinetic.Stage({
             container: session.container,
@@ -138,7 +157,7 @@
         areaMap.addLayersToStage(stage);
         session.map = areaMap;
 
-        stage.draw();
+        return stage;
     }
 
     Nv.Session = function(sessionData) {
@@ -191,7 +210,7 @@
             setupEvents(this);
 
             // setup map
-            enterMap(this, this.config.map);
+            var stage = enterMap(this, this.config.map);
 
             // add main hero
             createProtagonist(this, this.config.hero);
@@ -200,7 +219,11 @@
 
             startBattles(this, this.config.battles);
 
+            loadAreaEntrances(this, this.config.areas);
+
             initializeHUD(this, this.config.hero);
+
+            stage.draw();
 
             Nv.Interactions.init(this.hero, this.container);
         },

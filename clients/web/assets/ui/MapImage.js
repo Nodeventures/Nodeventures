@@ -24,7 +24,7 @@
 
     Nv.MapImage.prototype = {
         mapObjectClicked: function() {
-            return this.onClickHandler();
+            return this.onClickHandler.call(this);
         },
 
     };

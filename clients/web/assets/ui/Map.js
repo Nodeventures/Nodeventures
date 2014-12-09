@@ -44,6 +44,8 @@
 
         this.layers['mapLayer'] = mapLayer;
 
+        this.layers['areasLayer'] = new Kinetic.Layer();
+
         this.layers['itemsLayer'] = new Kinetic.Layer();
 
         this.layers['heroLayer'] = new Kinetic.Layer();
@@ -117,6 +119,7 @@
         },
 
         addToLayer: function(item, layer) {
+            console.log(item, layer);
             this.layers[layer].add(item);
         },
 

@@ -106,9 +106,14 @@
                 }
                 
             } else {
-                // start battle with player hero
-                var battle = new Nv.Battle(this, Nv.sessionInstance().hero);
-                battle.start();
+                if (this.id === Nv.sessionInstance().hero.id) {
+                    return this.saySomething(['Hello!'], 1);
+                }
+                else {
+                    // start battle with player hero
+                    var battle = new Nv.Battle(this, Nv.sessionInstance().hero);
+                    battle.start();
+                }
             }
         },
 

@@ -43,8 +43,8 @@
         {
             "type": "building",
             "position": {
-                "x": 130,
-                "y": 490
+                "x": 430,
+                "y": 60
             },
             "dimentions": {
                 "width": 150,

@@ -101,6 +101,10 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
         .then(function(map){
             // copy object so that we can attach and access attached properties
             eventData.map = map;
+
+            eventData.areas = _.filter(map.mapObjects, function(mapObject){
+                return mapObject.type === 'building';
+            });
         })
 
         // forward any errors back
@@ -119,8 +123,14 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
                     "tileSet": eventData.map.tileSet
                 };
 
+                // load item images
                 eventData.map.itemsOnMap.forEach(function(item){
                     eventData.images[item.key] = 'assets/items/' + item.image;
+                });
+
+                // load area images
+                eventData.areas.forEach(function(area){
+                    eventData.images[area.image] = 'assets/buildings/' + area.image;
                 });
 
                 deferred.resolve(utils.createGameEvent(defaultChannel, 'userLoggedIn', eventData));
