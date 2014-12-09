@@ -19,6 +19,12 @@
                 hud.refreshUI();
             }
         });
+
+        var battleSocket = this.session.connectToChannel('/battle');
+
+        battleSocket.on('heroAttacked', function(data){
+            hud.showGameMessage(data.attackerName + ' attacked ' + data.defenderName + ' for ' + data.attackDamage);
+        });
     }
 
     function setupUIEvents(hud) {
@@ -54,6 +60,7 @@
 
         var html = this.template(hudConfig.hero);
         this.data = hudConfig.hero;
+        this.data.messages = [];
 
         this.container.html(html);
 
@@ -78,6 +85,7 @@
 
         showGameMessage: function(message) {
             message = moment().format('hh:mm:ss') + ' - ' + message;
+            this.data.messages.unshift(message);
             $("#hud-messages").prepend('<div>'+message+'</div>');
         }
 
