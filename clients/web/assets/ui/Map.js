@@ -116,6 +116,10 @@
             return this.layers;
         },
 
+        addToLayer: function(item, layer) {
+            this.layers[layer].add(item);
+        },
+
         addLayersToStage: function(stage) {
             $.each(this.layers, function(layerKey, layer){
                 stage.add(layer);
