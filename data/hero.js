@@ -171,7 +171,7 @@ module.exports = {
     setHeroMapPosition: function (heroId, newMapKey) {
         var defer = q.defer();
 
-        Hero.findOneAndUpdate({id: heroId}, {'position.map': newMapKey}, function (err, numberAffected, raw) {
+        Hero.findOneAndUpdate({id: heroId}, {'position.map': newMapKey, 'position.x': 320, 'position.y': 320}, function (err, numberAffected, raw) {
             if (err) {
                 defer.reject(err);
             }

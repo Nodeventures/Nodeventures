@@ -61,29 +61,15 @@ function loadMapByKey(key) {
     return defer.promise;
 }
 
-var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
-    // eventData: username, password
+function loadAreaData(promise) {
+    var defer = Q.defer();
 
     var eventData = {},
         errorEncountered = null;
-    data.user.registerUser(gameEvent.data)
 
-        // get user object
-        .then(function(registeredUser){
-            eventData.user = {
-                username: registeredUser.username
-            };
-
-            return data.hero.createHero({
-                username: registeredUser.username,
-                name: registeredUser.username,
-                status: 'online'
-            });
-        })
-
-        // get hero
-        .then(function(createdHero){
-            eventData.hero = createdHero.toObject();
+    promise
+        .then(function(hero){
+            eventData.hero = hero.toObject();
             return data.item.findItemsByKeys(eventData.hero.inventoryItems);
         })
 
@@ -114,7 +100,7 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
         })
 
         // return event
-        .done(function(){
+        .then(function(){
 
             if (!errorEncountered) {
                 // mark images / assets that need loading
@@ -133,8 +119,40 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
                     eventData.images[area.image] = 'assets/buildings/' + area.image;
                 });
 
-                deferred.resolve(utils.createGameEvent(defaultChannel, 'userLoggedIn', eventData));
+                defer.resolve(eventData);
             }
+        });
+
+    return defer.promise;
+}
+
+var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
+    // eventData: username, password
+
+    var eventData = {};
+
+    var registerUserPromise = data.user.registerUser(gameEvent.data)
+
+        // get user object
+        .then(function(registeredUser){
+            eventData.user = {
+                username: registeredUser.username
+            };
+
+            return data.hero.createHero({
+                username: registeredUser.username,
+                name: registeredUser.username,
+                status: 'online'
+            });
+        })
+        .fail(function(err){
+            deferred.reject(err);
+        });
+
+    loadAreaData(registerUserPromise)
+        .done(function(data){
+            eventData = _.extend(eventData, data);
+            deferred.resolve(utils.createGameEvent(defaultChannel, 'userLoggedIn', eventData));
         });
 });
 
@@ -159,7 +177,49 @@ var onUserLogout = utils.wrapWithPromise(function (gameEvent, deferred) {
     
 });
 
+var onAreaChanged = utils.wrapWithPromise(function (gameEvent, deferred, clientSocket) {
+    // eventData: heroId, mapKey
+    
+    // load new map for hero and send back to him
+    // forward event to other clients to remove from maps
+    // send event to show user on new map
+
+    var eventData = {};
+    var events = [];
+
+    var heroPromise = data.hero.setHeroMapPosition(gameEvent.data.heroId, gameEvent.data.mapKey)
+
+        // get user object
+        .then(function(){
+            return data.hero.findById(gameEvent.data.heroId);
+        })
+        .fail(function(err){
+            deferred.reject(err);
+        });
+
+    loadAreaData(heroPromise)
+        .done(function(data){
+            data.user = {
+                username: data.hero.name
+            };
+
+            // event to remove user from all areas
+            events.push(utils.createGameEvent(defaultChannel, 'userLoggedOut', {
+                'username': data.user.username,
+                'hero_id': data.hero.id
+            }));
+
+            // event to login user to target area
+            var loginEvent = utils.createGameEvent(defaultChannel, 'userLoggedIn', data);
+            // narrowedLoginEvent = utils.designateEventSocket(loginEvent, clientSocket);
+            events.push(loginEvent);
+            deferred.resolve(events);
+        });
+    
+});
+
 module.exports = {
     onUserLogin: onUserLogin,
-    onUserLogout: onUserLogout
+    onUserLogout: onUserLogout,
+    onAreaChanged: onAreaChanged
 };
