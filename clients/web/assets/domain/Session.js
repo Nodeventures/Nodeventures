@@ -123,18 +123,6 @@
 
     function loadAreaEntrances(session, areas) {
         _.each(areas, function(areaConfig){
-            areaConfig.key = areaConfig.image;
-            areaConfig.width = areaConfig.dimentions.width;
-            areaConfig.height = areaConfig.dimentions.height;
-            areaConfig.layer = 'areasLayer';
-
-            var areaEntrance = this;
-            areaConfig.onClickHandler = function(){
-                alert('going to ' + areaEntrance.leadsToMap);
-            };
-
-            areaConfig.tooltipText = 'Enter area';
-
             var area = new Nv.AreaEntrance(session.map, areaConfig);
             session.map.addToLayer(area, 'areasLayer');
         });
@@ -238,6 +226,7 @@
                     var hero = createHero(currentSession, heroConfig);
 
                     currentSession.map.heroEnter(hero);
+                    Nv.Session.showGameMessage('Hero ' + hero.name + ' entered area.');
                 });
 
                 // trigger event for hud
@@ -274,7 +263,7 @@
         alert(message);
     };
 
-    Nv.Session.showGameMessage = Nv.Session.showError;
+    Nv.Session.showGameMessage = function(){};
 
     Nv.Session.loginUser = function(usernameInput, passwordInput) {
         lastUsedUsername = usernameInput;
@@ -293,7 +282,7 @@
 
         if (!eventsInitialized) {
             systemChannel.on('userLoggedIn', function(data){
-                console.log('User logged in', data);
+                // console.log('User logged in', data);
                 if (data.user.username === lastUsedUsername) {
                     currentSession = new Nv.Session(data);
                 }

@@ -83,6 +83,11 @@
             document.body.style.cursor = 'pointer';
         },
 
+        destroyTooltip: function() {
+            this.tooltip.destroy();
+            this.rect.destroy();
+        },
+
         hideTooltip: function(message) {
             this.tooltip.hide();
             this.rect.hide();

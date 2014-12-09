@@ -15,7 +15,6 @@
     }
 
     function drawMap(mapConfig) {
-        console.log("mapConfig", mapConfig);
         var stepsX = this.width / this.tileSize,
             stepsY = this.height / this.tileSize,
             mapLayer = new Kinetic.Layer();
@@ -111,6 +110,7 @@
                 var hero = this.heroes[hero_id];
                 delete this.heroes[hero_id];
                 hero.leave();
+                Nv.Session.showGameMessage('Hero ' + hero.name + ' left area.');
             }
         },
 
@@ -119,7 +119,6 @@
         },
 
         addToLayer: function(item, layer) {
-            console.log(item, layer);
             this.layers[layer].add(item);
         },
 

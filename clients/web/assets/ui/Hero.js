@@ -68,6 +68,7 @@
     Nv.Hero.prototype = {
 
         leave: function() {
+            this.destroyTooltip();
             this.sprite.destroy();
             this.textLabel.destroy();
             if (this.inBattle) {
