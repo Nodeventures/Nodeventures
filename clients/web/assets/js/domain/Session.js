@@ -86,7 +86,6 @@
     }
 
     function createHero(session, heroConfig, protagonist) {
-
         heroConfig.layer = session.map.layers['heroLayer'];
         var hero = new Nv.Hero(session.map, heroConfig);
         hero.skipEvents = !protagonist;
@@ -99,7 +98,7 @@
         onlineHeroes = _.chain(onlineHeroes).filter(function(hero){
             return hero.id !== session.hero.id;
         }).each(function(hero){
-            hero.image = session.images.heroSprite;
+            hero.image = session.images[hero.heroSprite];
             hero = createHero(session, hero, false);
             session.map.heroEnter(hero);
         });
@@ -116,7 +115,7 @@
     }
 
     function createProtagonist(session, heroConfig) {
-        heroConfig.image = session.images.heroSprite;
+        heroConfig.image = session.images[heroConfig.heroSprite];
         var hero = createHero(session, heroConfig, true);
         session.hero = hero;
     }
@@ -219,17 +218,16 @@
         loginHero: function(heroConfig) {
             // if hero is on current map
             if (heroConfig.position.map === currentSession.map.key) {
-                var imagesToLoad = {heroSprite: 'assets/images/heroes/' + heroConfig.heroSprite};
+                var imagesToLoad = {};
+                imagesToLoad[heroConfig.heroSprite] = 'assets/images/heroes/' + heroConfig.heroSprite;
                 loadImages(imagesToLoad, function(images){
 
-                    heroConfig.image = images.heroSprite;
+                    heroConfig.image = images[heroConfig.heroSprite];
                     var hero = createHero(currentSession, heroConfig);
 
                     currentSession.map.heroEnter(hero);
                     Nv.Session.showGameMessage('Hero ' + hero.name + ' entered area.');
                 });
-
-                // trigger event for hud
             }
         },
 

@@ -3,6 +3,7 @@
 var q = require('q');
 var userData = require('./user');
 var Hero = require('./models/Hero');
+var _ = require('underscore');
 
 function processHeroCreate(heroInfo, defer) {
     userData.findByUsername(heroInfo.username)
@@ -12,10 +13,7 @@ function processHeroCreate(heroInfo, defer) {
                 name: heroInfo.name,
                 id: heroInfo.id,
                 status: heroInfo.status,
-                animations: {
-                    walk: [[0, 2], [1, 2], [2, 2]],
-                    idle: [[1, 2], [1, 2]]
-                },
+                heroSprite: _.sample(['knight', 'female_peasant', 'male_gold', 'female_thief'], 1) + '.png',
             };
 
             Hero.create(newHero, function (err, createdHero) {

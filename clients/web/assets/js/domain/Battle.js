@@ -16,7 +16,13 @@
         this.battlePair[this.protagonist.id] = this.otherHero.id;
         this.battlePair[this.otherHero.id] = this.protagonist.id;
 
-        protagonist.moveToPosition(otherHero.getX() - otherHero.width - 10, otherHero.getY());
+        protagonist.moveToPosition(otherHero.getX() - otherHero.width * 2 / 3, otherHero.getY(), function(){
+            protagonist.calculateFacingDirection(otherHero.getX(), otherHero.getY());
+            protagonist.animate('idle');
+
+            otherHero.calculateFacingDirection(protagonist.getX(), protagonist.getY());
+            otherHero.animate('idle');
+        });
 
         this.otherHero.inBattle = this;
         this.protagonist.inBattle = this;
@@ -27,8 +33,8 @@
             'width': 34,
             'height': 34,
             'position': {
-                x: otherHero.getX()-22, // 34 / 2 + 10 / 2
-                y: otherHero.getY()-50
+                x: otherHero.getX() - 17 * 1 / 3, // 34 / 2 +
+                y: otherHero.getY() - 42
             },
             layer: 'heroLayer',
             tooltipText: 'Flee',

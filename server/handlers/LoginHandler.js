@@ -105,9 +105,15 @@ function loadAreaData(promise) {
             if (!errorEncountered) {
                 // mark images / assets that need loading
                 eventData.images = {
-                    "heroSprite": 'assets/images/heroes/' + eventData.hero.heroSprite,
                     "tileSet": 'assets/images/tileset/' + eventData.map.tileSet
                 };
+
+                eventData.images[eventData.hero.heroSprite] = 'assets/images/heroes/' + eventData.hero.heroSprite;
+
+                // load online hero sprites
+                _.each(eventData.map.onlineHeroes, function(hero){
+                    eventData.images[hero.heroSprite] = 'assets/images/heroes/' + hero.heroSprite;
+                });
 
                 // load item images
                 eventData.map.itemsOnMap.forEach(function(item){

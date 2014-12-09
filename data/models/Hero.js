@@ -20,11 +20,7 @@ var heroSchema = new mongoose.Schema({
     attack: {type: Number, required: true, default: 1},
     defense: {type: Number, required: true, default: 0},
     userId: {type: mongoose.Schema.ObjectId, ref: 'User'},
-    heroSprite: {type: String, default: 'space_guy.png'},
-    animations: {
-        idle: {},
-        walk: {}
-    },
+    heroSprite: {type: String, default: 'knight.png'},
     id: Number,
     inventoryItems: [{
         type: String

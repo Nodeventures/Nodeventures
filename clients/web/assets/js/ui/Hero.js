@@ -1,17 +1,34 @@
 (function() {
 
     Nv.Hero = function(map, config) {
-        Nv.MapObject.call(this, map, 32, 48, config.position, config);
+        Nv.MapObject.call(this, map, config.width || 64, config.height || 64, config.position, config);
 
         this.name = config.name;
         this.id = config.id;
         this.inBattle = false;
         this.isDead = false;
+        this.facingDirection = 'down';
 
         var hero = this;
+        var heroAnimations = {
+            // [ x, y ] in sprite sheet
+            walk_up: [[0, 8], [1, 8], [2, 8], [3, 8], [4, 8], [5, 8], [6, 8], [7, 8], [8, 8]],
+            walk_down: [[0, 10], [1, 10], [2, 10], [3, 10], [4, 10], [5, 10], [6, 10], [7, 10], [8, 10]],
+            walk_left: [[0, 9], [1, 9], [2, 9], [3, 9], [4, 9], [5, 9], [6, 9], [7, 9], [8, 9]],
+            walk_right: [[0, 11], [1, 11], [2, 11], [3, 11], [4, 11], [5, 11], [6, 11], [7, 11], [8, 11]],
+            idle_up: [[0, 8], [0, 8]],
+            idle_down: [[0, 10], [0, 10]],
+            idle_left: [[0, 9], [0, 9]],
+            idle_right: [[0, 11], [0, 11]],
+            attack_up: [[0, 12], [1, 12], [2, 12], [3, 12], [4, 12]],
+            attack_left: [[0, 13], [1, 13], [2, 13], [3, 13], [4, 13]],
+            attack_down: [[0, 14], [1, 14], [2, 14], [3, 14], [4, 14]],
+            attack_right: [[0, 15], [1, 15], [2, 15], [3, 15], [4, 15]],
+            die: [[0, 22], [1, 22], [2, 22], [3, 22], [4, 22]],
+        };
 
         var animations = [];
-        $.each(config.animations || [], function(animationName, frames){
+        $.each(heroAnimations, function(animationName, frames){
             animations[animationName] = [];
 
             $.each(frames, function(frameIndex, frameValues){
@@ -23,13 +40,22 @@
             });
         });
 
+        // get keys so that we can figure out which animations are affected by direction
+        this.animationNames = _.keys(animations);
+        this.frameRates = {
+            'walk': 17,
+            'idle': 1,
+            'attack': 8,
+            'die': 8
+        };
+
         var spriteConfig = {
             x: 0,
             y: 0,
             image: config.image,
-            animation: 'idle',
+            animation: 'idle_' + this.facingDirection,
             animations: animations,
-            frameRate: 7,
+            frameRate: 17,
             frameIndex: 0
         };
 
@@ -87,7 +113,21 @@
                 this.sprite.start();
             }
             else {
-                this.sprite.animation(animationName);
+                // find matching framerate or set default
+                var frameRate = _.reduce(this.frameRates, function(memo, rate, key){
+                    if (animationName.indexOf(key) === 0) {
+                        memo = rate;
+                    }
+                    return memo;
+                }, null) || 17;
+                this.sprite.frameRate(frameRate);
+
+                if (_.contains(this.animationNames, animationName)) {
+                    this.sprite.animation(animationName);
+                }
+                else {
+                    this.sprite.animation(animationName + "_" + this.facingDirection);
+                }
             }
         },
 
@@ -119,8 +159,7 @@
         },
 
         animateAttack: function() {
-            // TODO: replace with attack
-            this.animate('walk');
+            this.animate('attack');
             var taunts = ['Take that!', 'Raaaawwrr!', 'Pew pew!', 'Have at thee!'];
             this.showTooltip(_.sample(taunts, 1));
 
@@ -158,6 +197,22 @@
             }, 5000);
         },
 
+        calculateFacingDirection: function(targetX, targetY) {
+            var diffX = this.getX() - targetX,
+                diffY = this.getY() - targetY,
+                axis = Math.abs(diffX) <= Math.abs(diffY) ? 'y' : 'x',
+                facingDirection = null;
+
+            if (axis === 'y') {
+                facingDirection = diffY < 0 ? 'down' : 'up';
+            }
+            else {
+                facingDirection = diffX < 0 ? 'right' : 'left';
+            }
+
+            this.facingDirection = facingDirection;
+        },
+
         moveToPosition: function(x, y, callback) {
             if (this.inBattle) {
                 return;
@@ -170,6 +225,8 @@
             if (this.currentAnimation) {
                 this.currentAnimation.pause();
             }
+
+            this.calculateFacingDirection(x, y);
 
             this.saySomething(['On my way', 'As you command', 'I\'m so tired..', 'Look! A nickel!'], 0.4);
 
