@@ -57,7 +57,8 @@
             Nv.sessionInstance().emitEvent('/battle', 'battleStarted', {
                 heroId: this.protagonist.id,
                 otherHeroId: this.otherHero.id,
-                firstAttacker: this.protagonist.id
+                firstAttacker: this.protagonist.id,
+                mapKey: Nv.sessionInstance().map.key
             });
         },
 

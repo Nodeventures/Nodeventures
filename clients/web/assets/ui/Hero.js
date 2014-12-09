@@ -73,6 +73,11 @@
             if (this.inBattle) {
                 var battle = this.inBattle;
                 battle.heroFled(this);
+
+                // send flee event 
+                Nv.sessionInstance().emitEvent('/battle', 'heroFled', {
+                    fleeingHero: this.id,
+                });
             }
         },
 

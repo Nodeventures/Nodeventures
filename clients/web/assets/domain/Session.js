@@ -105,6 +105,16 @@
         });
     }
 
+    function startBattles(session, battles) {
+        _.each(battles, function(battle){
+            var hero = Nv.sessionInstance().map.getHero(battle.heroId);
+            var otherHero = Nv.sessionInstance().map.getHero(battle.otherHeroId);
+
+            // start battle between combatants
+            new Nv.Battle(otherHero, hero);
+        });
+    }
+
     function createProtagonist(session, heroConfig) {
         heroConfig.image = session.images.heroSprite;
         var hero = createHero(session, heroConfig, true);
@@ -187,6 +197,8 @@
             createProtagonist(this, this.config.hero);
 
             createOnlineHeroes(this, this.config.map.onlineHeroes);
+
+            startBattles(this, this.config.battles);
 
             initializeHUD(this, this.config.hero);
 
