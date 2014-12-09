@@ -8,13 +8,18 @@ function createGameEvent(channel, key, data) {
     };
 }
 
+function designateEventSocket(gameEvent, socket) {
+    gameEvent.socket = socket;
+    return gameEvent;
+}
+
 function wrapWithPromise(callback) {
 
-    return function(gameEvent) {
+    return function(gameEvent, clientSocket) {
 
         var deferred = Q.defer();
 
-        callback(gameEvent, deferred);
+        callback(gameEvent, deferred, clientSocket);
 
         return deferred.promise;
 
@@ -26,6 +31,8 @@ module.exports = {
 
     createGameEvent: createGameEvent,
 
-    wrapWithPromise: wrapWithPromise
+    wrapWithPromise: wrapWithPromise,
+
+    designateEventSocket: designateEventSocket
     
 };
