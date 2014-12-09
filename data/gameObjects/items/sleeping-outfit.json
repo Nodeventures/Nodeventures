@@ -1,0 +1,13 @@
+{
+    "type": "armor",
+    "key": "sleeping-outfit",
+    "name": "Old pijamas",
+    "description": "",
+    "image": "sleepingOutfit.png",
+
+    "modifiers": {
+        "health": 5,
+        "attack": 0,
+        "defense": 0
+    }
+}

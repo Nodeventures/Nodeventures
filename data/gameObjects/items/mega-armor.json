@@ -1,0 +1,13 @@
+{
+    "type": "armor",
+    "key": "mega-armor",
+    "name": "Fatguy Mega Armor (TM)",
+    "description": "",
+    "image": "megaArmor.png",
+
+    "modifiers": {
+        "health": 25,
+        "attack": 0,
+        "defense": 2
+    }
+}

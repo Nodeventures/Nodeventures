@@ -7,5 +7,12 @@ var sturdyBuckleOfThorns = require('./sturdy-buckle-of-thorns.json');
 module.exports = [
     greatSwordOfAwesomeness,
     plainLeatherArmor,
-    sturdyBuckleOfThorns
+    sturdyBuckleOfThorns,
+    require('./candy-mace.json'),
+    require('./fire-sword.json'),
+    require('./ice-sword.json'),
+    require('./mega-armor.json'),
+    require('./sleeping-outfit.json'),
+    require('./tower-shield.json'),
+
 ];

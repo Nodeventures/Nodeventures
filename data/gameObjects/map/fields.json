@@ -2,7 +2,7 @@
     "key": "fields",
 
     "tileSize": 32,
-    "tileSet": "assets/tileset/free_tileset_CC.png",
+    "tileSet": "assets/tileset/fields.png",
     "width": 640,
     "height": 640,
 

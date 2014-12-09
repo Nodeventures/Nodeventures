@@ -45,5 +45,52 @@
                 "repeatX": 20
             }
         }
+    },
+
+    "house": {
+        "potionshelf": {
+            "tilesConfig": {
+                "imageX": 0,
+                "imageY": 12,
+                "horizontalTiles": 2,
+                "verticalTiles": 2
+            }
+        },
+
+        "barrel": {
+            "tilesConfig": {
+                "imageX": 7,
+                "imageY": 12,
+                "horizontalTiles": 1,
+                "verticalTiles": 1
+            }
+        },
+
+        "barrels": {
+            "tilesConfig": {
+                "imageX": 8,
+                "imageY": 12,
+                "horizontalTiles": 2,
+                "verticalTiles": 1
+            }
+        },
+
+        "table1": {
+            "tilesConfig": {
+                "imageX": 6,
+                "imageY": 13,
+                "horizontalTiles": 2,
+                "verticalTiles": 2
+            }
+        },
+
+        "table2": {
+            "tilesConfig": {
+                "imageX": 8,
+                "imageY": 13,
+                "horizontalTiles": 2,
+                "verticalTiles": 2
+            }
+        }
     }
 }

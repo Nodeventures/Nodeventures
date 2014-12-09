@@ -7,7 +7,7 @@
 
     "modifiers": {
         "health": 0,
-        "attack": 5,
+        "attack": 10,
         "defense": 0
     }
 }

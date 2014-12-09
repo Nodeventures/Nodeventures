@@ -1,0 +1,108 @@
+{
+    "key": "house",
+
+    "tileSize": 32,
+    "tileSet": "assets/tileset/fields.png",
+    "width": 640,
+    "height": 640,
+
+    "tilesConfig": {
+        "imageX": 13,
+        "imageY": 13,
+        "stepsHorizontalAllowed": 1,
+        "stepsVerticalAllowed": 1
+    },
+
+    "mapObjects": [{
+            "type": "item",
+            "itemId": "fire-sword",
+            "position": {
+                "x": 160,
+                "y": 50
+            }
+        },
+
+        {
+            "type": "item",
+            "itemId": "sleeping-outfit",
+            "position": {
+                "x": 230,
+                "y": 300
+            }
+        },
+
+        {
+            "type": "item",
+            "itemId": "tower-shield",
+            "position": {
+                "x": 560,
+                "y": 430
+            }
+        },
+
+        {
+            "type": "building",
+            "position": {
+                "x": 0,
+                "y": 340
+            },
+            "dimentions": {
+                "width": 64,
+                "height": 64
+            },
+            "mapKey": "fields",
+            "image": "exit.png"
+        }
+    ],
+
+    "obstacles": [
+        {
+            "name": "potionshelf",
+            "position": {
+                "x": 50,
+                "y": 50
+            }
+        },
+
+        {
+            "name": "table1",
+            "position": {
+                "x": 280,
+                "y": 90
+            }
+        },
+
+        {
+            "name": "table2",
+            "position": {
+                "x": 450,
+                "y": 540
+            }
+        },
+
+        {
+            "name": "barrel",
+            "position": {
+                "x": 150,
+                "y": 510
+            }
+        },
+
+        {
+            "name": "barrel",
+            "position": {
+                "x": 330,
+                "y": 240
+            }
+        },
+
+        {
+            "name": "barrels",
+            "position": {
+                "x": 560,
+                "y": 130
+            }
+        }
+    ]
+
+}

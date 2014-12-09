@@ -18,7 +18,7 @@ var mapSchema = new mongoose.Schema({
     width: {type: Number, default: 640},
     height: {type: Number, default: 640},
     tileSize: {type: Number, default: 32},
-    tileSet: {type: String, default: 'assets/tileset/free_tileset_CC.png'},
+    tileSet: {type: String, default: 'assets/tileset/fields.png'},
 
     tilesConfig: {
         imageX: {type: Number, default: 5},

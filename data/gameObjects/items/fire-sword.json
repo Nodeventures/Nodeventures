@@ -1,0 +1,13 @@
+{
+    "type": "sword",
+    "key": "fire-sword",
+    "name": "Flames R Us",
+    "description": "",
+    "image": "fireSword.png",
+
+    "modifiers": {
+        "health": 0,
+        "attack": 6,
+        "defense": 0
+    }
+}

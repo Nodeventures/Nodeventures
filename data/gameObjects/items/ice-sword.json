@@ -1,0 +1,13 @@
+{
+    "type": "sword",
+    "key": "ice-sword",
+    "name": "Frostbite",
+    "description": "",
+    "image": "iceSword.png",
+
+    "modifiers": {
+        "health": 0,
+        "attack": 6,
+        "defense": 0
+    }
+}

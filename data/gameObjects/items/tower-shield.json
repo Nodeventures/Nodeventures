@@ -1,0 +1,13 @@
+{
+    "type": "shield",
+    "key": "tower-shield",
+    "name": "Tower shield",
+    "description": "",
+    "image": "towerShield.png",
+
+    "modifiers": {
+        "health": 0,
+        "attack": 0,
+        "defense": 4
+    }
+}

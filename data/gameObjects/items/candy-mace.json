@@ -1,0 +1,13 @@
+{
+    "type": "sword",
+    "key": "candy-mace",
+    "name": "Candy mace of Yumm!",
+    "description": "",
+    "image": "candyMace.png",
+
+    "modifiers": {
+        "health": 5,
+        "attack": 4,
+        "defense": 0
+    }
+}
