@@ -4,10 +4,12 @@ var q = require('q');
 var Battle = require('./models/Battle');
 
 module.exports = {
-    getBattlesOnMap: function (mapKey) {
+    getBattlesOnMap: function(mapKey) {
         var defer = q.defer();
 
-        Battle.find({mapKey: mapKey}, function (err, battles) {
+        Battle.find({
+            mapKey: mapKey
+        }, function(err, battles) {
             if (err) {
                 defer.reject(err);
             } else {
@@ -18,12 +20,12 @@ module.exports = {
         return defer.promise;
     },
 
-    startBattleOnMap: function (battleInfo, mapKey) {
+    startBattleOnMap: function(battleInfo, mapKey) {
         var defer = q.defer();
 
         battleInfo.mapKey = mapKey;
 
-        Battle.create(battleInfo, function (err, battle) {
+        Battle.create(battleInfo, function(err, battle) {
             if (err) {
                 defer.reject(err);
             } else {
@@ -34,12 +36,10 @@ module.exports = {
         return defer.promise;
     },
 
-    cancelBattleOnMap: function (battleInfo, mapKey) {
+    cancelBattleByCombatant: function(heroId) {
         var defer = q.defer();
 
-        battleInfo.mapKey = mapKey;
-
-        Battle.remove(battleInfo, function (err) {
+        Battle.remove({$or : [{heroId: heroId}, {otherHeroId: heroId}]}, function(err) {
             if (err) {
                 defer.reject(err);
             } else {
@@ -48,5 +48,5 @@ module.exports = {
         });
 
         return defer.promise;
-    },
+    }
 };

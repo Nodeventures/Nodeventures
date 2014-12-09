@@ -89,6 +89,11 @@ var onUserLogin = utils.wrapWithPromise(function (gameEvent, deferred) {
 
         .then(function(items){
             eventData.hero.inventory = items;
+            return data.battle.getBattlesOnMap(eventData.hero.position.map);
+        })
+
+        .then(function(battles){
+            eventData.battles = battles;
             return loadMapByKey(eventData.hero.position.map);
         })
 
