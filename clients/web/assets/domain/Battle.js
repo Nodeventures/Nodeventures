@@ -39,6 +39,25 @@
         this.otherHero.inBattle = this;
         this.protagonist.inBattle = this;
 
+        // add battle image
+        this.image = new Nv.MapImage(Nv.sessionInstance().map, {
+            'key': 'battle',
+            'width': 34,
+            'height': 34,
+            'position': {
+                x: otherHero.getX()-22, // 34 / 2 + 10 / 2
+                y: otherHero.getY()-50
+            },
+            layer: 'heroLayer',
+            tooltipText: 'Flee',
+            onClickHandler: function() {
+                var fleeingHero = Nv.sessionInstance().hero;
+                Nv.sessionInstance().emitEvent('/battle', 'heroFled', {
+                    fleeingHero: fleeingHero.id,
+                });
+            }
+        });
+        Nv.sessionInstance().map.addToLayer(this.image, 'heroLayer');
 
         protagonist.showTooltip('Charge!');
         setTimeout(function(){
@@ -63,6 +82,7 @@
         heroFled: function(hero) {
             this.protagonist.inBattle = false;
             this.otherHero.inBattle = false;
+            this.image.hideFromUI();
             Nv.Session.showGameMessage('Player ' + hero.name + ' fled the battlefield');
         },
 

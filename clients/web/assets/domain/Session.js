@@ -55,6 +55,14 @@
             }
             attacker.inBattle.performAttackBy(attacker);
         });
+
+        battleSocket.on('heroFled', function(data){
+            var fleeingHero = Nv.sessionInstance().map.getHero(data.fleeingHero);
+
+            if (fleeingHero.inBattle) {
+                fleeingHero.inBattle.heroFled(fleeingHero);
+            }
+        });
     }
 
     function initializeHUD(session, hero) {
@@ -127,6 +135,7 @@
         this.container = sessionOptions.container;
 
         var imagesToLoad = sessionData.images;
+        imagesToLoad['battle'] = 'assets/images/battle.png';
 
         var session = this;
         loadImages(imagesToLoad, function(images){

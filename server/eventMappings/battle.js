@@ -7,7 +7,7 @@ module.exports = function(eventEngine) {
         "heroAttacked": BattleHandler.onHeroAttacked
     };
 
-    var forwardedEvents = ['battleStarted'];
+    var forwardedEvents = ['battleStarted', 'heroFled'];
 
     // add all mappings to a specific channel
     eventEngine.forChannel('/battle')
