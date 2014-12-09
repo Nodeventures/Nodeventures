@@ -1,24 +1,6 @@
 (function() {
 
     function setupEvents() {
-        // var heroSocket = this.session.connectToChannel('/hero'),
-        //     hud = this;
-
-        // heroSocket.on('heroStatsChanged', function(data){
-        //     if (data.id === hud.heroId) {
-        //         $.each(data, function(key, value){
-        //             hud.data[key] = value;
-        //         });
-        //         hud.refreshUI();
-        //     }
-        // });
-
-        // heroSocket.on('inventoryUpdated', function(data){
-        //     if (data.heroId === hud.heroId) {
-        //         hud.data.inventory = data.items;
-        //         hud.refreshUI();
-        //     }
-        // });
     }
 
     Nv.Battle = function(otherHero, protagonist) {
