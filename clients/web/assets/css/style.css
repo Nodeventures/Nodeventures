@@ -11,7 +11,14 @@ body {
     width: 640px;
     height: 640px;
     float: left;
+    background-color: rgba(150,103,51,0.3);
+}
 
+#how-to-play {
+    text-align: left;
+    padding: 10px 20px;
+    border: 5px solid rgba(150,103,51,0.3);
+    background: #F7E9D7;
 }
 
 #hud-container {
@@ -37,6 +44,13 @@ body {
     margin-top: 0;
 }
 
+#creators {
+    font-size: 0.9em;
+    margin-top: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 #hud-messages {
     background: rgba(255, 255, 255, 0.7);
     padding: 5px;
@@ -56,6 +70,6 @@ body {
     width: 900px;
     margin: 0 auto;
     text-align: center;
-    background: #f7e9d7;
+    background: #D9C0A5;
     border: 5px solid rgba(150,103,51,0.3);
 }

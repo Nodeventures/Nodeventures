@@ -73,12 +73,54 @@
 
                 </fieldset>
             </form>
+
+            <div id="how-to-play">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>How to play</h2>
+                        <p>Nodeventures is a very basic MMORPG type of game.</p>
+
+                        <h3>Logging in and out</h3>
+                        <p>The user and password you enter at the top will be used to create an account for you or login if you already have one.</p>
+                        <p>You can logout by simply closing your browser window.</p>
+
+                        <h3>Navigating the map</h3>
+                        <p>You control you're hero's moveing by clicking the map at the point where you want to go. Some items on the map are obstacles and cannot be clicked. On all maps you will encounter area entrances like the example below. By clicking on these you will be taken to another area of the game</p>
+                        <p><img src="/assets/images/buildings/house.png" alt="House" class="thumbnail"></p>
+
+                        <h3>Inventory and items</h3>
+                        <p>You can find different items spread around on the map. You can pick up any if them by clicking them with the mouse. By doing so these will be added to your inventory and may affect your hero's stats in some way. Example items: </p>
+                        <ul>
+                            <li><img src="/assets/images/items/fireSword.png" alt=""> - A fire sword</li>
+                            <li><img src="/assets/images/items/megaArmor.png" alt=""> - Bulky armor</li>
+                        </ul>
+
+                        <p>By clicking the items in the inventory you can either drop or use them - depending on the item type.</p>
+
+                        <h3>Battles</h3>
+                        <p>If there are other players online you can enter combat with them. You can do that by clicking on any player's hero.</p>
+                        <p>Once entered combat a symbol will appear over the combating heroes (<img src="/assets/images/battle.png" alt="">). This signifies that they are fighting. Combat is turn-based which means you'll need to wait for your adversary to make his swing before you can attack. The hero that started the battle gets to attack first. While in battle you have only two options:</p>
+                        <ol>
+                            <li>Attack - by clicking on the enemy hero</li>
+                            <li>Flee - by clicking on the battle icon</li>
+                        </ol>
+                        <p>A battle ends either with one of the heroes fleeing or with their death. If a hero dies - it just respawns with full health a few seconds later.</p>
+
+                        <h3>Have fun!</h3>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="container" class='game-ui'></div>
         <div id="hud-container" class='game-ui'></div>
 
         <div class="clear"></div>
+
+    </div>
+
+    <div id="creators">
+        This game was created by Stefan Kovachev (<a href="http://www.stefankovachev.com">web</a>, <a href="https://github.com/skovachev">github</a>) and Martin Belev (<a href="https://github.com/Belev">github</a>) as part of <a href="https://hackbulgaria.com/">HackBulgaria</a>'s NodeJS course of 2014.
     </div>
 
     <script id="hud-template" type="text/x-handlebars-template">
@@ -94,7 +136,7 @@
             <div id="hero-inventory">
                 {{#each inventory}}
                     <div class="item" data-item-key="{{ key }}">
-                        <img src="/assets/items/{{ image }}" alt="{{ name }}">
+                        <img src="/assets/images/items/{{ image }}" alt="{{ name }}">
                         {{ name }}
                     </div>
                 {{/each}}
