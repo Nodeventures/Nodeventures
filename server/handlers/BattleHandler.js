@@ -57,6 +57,39 @@ var onHeroAttacked = utils.wrapWithPromise(function(gameEvent, deferred){
         });
 });
 
+var onHeroFled = utils.wrapWithPromise(function(gameEvent, deferred){
+    // eventData: fleeingHero
+    
+    data.battle.cancelBattleByCombatant(gameEvent.data.fleeingHero)
+        .fail(function(err){
+            deferred.reject(err);
+        })
+        .then(function(){
+            // event is already forwarded -> no need to resend it
+            deferred.resolve();
+        });
+});
+
+var onBattleStarted = utils.wrapWithPromise(function(gameEvent, deferred){
+    // eventData: otherHeroId, heroId, firstAttacker
+    
+    var battleInfo = {
+        heroId: gameEvent.data.heroId,
+        otherHeroId: gameEvent.data.otherHeroId
+    };
+
+    data.battle.startBattleOnMap(battleInfo, gameEvent.data.mapKey)
+        .fail(function(err){
+            deferred.reject(err);
+        })
+        .then(function(){
+            // event is already forwarded -> no need to resend it
+            deferred.resolve();
+        });
+});
+
 module.exports = {
     onHeroAttacked: onHeroAttacked,
+    onBattleStarted: onBattleStarted,
+    onHeroFled: onHeroFled
 };
