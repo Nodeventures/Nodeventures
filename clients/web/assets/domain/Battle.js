@@ -79,11 +79,21 @@
             });
         },
 
-        heroFled: function(hero) {
+        cancelBattle: function() {
             this.protagonist.inBattle = false;
             this.otherHero.inBattle = false;
             this.image.hideFromUI();
+        },
+
+        heroFled: function(hero) {
+            this.cancelBattle();
             Nv.Session.showGameMessage('Player ' + hero.name + ' fled the battlefield');
+        },
+
+        resolveBattleWithDeath: function(deadGuy) {
+            this.cancelBattle();
+            deadGuy.animateDeath();
+            Nv.Session.showGameMessage('Player ' + deadGuy.name + ' was killed in action.');
         },
 
         hasCurrentTurn: function(heroId) {

@@ -6,6 +6,7 @@
         this.name = config.name;
         this.id = config.id;
         this.inBattle = false;
+        this.isDead = false;
 
         var hero = this;
 
@@ -58,10 +59,10 @@
         });
 
         this.on('mouseout', function(){
-            hero.hideTooltip();
+            if (!hero.isDead) {
+                hero.hideTooltip();
+            }
         });
-
-        // setupEvents.call(this);
     };
 
     Nv.Hero.prototype = {
@@ -85,6 +86,10 @@
         },
 
         mapObjectClicked: function() {
+            if (this.isDead) {
+                return Nv.Session.showGameMessage('That guy is dead. Leave him be!');
+            }
+
             if (this.inBattle) {
                 // player clicked on his own hero
                 if (this.id === Nv.sessionInstance().hero.id) {
@@ -113,6 +118,20 @@
                 attacker.animate('idle');
                 attacker.hideTooltip();
             }, 1000);
+        },
+
+        animateDeath: function() {
+            this.animate('walk');
+            var taunts = ['Goodbye cruel world...', 'RIP', 'Mommieee!', ':X'];
+            this.showTooltip(_.sample(taunts, 1));
+            this.isDead = true;
+
+            var deadGuy = this;
+            setTimeout(function(){
+                deadGuy.animate('idle');
+                deadGuy.hideTooltip();
+                deadGuy.isDead = false; // respawn
+            }, 5000);
         },
 
         moveToPosition: function(x, y, callback) {

@@ -63,6 +63,14 @@
                 fleeingHero.inBattle.heroFled(fleeingHero);
             }
         });
+
+        battleSocket.on('heroDied', function(data){
+            var deceasedHero = Nv.sessionInstance().map.getHero(data.deceasedId);
+
+            if (deceasedHero.inBattle) {
+                deceasedHero.inBattle.resolveBattleWithDeath(deceasedHero);
+            }
+        });
     }
 
     function initializeHUD(session, hero) {

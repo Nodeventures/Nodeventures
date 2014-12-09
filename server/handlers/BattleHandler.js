@@ -27,11 +27,20 @@ var onHeroAttacked = utils.wrapWithPromise(function(gameEvent, deferred){
                     gameEvent.data.attackDamage = attackDamage;
                     events.push(gameEvent);
 
+                    if (attackDamage >= defender.currentHealth) {
+                        events.push(utils.createGameEvent(defaultChannel, 'heroDied', {
+                            killerId: attacker.id,
+                            deceasedId: defender.id
+                        }));
+
+                        // heal to full
+                        damagedStats.currentHealth = defender.health - defender.currentHealth;
+                    }
+
                     return data.hero.updateHeroStatsWith(defender.id, damagedStats)
                         .then(function(hero){
                             var newStats = _.pick(hero.toObject(), ['attack', 'defense', 'health', 'currentHealth']);
                             newStats.id = hero.id;
-                            events.push(utils.createGameEvent('defaultChannel', 'heroStatsChanged', newStats));
                             events.push(utils.createGameEvent('/hero', 'heroStatsChanged', newStats));
                         })
                         .fail(function(err){
