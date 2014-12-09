@@ -125,6 +125,19 @@
             }, 1000);
         },
 
+        saySomething: function(sayings, percentOfTime) {
+            var number = _.random(0, 10);
+            if (number / 10 <= percentOfTime) {
+                this.showTooltip(_.sample(sayings, 1));
+
+                // hide bubble after 2 sec
+                var hero = this;
+                setTimeout(function(){
+                    hero.hideTooltip();
+                }, 1000);
+            }
+        },
+
         animateDeath: function() {
             this.animate('walk');
             var taunts = ['Goodbye cruel world...', 'RIP', 'Mommieee!', ':X'];
@@ -151,6 +164,8 @@
             if (this.currentAnimation) {
                 this.currentAnimation.pause();
             }
+
+            this.saySomething(['On my way', 'As you command', 'I\'m so tired..', 'Look! A nickel!'], 0.4);
 
             // send event
             this.emitEvent('/movement', 'moveHero', {

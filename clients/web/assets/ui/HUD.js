@@ -47,6 +47,8 @@
                 });
 
                 hud.refreshUI();
+
+                Nv.sessionInstance().hero.saySomething(['Hey! I liked that thing..', 'Hurray! I can run again!', 'I must have misplaced something...'], 0.3);
             }
         });
     }
