@@ -2,7 +2,7 @@
     "key": "house",
 
     "tileSize": 32,
-    "tileSet": "assets/tileset/fields.png",
+    "tileSet": "fields.png",
     "width": 640,
     "height": 640,
 

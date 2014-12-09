@@ -20,7 +20,7 @@ var heroSchema = new mongoose.Schema({
     attack: {type: Number, required: true, default: 1},
     defense: {type: Number, required: true, default: 0},
     userId: {type: mongoose.Schema.ObjectId, ref: 'User'},
-    heroSprite: {type: String, default: 'assets/tileset/space_guy.png'},
+    heroSprite: {type: String, default: 'space_guy.png'},
     animations: {
         idle: {type: [[Number]], default: [[1, 2], [1, 2]]},
         walk: {type: [[Number]], default: [[0, 2], [1, 2], [2, 2]]}

@@ -105,18 +105,18 @@ function loadAreaData(promise) {
             if (!errorEncountered) {
                 // mark images / assets that need loading
                 eventData.images = {
-                    "heroSprite": eventData.hero.heroSprite,
-                    "tileSet": eventData.map.tileSet
+                    "heroSprite": 'assets/images/heroes/' + eventData.hero.heroSprite,
+                    "tileSet": 'assets/images/tileset/' + eventData.map.tileSet
                 };
 
                 // load item images
                 eventData.map.itemsOnMap.forEach(function(item){
-                    eventData.images[item.key] = 'assets/items/' + item.image;
+                    eventData.images[item.key] = 'assets/images/items/' + item.image;
                 });
 
                 // load area images
                 eventData.areas.forEach(function(area){
-                    eventData.images[area.image] = 'assets/buildings/' + area.image;
+                    eventData.images[area.image] = 'assets/images/buildings/' + area.image;
                 });
 
                 defer.resolve(eventData);

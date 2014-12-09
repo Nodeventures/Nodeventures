@@ -2,13 +2,6 @@ $(function() {
     var username = null;
     var session = null;
 
-    //http://silveiraneto.net/tag/tileset/
-    //http://opengameart.org/art-search-advanced?field_art_tags_tid=tileset
-    //http://opengameart.org/content/base-pixel-art-for-3d-pixelish-rpg
-    //                spaceGuy: "/kineticjs/tiletest/ranger_m.png" //32 by 36, ranger
-    //http://opengameart.org/content/antifareas-rpg-sprite-set-1-enlarged-w-transparent-background
-    //https://github.com/silveira/openpixels/blob/master/open_chars.xcf
-
     Nv.Session.initStatic({
 
         ioUrl: window.location.protocol + '//' + window.location.hostname + ':8080',
