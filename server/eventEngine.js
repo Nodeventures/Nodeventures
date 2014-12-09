@@ -6,7 +6,11 @@ var async = require('async'),
 function emitEvents(io, events) {
     events.forEach(function(gameEvent){
         if (gameEvent) {
-            io.of(gameEvent.channel).emit(gameEvent.key, gameEvent.data);
+            var socket = gameEvent.socket;
+            if (!socket) {
+                socket = io.of(gameEvent.channel);
+            }
+            socket.emit(gameEvent.key, gameEvent.data);
         }
     });
 }
