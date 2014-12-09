@@ -11,7 +11,7 @@
         var image = new Kinetic.Image({
             x: 0,
             y: 0,
-            image: config.session.images[config.key],
+            image: Nv.sessionInstance().images[config.key],
             width: 34,
             height: 34
         });

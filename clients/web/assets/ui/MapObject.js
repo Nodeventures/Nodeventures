@@ -15,7 +15,7 @@
         this.width = width;
         this.height = height;
         this.map = map;
-        this.layer = config.layer;
+        this.layer = typeof config.layer !== 'undefined' ? (typeof config.layer === 'string' ? Nv.sessionInstance().map.layers[config.layer] : config.layer) : null;
         this.tooltipText = config.tooltipText;
 
         var tooltip = {
