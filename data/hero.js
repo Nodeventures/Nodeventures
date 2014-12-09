@@ -11,7 +11,11 @@ function processHeroCreate(heroInfo, defer) {
                 userId: user.id,
                 name: heroInfo.name,
                 id: heroInfo.id,
-                status: heroInfo.status
+                status: heroInfo.status,
+                animations: {
+                    walk: [[0, 2], [1, 2], [2, 2]],
+                    idle: [[1, 2], [1, 2]]
+                },
             };
 
             Hero.create(newHero, function (err, createdHero) {
