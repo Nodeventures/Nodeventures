@@ -28,22 +28,13 @@ function processHeroCreate(heroInfo, defer) {
 }
 
 function updateHeroStats(hero, statsToAdd, defer) {
-    var heroIsAtFullHealth = hero.health === hero.currentHealth;
-    var heroHealthReduced = hero.health < hero.currentHealth;
 
-    hero.health += statsToAdd.health;
-    hero.attack += statsToAdd.attack;
-    hero.defense += statsToAdd.defense;
+    hero.health += (statsToAdd.health || 0);
+    hero.attack += (statsToAdd.attack || 0);
+    hero.defense += (statsToAdd.defense || 0);
 
-    if (heroIsAtFullHealth) {
-        hero.currentHealth += statsToAdd.health;
-    }
-    else if (heroHealthReduced) {
-        hero.currentHealth = hero.health;
-    }
-    else {
-        hero.currentHealth += hero.currentHealth;
-    }
+    hero.currentHealth += (statsToAdd.currentHealth || 0);
+    hero.currentHealth += (statsToAdd.health || 0);
 
     hero.save(function (err, heroSaved) {
         if (err) {

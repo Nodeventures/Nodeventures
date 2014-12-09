@@ -6,22 +6,32 @@ var utils = require('./utils'),
 var onHeroAttacked = utils.wrapWithPromise(function(gameEvent, deferred){
     // eventData: attacker, defender
     
-    var events = [gameEvent];
+    var events = [];
     
     data.hero.findById(gameEvent.data.attacker)
         .then(function(attacker){
             return data.hero.findById(gameEvent.data.defender)
                 .then(function(defender){
+
+                    var attackDamage = _.random(Math.ceil(attacker.attack * 2 / 3), attacker.attack);
+
+                    attackDamage = Math.max(0, attackDamage - defender.defense);
                     
                     // attack defender
                     var damagedStats = {
-                        currentHealth: -attacker.attack
+                        currentHealth: -attackDamage
                     };
 
-                    data.hero.updateHeroStatsWith(defender.id, damagedStats)
+                    gameEvent.data.attackerName = attacker.name;
+                    gameEvent.data.defenderName = defender.name;
+                    gameEvent.data.attackDamage = attackDamage;
+                    events.push(gameEvent);
+
+                    return data.hero.updateHeroStatsWith(defender.id, damagedStats)
                         .then(function(hero){
                             var newStats = _.pick(hero.toObject(), ['attack', 'defense', 'health', 'currentHealth']);
                             newStats.id = hero.id;
+                            events.push(utils.createGameEvent('defaultChannel', 'heroStatsChanged', newStats));
                             events.push(utils.createGameEvent('/hero', 'heroStatsChanged', newStats));
                         })
                         .fail(function(err){
