@@ -22,8 +22,8 @@ var heroSchema = new mongoose.Schema({
     userId: {type: mongoose.Schema.ObjectId, ref: 'User'},
     heroSprite: {type: String, default: 'space_guy.png'},
     animations: {
-        idle: {type: [[Number]], default: [[1, 2], [1, 2]]},
-        walk: {type: [[Number]], default: [[0, 2], [1, 2], [2, 2]]}
+        idle: {},
+        walk: {}
     },
     id: Number,
     inventoryItems: [{
