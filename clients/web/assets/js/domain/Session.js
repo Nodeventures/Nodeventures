@@ -219,7 +219,7 @@
         loginHero: function(heroConfig) {
             // if hero is on current map
             if (heroConfig.position.map === currentSession.map.key) {
-                var imagesToLoad = {heroSprite: heroConfig.heroSprite};
+                var imagesToLoad = {heroSprite: 'assets/images/heroes/' + heroConfig.heroSprite};
                 loadImages(imagesToLoad, function(images){
 
                     heroConfig.image = images.heroSprite;
