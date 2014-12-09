@@ -13,6 +13,14 @@ function loadMapByKey(key) {
 
             map = map.toObject();
 
+            var obstacles = require('../../data/gameObjects/obstacles.json');
+            var compatibleObstacles = obstacles[key];
+
+            map.obstacles = _.map(map.obstacles, function(obstacle){
+                obstacle = _.extend(obstacle, compatibleObstacles[obstacle.name]);
+                return obstacle;
+            });
+
             // load online heroes
             data.hero.findOnlineHeroesForMap(key)
                 .then(function(heroes){

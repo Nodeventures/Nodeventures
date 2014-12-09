@@ -1,0 +1,49 @@
+{
+    "fields": {
+        "bush": {
+            "tilesConfig": {
+                "imageX": 0,
+                "imageY": 18,
+                "horizontalTiles": 2,
+                "verticalTiles": 2
+            }
+        },
+
+        "tree": {
+            "tilesConfig": {
+                "imageX": 0,
+                "imageY": 15,
+                "horizontalTiles": 3,
+                "verticalTiles": 3
+            }
+        },
+
+        "tree-trunk": {
+            "tilesConfig": {
+                "imageX": 12,
+                "imageY": 16,
+                "horizontalTiles": 3,
+                "verticalTiles": 2
+            }
+        },
+
+        "river-1": {
+            "tilesConfig": {
+                "imageX": 9,
+                "imageY": 18,
+                "horizontalTiles": 3,
+                "verticalTiles": 3
+            }
+        },
+        
+        "river-2": {
+            "tilesConfig": {
+                "imageX": 9,
+                "imageY": 18,
+                "horizontalTiles": 1,
+                "verticalTiles": 2,
+                "repeatX": 20
+            }
+        }
+    }
+}
