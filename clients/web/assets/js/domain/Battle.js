@@ -27,6 +27,8 @@
         this.otherHero.inBattle = this;
         this.protagonist.inBattle = this;
 
+        this.attackEventSent = false;
+
         // add battle image
         this.image = new Nv.MapImage(Nv.sessionInstance().map, {
             'key': 'battle',
@@ -98,11 +100,15 @@
                 Nv.Session.showGameMessage('You must wait your turn to attack');
             }
             else {
-                // emit attack event
-                Nv.sessionInstance().emitEvent('/battle', 'heroAttacked', {
-                    attacker: this.attacker,
-                    defender: this.battlePair[this.attacker]
-                });
+                if (!this.attackEventSent) {
+                    // emit attack event
+                    Nv.sessionInstance().emitEvent('/battle', 'heroAttacked', {
+                        attacker: this.attacker,
+                        defender: this.battlePair[this.attacker]
+                    });
+                    // make sure he can't attack until his next turn
+                    this.attackEventSent = true;
+                }
             }
         },
 
@@ -114,6 +120,8 @@
 
             // go to next turn
             this.attacker = this.battlePair[this.attacker];
+            // allow attacking
+            this.attackEventSent = false;
         }
     };
 
