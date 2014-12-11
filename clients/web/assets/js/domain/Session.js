@@ -39,9 +39,11 @@
             var attacker = Nv.sessionInstance().map.getHero(data.heroId);
             var otherHero = Nv.sessionInstance().map.getHero(data.otherHeroId);
 
-            if (!attacker.inBattle) {
-                var battle = new Nv.Battle(otherHero, attacker);
-                battle.firstAttackBy(data.firstAttacker);
+            if (attacker && otherHero) {
+                if (!attacker.inBattle) {
+                    var battle = new Nv.Battle(otherHero, attacker);
+                    battle.firstAttackBy(data.firstAttacker);
+                }
             }
         });
 
@@ -49,17 +51,19 @@
             var attacker = Nv.sessionInstance().map.getHero(data.attacker);
             var defender = Nv.sessionInstance().map.getHero(data.defender);
 
-            if (!attacker.inBattle) {
-                var battle = new Nv.Battle(defender, attacker);
-                battle.firstAttackBy(attacker.id);
+            if (attacker && defender) {
+                if (!attacker.inBattle) {
+                    var battle = new Nv.Battle(defender, attacker);
+                    battle.firstAttackBy(attacker.id);
+                }
+                attacker.inBattle.performAttackBy(attacker);
             }
-            attacker.inBattle.performAttackBy(attacker);
         });
 
         battleSocket.on('heroFled', function(data){
             var fleeingHero = Nv.sessionInstance().map.getHero(data.fleeingHero);
 
-            if (fleeingHero.inBattle) {
+            if (fleeingHero && fleeingHero.inBattle) {
                 fleeingHero.inBattle.heroFled(fleeingHero);
             }
         });
@@ -67,7 +71,7 @@
         battleSocket.on('heroDied', function(data){
             var deceasedHero = Nv.sessionInstance().map.getHero(data.deceasedId);
 
-            if (deceasedHero.inBattle) {
+            if (deceasedHero && deceasedHero.inBattle) {
                 deceasedHero.inBattle.resolveBattleWithDeath(deceasedHero);
             }
         });

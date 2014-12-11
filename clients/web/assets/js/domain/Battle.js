@@ -101,13 +101,13 @@
             }
             else {
                 if (!this.attackEventSent) {
+                    // make sure he can't attack until his next turn
+                    this.attackEventSent = true;
                     // emit attack event
                     Nv.sessionInstance().emitEvent('/battle', 'heroAttacked', {
                         attacker: this.attacker,
                         defender: this.battlePair[this.attacker]
                     });
-                    // make sure he can't attack until his next turn
-                    this.attackEventSent = true;
                 }
             }
         },
