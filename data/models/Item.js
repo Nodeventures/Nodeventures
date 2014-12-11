@@ -11,12 +11,13 @@ var itemSchema = new mongoose.Schema({
     image: String,
     // the modifiers for hero stats change after item is picked up
     modifiers: {
-        health: {type: Number, required: true},
-        attack: {type: Number, required: true},
-        defense: {type: Number, required: true}
+        health: {type: Number, default: 0},
+        attack: {type: Number, default: 0},
+        defense: {type: Number, default: 0},
+        currentHealth: {type: Number, default: 0}
     },
 
-    useable: {type: Boolean, default: true},
+    useable: {type: Boolean, default: false},
     uses: {type:Number, default: 0}
 });
 
