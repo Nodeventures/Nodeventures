@@ -1,0 +1,14 @@
+{
+    "type": "potion",
+    "key": "endurance-potion",
+    "name": "Endurance potion",
+    "description": "",
+    "image": "endurancePotion.png",
+
+    "modifiers": {
+        "health": 5
+    },
+
+    "useable": true,
+    "uses": 1
+}

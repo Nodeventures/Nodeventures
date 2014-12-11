@@ -5,7 +5,8 @@ module.exports = function(eventEngine) {
     // mappings between event key and handler method
     var mappings = {
         'itemPickedUp': ItemsHandler.onItemPickedUp,
-        'dropItem': ItemsHandler.onItemDrop
+        'dropItem': ItemsHandler.onItemDrop,
+        'useItem': ItemsHandler.onItemUsed
     };
 
     // add all mappings to a specific channel

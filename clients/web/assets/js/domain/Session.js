@@ -280,7 +280,7 @@
 
         if (!eventsInitialized) {
             systemChannel.on('userLoggedIn', function(data){
-                // console.log('User logged in', data);
+                console.log('User logged in', data);
                 if (data.user.username === lastUsedUsername) {
                     currentSession = new Nv.Session(data);
                 }

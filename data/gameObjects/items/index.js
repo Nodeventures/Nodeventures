@@ -16,5 +16,6 @@ module.exports = [
     require('./tower-shield.json'),
     require('./potion.json'),
     require('./large-health-potion.json'),
+    require('./endurance-potion.json')
 
 ];

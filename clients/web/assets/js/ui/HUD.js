@@ -34,21 +34,39 @@
                 item = _.find(hud.data.inventory, function(item){
                     return item.key === key;
                 }),
-                itemName = item.name;
+                itemName = item.name,
+                itemRemoved = false;
 
-            if (confirm('Do you want to drop "' + itemName + '"?')) {
-                hud.emitEvent('/items', 'dropItem', {
-                    'heroId': hud.data.id,
-                    'itemKey': key
-                });
+            if (item.useable) {
+                if (confirm('Do you want to use "' + itemName + '"?')) {
+                    hud.emitEvent('/items', 'useItem', {
+                        'heroId': hud.data.id,
+                        'itemKey': key
+                    });
 
+                    Nv.sessionInstance().hero.saySomething(['*gulp*', 'That felt gooood', 'Ahhhh... so fresh!'], 0.3);
+
+                    itemRemoved = true;
+                }
+            } else {
+                if (confirm('Do you want to drop "' + itemName + '"?')) {
+                    hud.emitEvent('/items', 'dropItem', {
+                        'heroId': hud.data.id,
+                        'itemKey': key
+                    });
+
+                    Nv.sessionInstance().hero.saySomething(['Hey! I liked that thing..', 'Hurray! I can run again!', 'I must have misplaced something...'], 0.3);
+
+                    itemRemoved = true;
+                }
+            }
+
+            if (itemRemoved) {
                 hud.data.inventory = _.filter(hud.data.inventory, function(item){
                     return item.key !== key;
                 });
 
                 hud.refreshUI();
-
-                Nv.sessionInstance().hero.saySomething(['Hey! I liked that thing..', 'Hurray! I can run again!', 'I must have misplaced something...'], 0.3);
             }
         });
     }
