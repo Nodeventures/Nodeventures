@@ -30,7 +30,9 @@
             attack_left: [[0, 13], [1, 13], [2, 13], [3, 13], [4, 13]],
             attack_down: [[0, 14], [1, 14], [2, 14], [3, 14], [4, 14]],
             attack_right: [[0, 15], [1, 15], [2, 15], [3, 15], [4, 15]],
-            die: [[0, 22], [1, 22], [2, 22], [3, 22], [4, 22]],
+            die: [[0, 20], [1, 20], [2, 20], [3, 20], [4, 20]],
+            rise: [[5, 20], [4, 20], [3, 20], [2, 20], [1, 20]],
+            dead: [[5, 20]],
         };
 
         var animations = [];
@@ -48,11 +50,23 @@
 
         // get keys so that we can figure out which animations are affected by direction
         this.animationNames = _.keys(animations);
+
+        // BUG: per animation frameRates do not seem to work on non-protagonist heroes
+        // this.frameRates = {
+        //     'walk': 17,
+        //     'idle': 1,
+        //     'attack': 8,
+        //     'die': 8,
+        //     'rise': 8,
+        //     'dead': 1
+        // };
         this.frameRates = {
             'walk': 17,
-            'idle': 1,
-            'attack': 8,
-            'die': 8
+            'idle': 17,
+            'attack': 17,
+            'die': 17,
+            'rise': 17,
+            'dead': 17
         };
 
         var spriteConfig = {
@@ -61,7 +75,7 @@
             image: config.image,
             animation: 'idle_' + this.facingDirection,
             animations: animations,
-            frameRate: 17,
+            frameRate: 8,
             frameIndex: 0
         };
 
@@ -75,6 +89,20 @@
         };
 
         this.sprite = new Kinetic.Sprite(spriteConfig);
+
+        var frameCount = 0;
+        this.sprite.on('frameIndexChange', function(evt) {
+          if (hero.sprite.animation() === 'die' && ++frameCount > 5) {
+            hero.animate('dead');
+            frameCount = 0;
+          }
+        });
+        this.sprite.on('frameIndexChange', function(evt) {
+          if (hero.sprite.animation() === 'rise' && ++frameCount > 5) {
+            hero.animate('idle');
+            frameCount = 0;
+          }
+        });
 
         var text = new Kinetic.Text(textConfig);
         text.setX(text.getX() - text.getTextWidth() / 2 + this.width / 2);
@@ -125,7 +153,7 @@
                         memo = rate;
                     }
                     return memo;
-                }, null) || 17;
+                }, null) || 8;
                 this.sprite.frameRate(frameRate);
 
                 if (_.contains(this.animationNames, animationName)) {
@@ -190,14 +218,14 @@
         },
 
         animateDeath: function() {
-            this.animate('walk');
+            this.animate('die');
             var taunts = ['Goodbye cruel world...', 'RIP', 'Mommieee!', ':X'];
             this.showTooltip(_.sample(taunts, 1));
             this.isDead = true;
 
             var deadGuy = this;
             setTimeout(function(){
-                deadGuy.animate('idle');
+                deadGuy.animate('rise');
                 deadGuy.hideTooltip();
                 deadGuy.isDead = false; // respawn
             }, 5000);
@@ -219,8 +247,12 @@
             this.facingDirection = facingDirection;
         },
 
+        interactionsDisabled: function () {
+            return this.inBattle || this.isDead;
+        },
+
         moveToPosition: function(x, y, callback) {
-            if (this.inBattle) {
+            if (this.interactionsDisabled()) {
                 return;
             }
 
