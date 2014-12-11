@@ -7,6 +7,7 @@ module.exports = function(eventEngine) {
         "heroAttacked": BattleHandler.onHeroAttacked,
         'battleStarted': BattleHandler.onBattleStarted,
         'heroFled': BattleHandler.onHeroFled,
+        'heroDied': BattleHandler.onHeroDied
     };
 
     var forwardedEvents = ['battleStarted', 'heroFled'];

@@ -85,6 +85,9 @@
             this.cancelBattle();
             deadGuy.animateDeath();
             Nv.Session.showGameMessage('Player ' + deadGuy.name + ' was killed in action.');
+            Nv.sessionInstance().emitEvent('/battle', 'heroDied', {
+                deadHeroId: deadGuy.id,
+            });
         },
 
         hasCurrentTurn: function(heroId) {

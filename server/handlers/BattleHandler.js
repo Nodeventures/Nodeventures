@@ -70,6 +70,19 @@ var onHeroFled = utils.wrapWithPromise(function(gameEvent, deferred){
         });
 });
 
+var onHeroDied = utils.wrapWithPromise(function(gameEvent, deferred){
+    // eventData: deadHeroId
+    
+    data.battle.cancelBattleByCombatant(gameEvent.data.deadHeroId)
+        .fail(function(err){
+            deferred.reject(err);
+        })
+        .then(function(){
+            // event is already forwarded -> no need to resend it
+            deferred.resolve();
+        });
+});
+
 var onBattleStarted = utils.wrapWithPromise(function(gameEvent, deferred){
     // eventData: otherHeroId, heroId, firstAttacker
     
@@ -91,5 +104,6 @@ var onBattleStarted = utils.wrapWithPromise(function(gameEvent, deferred){
 module.exports = {
     onHeroAttacked: onHeroAttacked,
     onBattleStarted: onBattleStarted,
-    onHeroFled: onHeroFled
+    onHeroFled: onHeroFled,
+    onHeroDied: onHeroDied
 };
