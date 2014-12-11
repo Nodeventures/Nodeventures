@@ -36,15 +36,32 @@ function loadMapByKey(key) {
 
                             // load items
                             var itemsOnMap = [];
+                            var itemsKeyMap = {};
+
+                            // create map for easy access
+                            _.each(map.mapObjects, function(obj){
+                                if (obj.type === 'item') {
+                                    itemsKeyMap[obj.itemId] = obj;
+                                }
+                            });
+
                             items.forEach(function(item){
-                                var positionData = _.find(map.mapObjects, function(obj){
-                                    return obj.type === 'item' && obj.itemId === item.key;
-                                });
+                                var mapObject = itemsKeyMap[item.key];
 
-                                var builtItem = item.toObject();
-                                builtItem.position = positionData.position;
+                                if (mapObject) {
+                                    var chanceToAppear = mapObject.chanceToAppear || 0.2,
+                                        randomNumber = _.random(0, 100),
+                                        rolledChance = randomNumber / 100,
+                                        hasSpawned = rolledChance <= chanceToAppear;
 
-                                itemsOnMap.push(builtItem);
+                                    if (hasSpawned) {
+                                        var builtItem = item.toObject();
+                                        builtItem.position = mapObject.position;
+
+                                        itemsOnMap.push(builtItem);
+                                    }
+                                }
+                                
                             });
 
                             map.itemsOnMap = itemsOnMap;
