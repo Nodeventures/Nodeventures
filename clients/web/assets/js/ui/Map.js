@@ -42,13 +42,9 @@
         }
 
         this.layers['mapLayer'] = mapLayer;
-
-        this.layers['areasLayer'] = new Kinetic.Layer();
-
-        this.layers['itemsLayer'] = new Kinetic.Layer();
-
         this.layers['heroLayer'] = new Kinetic.Layer();
-
+        this.layers['itemsLayer'] = new Kinetic.Layer();
+        this.layers['areasLayer'] = new Kinetic.Layer();
         this.layers['obstaclesLayer'] = new Kinetic.Layer();
     }
 
