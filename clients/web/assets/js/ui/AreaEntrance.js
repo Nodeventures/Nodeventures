@@ -8,10 +8,14 @@
 
         var areaEntrance = this;
         config.onClickHandler = function(){
-            areaEntrance.emitEvent('/system', 'areaChanged', {
-                'heroId': Nv.sessionInstance().hero.id,
-                'mapKey': areaEntrance.leadsToMap
-            });
+            var hero = Nv.sessionInstance().hero;
+
+            if (!hero.interactionsDisabled()) {
+                areaEntrance.emitEvent('/system', 'areaChanged', {
+                    'heroId': Nv.sessionInstance().hero.id,
+                    'mapKey': areaEntrance.leadsToMap
+                });
+            }
 
             // BUG: somehow the callback is undefined and won't call after hero reaches target
             // Nv.sessionInstance().hero.moveToPosition(areaEntrance.getX(), areaEntrance.getY(), function(){
