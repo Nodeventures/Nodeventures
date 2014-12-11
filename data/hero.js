@@ -38,6 +38,10 @@ function updateHeroStats(hero, statsToAdd, defer) {
     hero.currentHealth += (statsToAdd.currentHealth || 0);
     hero.currentHealth += (statsToAdd.health || 0);
 
+    if (hero.currentHealth > hero.health) {
+        hero.currentHealth = hero.health;
+    }
+
     hero.save(function (err, heroSaved) {
         if (err) {
             defer.reject(err);
