@@ -19,7 +19,18 @@
             "position": {
                 "x": 160,
                 "y": 50
-            }
+            },
+            "chanceToAppear": 0.3
+        },
+
+        {
+            "type": "item",
+            "itemId": "large-health-potion",
+            "position": {
+                "x": 150,
+                "y": 450
+            },
+            "chanceToAppear": 0.3
         },
 
         {
@@ -28,7 +39,8 @@
             "position": {
                 "x": 230,
                 "y": 300
-            }
+            },
+            "chanceToAppear": 1
         },
 
         {
@@ -37,7 +49,8 @@
             "position": {
                 "x": 560,
                 "y": 430
-            }
+            },
+            "chanceToAppear": 0.9
         },
 
         {

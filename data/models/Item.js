@@ -14,7 +14,10 @@ var itemSchema = new mongoose.Schema({
         health: {type: Number, required: true},
         attack: {type: Number, required: true},
         defense: {type: Number, required: true}
-    }
+    },
+
+    useable: {type: Boolean, default: true},
+    uses: {type:Number, default: 0}
 });
 
 var Item = mongoose.model('Item', itemSchema);

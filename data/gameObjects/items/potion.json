@@ -1,0 +1,14 @@
+{
+    "type": "potion",
+    "key": "health-potion",
+    "name": "Health potion",
+    "description": "",
+    "image": "healthPotion.png",
+
+    "modifiers": {
+        "currentHealth": 20
+    },
+
+    "useable": true,
+    "uses": 1
+}

@@ -35,6 +35,7 @@
 
             // move hero to item abd pickup item
             hero.moveToPosition(x, y, function(){
+                
                 hero.saySomething(['Oooh, shiny!', 'What\'s this s@#t?!', 'Damn! Thought that was a squirrel..', 'It must be my birthday!'], 0.7);
                 // pickup item
                 item.emitEvent('/items', 'itemPickedUp', {

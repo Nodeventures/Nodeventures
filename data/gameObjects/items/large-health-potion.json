@@ -1,0 +1,14 @@
+{
+    "type": "potion",
+    "key": "large-health-potion",
+    "name": "Large health potion",
+    "description": "",
+    "image": "largeHealthPotion.png",
+
+    "modifiers": {
+        "currentHealth": 25
+    },
+
+    "useable": true,
+    "uses": 2
+}
