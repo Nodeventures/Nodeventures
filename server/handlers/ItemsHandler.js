@@ -69,8 +69,16 @@ var onItemPickedUp = utils.wrapWithPromise(function(gameEvent, deferred){
                         throw 'You already have this item';
                     }
 
-                    return data.hero.addItemToBackpack(gameEvent.data.heroId, item.key)
-                        .then(function(hero){
+                    return data.item.findItemsByKeys(hero.inventoryItems)
+                        .then(function(items){
+                            var itemTypes = _.pluck(items, 'type');
+                            if (itemTypes.indexOf(item.type) !== -1) {
+                                throw 'You cannot carry more than one item if this type.';
+                            }
+
+                            return data.hero.addItemToBackpack(gameEvent.data.heroId, item.key);
+                        })
+                        .then(function(){
                             events.push(utils.createGameEvent(defaultChannel, 'itemPickedUp', gameEvent.data));
 
                             return data.hero.updateHeroStatsWith(gameEvent.data.heroId, item.modifiers)
