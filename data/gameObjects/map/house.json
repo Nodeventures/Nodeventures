@@ -18,7 +18,7 @@
             "itemId": "fire-sword",
             "position": {
                 "x": 160,
-                "y": 50
+                "y": 100
             },
             "chanceToAppear": 0.3
         },
@@ -27,8 +27,8 @@
             "type": "item",
             "itemId": "large-health-potion",
             "position": {
-                "x": 150,
-                "y": 450
+                "x": 50,
+                "y": 80
             },
             "chanceToAppear": 0.3
         },
@@ -37,8 +37,8 @@
             "type": "item",
             "itemId": "endurance-potion",
             "position": {
-                "x": 250,
-                "y": 33
+                "x": 320,
+                "y": 70
             },
             "chanceToAppear": 0.1
         },
@@ -47,8 +47,8 @@
             "type": "item",
             "itemId": "sleeping-outfit",
             "position": {
-                "x": 230,
-                "y": 300
+                "x": 500,
+                "y": 500
             },
             "chanceToAppear": 1
         },
@@ -57,17 +57,28 @@
             "type": "item",
             "itemId": "tower-shield",
             "position": {
-                "x": 560,
-                "y": 430
+                "x": 585,
+                "y": 190
             },
             "chanceToAppear": 0.9
         },
 
         {
+            "type": "item",
+            "itemId": "mega-armor",
+            "position": {
+                "x": 515,
+                "y": 260
+            },
+            "chanceToAppear": 0.1
+        },
+
+
+        {
             "type": "building",
             "position": {
                 "x": 0,
-                "y": 340
+                "y": 556
             },
             "dimentions": {
                 "width": 64,
@@ -79,53 +90,32 @@
     ],
 
     "obstacles": [
-        {
-            "name": "potionshelf",
-            "position": {
-                "x": 50,
-                "y": 50
-            }
-        },
+        {"name":"potionshelf","position":{"x":50,"y":0}},
+        {"name":"potionshelf","position":{"x":130,"y":0}},
+        {"name":"potionshelf","position":{"x":200,"y":0}},
+        {"name":"potionshelf","position":{"x":270,"y":0}},
+        {"name":"potionshelf","position":{"x":340,"y":0}},
+        {"name":"potionshelf","position":{"x":410,"y":0}},
 
-        {
-            "name": "table1",
-            "position": {
-                "x": 280,
-                "y": 90
-            }
-        },
+        {"name":"table1","position":{"x":280,"y":90}},
+        {"name":"chair","position":{"x":350,"y":106}},
 
-        {
-            "name": "table2",
-            "position": {
-                "x": 450,
-                "y": 540
-            }
-        },
+        {"name":"candles","position":{"x":40,"y":200}},
+        {"name":"candles","position":{"x":40,"y":270}},
+        {"name":"candles","position":{"x":40,"y":340}},
+        {"name":"candles","position":{"x":40,"y":410}},
 
-        {
-            "name": "barrel",
-            "position": {
-                "x": 150,
-                "y": 510
-            }
-        },
+        {"name":"table2","position":{"x":450,"y":540}},
+        {"name":"table2","position":{"x":530,"y":540}},
+        {"name":"table2","position":{"x":370,"y":540}},
 
-        {
-            "name": "barrel",
-            "position": {
-                "x": 330,
-                "y": 240
-            }
-        },
+        {"name":"barrel","position":{"x":150,"y":510}},
+        {"name":"barrel","position":{"x":330,"y":240}},
 
-        {
-            "name": "barrels",
-            "position": {
-                "x": 560,
-                "y": 130
-            }
-        }
+        {"name":"barrels","position":{"x":560,"y":140}},
+        {"name":"barrels","position":{"x":580,"y":20}},
+        {"name":"barrels","position":{"x":580,"y":60}},
+        {"name":"barrels","position":{"x":580,"y":100}}
     ]
 
 }

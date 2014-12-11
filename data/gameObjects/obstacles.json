@@ -57,6 +57,34 @@
             }
         },
 
+        "counter": {
+            "tilesConfig": {
+                "imageX": 0,
+                "imageY": 12,
+                "horizontalTiles": 4,
+                "verticalTiles": 3
+            }
+        },
+
+        "candles": {
+            "tilesConfig": {
+                "imageX": 10,
+                "imageY": 9,
+                "horizontalTiles": 1,
+                "verticalTiles": 2
+            }
+        },
+
+        "chair": {
+            "tilesConfig": {
+                "imageX": 10,
+                "imageY": 13,
+                "horizontalTiles": 1,
+                "verticalTiles": 1
+            }
+        },
+
+
         "barrel": {
             "tilesConfig": {
                 "imageX": 7,

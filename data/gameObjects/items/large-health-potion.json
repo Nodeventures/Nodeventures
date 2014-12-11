@@ -6,9 +6,9 @@
     "image": "largeHealthPotion.png",
 
     "modifiers": {
-        "currentHealth": 25
+        "currentHealth": 50
     },
 
     "useable": true,
-    "uses": 2
+    "uses": 1
 }
