@@ -1,7 +1,13 @@
 (function() {
 
     Nv.Hero = function(map, config) {
-        Nv.MapObject.call(this, map, config.width || 64, config.height || 64, config.position, config);
+        var position = config.position;
+        if (!map.canMoveToPosition(position.x, position.y)) {
+            position.x = 320;
+            position.y = 320;
+        }
+
+        Nv.MapObject.call(this, map, config.width || 64, config.height || 64, position, config);
 
         this.name = config.name;
         this.id = config.id;
