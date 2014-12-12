@@ -7,7 +7,8 @@
         config.layer = 'areasLayer';
 
         var areaEntrance = this;
-        config.onClickHandler = function(){
+
+        config.onClickHandler = function() {
             var hero = Nv.sessionInstance().hero;
 
             if (!hero.interactionsDisabled()) {

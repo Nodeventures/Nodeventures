@@ -10,7 +10,7 @@ Nv.Interactions = {
             var x = event.pageX - elemLeft,
                 y = event.pageY - elemTop;
 
-           hero.moveToPosition(x, y);
+            hero.moveToPosition(x, y);
 
         }, false);
     }

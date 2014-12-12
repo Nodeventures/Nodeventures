@@ -101,7 +101,7 @@
             this.layer.draw();
         },
 
-        getCollisionDimentions: function(){
+        getCollisionDimentions: function() {
             return {
                 x: this.getX(),
                 y: this.getY(),
@@ -111,7 +111,7 @@
         },
 
         mapObjectClicked: function() {
-            
+
         }
 
     };

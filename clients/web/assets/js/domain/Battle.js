@@ -1,7 +1,6 @@
 (function() {
 
-    function setupEvents() {
-    }
+    function setupEvents() {}
 
     Nv.Battle = function(otherHero, protagonist) {
         this.protagonist = protagonist;
@@ -16,7 +15,8 @@
         this.battlePair[this.protagonist.id] = this.otherHero.id;
         this.battlePair[this.otherHero.id] = this.protagonist.id;
 
-        protagonist.moveToPosition(otherHero.getX() - otherHero.width * 2 / 3, otherHero.getY(), function(){
+        // when battle starts move to other hero and face him
+        protagonist.moveToPosition(otherHero.getX() - otherHero.width * 2 / 3, otherHero.getY(), function() {
             protagonist.calculateFacingDirection(otherHero.getX(), otherHero.getY());
             protagonist.animate('idle');
 
@@ -50,7 +50,7 @@
         Nv.sessionInstance().map.addToLayer(this.image, 'heroLayer');
 
         protagonist.showTooltip('Charge!');
-        setTimeout(function(){
+        setTimeout(function() {
             protagonist.hideTooltip();
         }, 1000);
 
@@ -94,15 +94,15 @@
             return this.attacker === heroId;
         },
 
-        firstAttackBy: function (heroId) {
+        firstAttackBy: function(heroId) {
             this.attacker = heroId;
         },
 
+        // send attack event
         triggerAttackBy: function(hero) {
             if (this.attacker !== hero.id) {
                 Nv.Session.showGameMessage('You must wait your turn to attack');
-            }
-            else {
+            } else {
                 if (!this.attackEventSent) {
                     // make sure he can't attack until his next turn
                     this.attackEventSent = true;
@@ -115,6 +115,7 @@
             }
         },
 
+        // trigger attack animation
         performAttackBy: function(attackerHero) {
             var defenderId = this.battlePair[attackerHero.id],
                 defenderHero = this.heroMap[defenderId];

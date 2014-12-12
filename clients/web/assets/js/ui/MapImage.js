@@ -17,7 +17,7 @@
         this.image = image;
         this.config = config;
 
-        this.onClickHandler = config.onClickHandler || function(){};
+        this.onClickHandler = config.onClickHandler || function() {};
 
         this.add(this.image);
     };

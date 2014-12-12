@@ -4,7 +4,7 @@
         var movementSocket = this.session.connectToChannel('/movement'),
             map = this;
 
-        movementSocket.on('heroMoved', function(data){
+        movementSocket.on('heroMoved', function(data) {
             if (typeof map.heroes[data.hero_id] !== 'undefined') {
                 var hero = map.heroes[data.hero_id];
                 if (hero) {
@@ -50,7 +50,7 @@
 
     function addObstaclesLayer(obstacles) {
         var map = this;
-        $.each(obstacles, function(index, obstacle){
+        $.each(obstacles, function(index, obstacle) {
             obstacle.session = map.session;
             obstacle.map = map;
             obstacle.layer = map.layers['obstaclesLayer'];
@@ -60,7 +60,7 @@
 
     function addItemsLayer(mapItems) {
         var map = this;
-        $.each(mapItems, function(index, item){
+        $.each(mapItems, function(index, item) {
             item.session = map.session;
             item.map = map;
             var mapItem = new Nv.MapItem(map, item);
@@ -119,7 +119,7 @@
         },
 
         addLayersToStage: function(stage) {
-            $.each(this.layers, function(layerKey, layer){
+            $.each(this.layers, function(layerKey, layer) {
                 stage.add(layer);
             });
         },

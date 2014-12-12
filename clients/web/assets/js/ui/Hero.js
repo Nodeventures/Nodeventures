@@ -1,6 +1,8 @@
 (function() {
 
     Nv.Hero = function(map, config) {
+
+        // reset hero position if he's placed at inaccessible area
         var position = config.position;
         if (!map.canMoveToPosition(position.x, position.y)) {
             position.x = 320;
@@ -15,6 +17,7 @@
         this.isDead = false;
         this.facingDirection = 'down';
 
+        // setup hero animations
         var hero = this;
         var heroAnimations = {
             // [ x, y ] in sprite sheet
@@ -90,18 +93,19 @@
 
         this.sprite = new Kinetic.Sprite(spriteConfig);
 
+        // set stop points for some animations
         var frameCount = 0;
         this.sprite.on('frameIndexChange', function(evt) {
-          if (hero.sprite.animation() === 'die' && ++frameCount > 5) {
-            hero.animate('dead');
-            frameCount = 0;
-          }
+            if (hero.sprite.animation() === 'die' && ++frameCount > 5) {
+                hero.animate('dead');
+                frameCount = 0;
+            }
         });
         this.sprite.on('frameIndexChange', function(evt) {
-          if (hero.sprite.animation() === 'rise' && ++frameCount > 5) {
-            hero.animate('idle');
-            frameCount = 0;
-          }
+            if (hero.sprite.animation() === 'rise' && ++frameCount > 5) {
+                hero.animate('idle');
+                frameCount = 0;
+            }
         });
 
         var text = new Kinetic.Text(textConfig);
@@ -112,13 +116,13 @@
         this.add(this.sprite);
         this.add(this.textLabel);
 
-        this.on('mouseover', function(){
-            if (hero.id !== Nv.sessionInstance().hero.id){
+        this.on('mouseover', function() {
+            if (hero.id !== Nv.sessionInstance().hero.id) {
                 hero.showTooltip('Attack');
             }
         });
 
-        this.on('mouseout', function(){
+        this.on('mouseout', function() {
             if (!hero.isDead) {
                 hero.hideTooltip();
             }
@@ -156,6 +160,7 @@
                 }, null) || 8;
                 this.sprite.frameRate(frameRate);
 
+                // set animation by checking if its affected by facing direction
                 if (_.contains(this.animationNames, animationName)) {
                     this.sprite.animation(animationName);
                 }
@@ -173,7 +178,7 @@
             if (this.inBattle) {
                 // player clicked on his own hero
                 if (this.id === Nv.sessionInstance().hero.id) {
-                    Nv.Session.showGameMessage('Oooohh, that tickles!');
+                    this.saySomething(['Hello!'], 1);
                 }
                 // player hero attacks
                 else {
@@ -181,6 +186,7 @@
                 }
                 
             } else {
+                // player clicked his own hero
                 if (this.id === Nv.sessionInstance().hero.id) {
                     return this.saySomething(['Hello!'], 1);
                 }

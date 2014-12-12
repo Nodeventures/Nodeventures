@@ -2,6 +2,7 @@ $(function() {
     var username = null;
     var session = null;
 
+    // set global session properties
     Nv.Session.initStatic({
 
         ioUrl: window.location.protocol + '//' + window.location.hostname + ':8080',
@@ -22,7 +23,7 @@ $(function() {
         }
     });
 
-
+    // setup login form events
     $('#login form').on('submit', function(e) {
         e.preventDefault();
 
@@ -39,10 +40,9 @@ $(function() {
         return false;
     });
 
-    // Nv.Session.loginUser('user' + (Math.random() * 1000), 'asd');
-    var u = window.location.search.replace("?", "");
-    if (u) {
-        Nv.Session.loginUser(u, 'test');
-    }
+    // var u = window.location.search.replace("?", "");
+    // if (u) {
+    //     Nv.Session.loginUser(u, 'test');
+    // }
 
 });

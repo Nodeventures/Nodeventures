@@ -26,7 +26,7 @@
     function setupEvents(session) {
         var systemChannel = Nv.Session.connectToChannel('/system');
 
-        systemChannel.on('userLoggedOut', function(data){
+        systemChannel.on('userLoggedOut', function(data) {
             if (currentSession !== null) {
                 currentSession.logoutHero(data.hero_id);
             }
@@ -35,7 +35,7 @@
         // setup battle events
         var battleSocket = Nv.sessionInstance().connectToChannel('/battle');
 
-        battleSocket.on('battleStarted', function(data){
+        battleSocket.on('battleStarted', function(data) {
             var attacker = Nv.sessionInstance().map.getHero(data.heroId);
             var otherHero = Nv.sessionInstance().map.getHero(data.otherHeroId);
 
@@ -47,7 +47,7 @@
             }
         });
 
-        battleSocket.on('heroAttacked', function(data){
+        battleSocket.on('heroAttacked', function(data) {
             var attacker = Nv.sessionInstance().map.getHero(data.attacker);
             var defender = Nv.sessionInstance().map.getHero(data.defender);
 
@@ -60,7 +60,7 @@
             }
         });
 
-        battleSocket.on('heroFled', function(data){
+        battleSocket.on('heroFled', function(data) {
             var fleeingHero = Nv.sessionInstance().map.getHero(data.fleeingHero);
 
             if (fleeingHero && fleeingHero.inBattle) {
@@ -68,7 +68,7 @@
             }
         });
 
-        battleSocket.on('heroDied', function(data){
+        battleSocket.on('heroDied', function(data) {
             var deceasedHero = Nv.sessionInstance().map.getHero(data.deceasedId);
 
             if (deceasedHero && deceasedHero.inBattle) {
@@ -77,14 +77,14 @@
         });
     }
 
-    function initializeHUD(session, hero) {
+    function createHUD(session, hero) {
         session.hud = new Nv.HUD({
             container: '#hud-container',
             hero: hero,
             session: session
         });
 
-        Nv.Session.showGameMessage = function(message){
+        Nv.Session.showGameMessage = function(message) {
             return session.hud.showGameMessage(message);
         };
     }
@@ -99,17 +99,17 @@
     }
 
     function createOnlineHeroes(session, onlineHeroes) {
-        onlineHeroes = _.chain(onlineHeroes).filter(function(hero){
+        onlineHeroes = _.chain(onlineHeroes).filter(function(hero) {
             return hero.id !== session.hero.id;
-        }).each(function(hero){
+        }).each(function(hero) {
             hero.image = session.images[hero.heroSprite];
             hero = createHero(session, hero, false);
             session.map.heroEnter(hero);
         });
     }
 
-    function startBattles(session, battles) {
-        _.each(battles, function(battle){
+    function createBattles(session, battles) {
+        _.each(battles, function(battle) {
             var hero = Nv.sessionInstance().map.getHero(battle.heroId);
             var otherHero = Nv.sessionInstance().map.getHero(battle.otherHeroId);
 
@@ -124,14 +124,14 @@
         session.hero = hero;
     }
 
-    function loadAreaEntrances(session, areas) {
-        _.each(areas, function(areaConfig){
+    function createAreaEntrances(session, areas) {
+        _.each(areas, function(areaConfig) {
             var area = new Nv.AreaEntrance(session.map, areaConfig);
             session.map.addToLayer(area, 'areasLayer');
         });
     }
 
-    function enterMap(session, mapConfig) {
+    function createMap(session, mapConfig) {
         var stage = new Kinetic.Stage({
             container: session.container,
             width: mapConfig.width,
@@ -166,7 +166,7 @@
         imagesToLoad['battle'] = 'assets/images/battle.png';
 
         var session = this;
-        loadImages(imagesToLoad, function(images){
+        loadImages(imagesToLoad, function(images) {
             session.images = images;
             if (sessionOptions.onCreate) {
                 sessionOptions.onCreate(session);
@@ -201,18 +201,18 @@
             setupEvents(this);
 
             // setup map
-            var stage = enterMap(this, this.config.map);
+            var stage = createMap(this, this.config.map);
 
             // add main hero
             createProtagonist(this, this.config.hero);
 
             createOnlineHeroes(this, this.config.map.onlineHeroes);
 
-            startBattles(this, this.config.battles);
+            createBattles(this, this.config.battles);
 
-            loadAreaEntrances(this, this.config.areas);
+            createAreaEntrances(this, this.config.areas);
 
-            initializeHUD(this, this.config.hero);
+            createHUD(this, this.config.hero);
 
             stage.draw();
 
@@ -224,7 +224,7 @@
             if (heroConfig.position.map === currentSession.map.key) {
                 var imagesToLoad = {};
                 imagesToLoad[heroConfig.heroSprite] = 'assets/images/heroes/' + heroConfig.heroSprite;
-                loadImages(imagesToLoad, function(images){
+                loadImages(imagesToLoad, function(images) {
 
                     heroConfig.image = images[heroConfig.heroSprite];
                     var hero = createHero(currentSession, heroConfig);
@@ -240,6 +240,8 @@
         }
     };
 
+    // add static functions for session
+
     Nv.sessionInstance = function() {
         return currentSession;
     };
@@ -254,7 +256,7 @@
         }
         channels[channel] = io(sessionOptions.ioUrl + channel);
         channels[channel].on('systemError', Nv.Session.showError);
-        channels[channel].on('gameError', function(message){
+        channels[channel].on('gameError', function(message) {
             Nv.Session.showGameMessage(message);
         });
         return channels[channel];
@@ -265,7 +267,7 @@
         alert(message);
     };
 
-    Nv.Session.showGameMessage = function(){};
+    Nv.Session.showGameMessage = function() {};
 
     Nv.Session.loginUser = function(usernameInput, passwordInput) {
         lastUsedUsername = usernameInput;
@@ -283,12 +285,11 @@
             };
 
         if (!eventsInitialized) {
-            systemChannel.on('userLoggedIn', function(data){
+            systemChannel.on('userLoggedIn', function(data) {
                 // console.log('User logged in', data);
                 if (data.user.username === lastUsedUsername) {
                     currentSession = new Nv.Session(data);
-                }
-                else if (currentSession !== null) {
+                } else if (currentSession !== null) {
                     currentSession.loginHero(data.hero);
                 }
             });

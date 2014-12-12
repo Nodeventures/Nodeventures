@@ -30,12 +30,12 @@
         mapObjectClicked: function() {
             var hero = Nv.sessionInstance().hero,
                 item = this,
-                x = this.getX()-1,
-                y = this.getY()-1;
+                x = this.getX() - 1,
+                y = this.getY() - 1;
 
             // move hero to item abd pickup item
-            hero.moveToPosition(x, y, function(){
-                
+            hero.moveToPosition(x, y, function() {
+
                 hero.saySomething(['Oooh, shiny!', 'What\'s this s@#t?!', 'Damn! Thought that was a squirrel..', 'It must be my birthday!'], 0.7);
                 // pickup item
                 item.emitEvent('/items', 'itemPickedUp', {
@@ -43,7 +43,7 @@
                     'itemKey': item.key,
                 });
             });
-            
+
         },
 
     };
@@ -54,7 +54,7 @@
         var itemsSocket = Nv.sessionInstance().connectToChannel('/items'),
             item = this;
 
-        itemsSocket.on('itemPickedUp', function(data){
+        itemsSocket.on('itemPickedUp', function(data) {
             if (data.itemKey === item.key) {
                 item.hideFromUI();
             }
