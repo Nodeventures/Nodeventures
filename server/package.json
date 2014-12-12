@@ -1,18 +1,23 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "Server module for Nodeventures",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "async": "^0.9.0",
-    "express": "^4.10.4",
-    "q": "^1.1.2",
-    "socket.io": "^1.2.1",
-    "underscore": "^1.7.0"
-  }
+    "name": "server",
+    "version": "1.0.0",
+    "description": "Server module for Nodeventures",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Stefan Kovachev",
+    "contributors": [{
+        "name": "Martin Belev",
+        "email": ""
+    }],
+
+    "license": "MIT",
+    "dependencies": {
+        "async": "^0.9.0",
+        "express": "^4.10.4",
+        "q": "^1.1.2",
+        "socket.io": "^1.2.1",
+        "underscore": "^1.7.0"
+    }
 }

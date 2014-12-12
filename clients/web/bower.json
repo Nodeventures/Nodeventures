@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "homepage": "https://github.com/skovachev/HackBulgaria-NodeJS-1",
   "authors": [
-    "Stefan Kovachev <stefan.kovachev@gmail.com>"
+    "Stefan Kovachev"
   ],
   "description": "Web client for Nodeventures",
   "license": "MIT",

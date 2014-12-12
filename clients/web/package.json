@@ -1,15 +1,15 @@
 {
-  "name": "web",
-  "version": "1.0.0",
-  "description": "Web client for Nodeventures",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "connect": "^3.3.3",
-    "serve-static": "^1.7.1"
-  }
+    "name": "web",
+    "version": "1.0.0",
+    "description": "Web client for Nodeventures",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Stefan Kovachev",
+    "license": "MIT",
+    "dependencies": {
+        "connect": "^3.3.3",
+        "serve-static": "^1.7.1"
+    }
 }
