@@ -18,7 +18,7 @@ require('../data/config/mongoose')(config);
 var io = require('socket.io')(server);
 var eventEngine = require('./eventEngine')(io);
 
-// add event mappings for movement events
+// add event mappings for different event types
 require('./eventMappings/movement')(eventEngine);
 require('./eventMappings/system')(eventEngine);
 require('./eventMappings/items')(eventEngine);

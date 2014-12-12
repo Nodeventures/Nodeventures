@@ -4,7 +4,7 @@ var async = require('async'),
     util = require('util');
 
 function emitEvents(io, events) {
-    events.forEach(function(gameEvent){
+    events.forEach(function(gameEvent) {
         if (gameEvent) {
             var socket = gameEvent.socket;
             if (!socket) {
@@ -37,12 +37,12 @@ function emitError(clientSocket, error) {
 }
 
 function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
-    clientSocket.on(eventKey, function(data){
+    clientSocket.on(eventKey, function(data) {
         // get arraay of handler functions for this message key
         handlers = util.isArray(handlers) ? handlers : [handlers];
 
         // wrap handler functions for async
-        var callbacks = handlers.map(function(handlerFunction){
+        var callbacks = handlers.map(function(handlerFunction) {
 
             // create async callback function
             return function(asyncCallback) {
@@ -50,17 +50,17 @@ function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
                 // call handler function and on success call the async callback
                 handlerFunction(data, clientSocket)
                     // forward error just to the source client
-                    .fail(function(error){
+                    .fail(function(error) {
                         emitError(clientSocket, error);
                     })
-                    .done(function(responseEvent){
+                    .done(function(responseEvent) {
                         asyncCallback(null, responseEvent);
                     });
 
             };
         });
 
-        async.parallel(callbacks, function(err, eventsToFire){
+        async.parallel(callbacks, function(err, eventsToFire) {
             if (eventsToFire) {
                 // flatten array of events -> allows for handlers to send multiple events instead of just one
                 var flattenedEventsArray = [].concat.apply([], eventsToFire);
@@ -71,16 +71,16 @@ function mapHandlersToSocket(io, clientSocket, eventKey, handlers) {
 }
 
 function addMappings(io, clientSocket, mappings) {
-    Object.keys(mappings).forEach(function(eventKey){
+    Object.keys(mappings).forEach(function(eventKey) {
         var eventMappings = mappings[eventKey];
         mapHandlersToSocket(io, clientSocket, eventKey, eventMappings);
     });
 }
 
 function forwardEvents(io, clientSocket, events) {
-    events.forEach(function(eventKey){
-        clientSocket.on(eventKey, function(data){
-           emitEvents(io, [data]);
+    events.forEach(function(eventKey) {
+        clientSocket.on(eventKey, function(data) {
+            emitEvents(io, [data]);
         });
     });
 }
@@ -95,9 +95,9 @@ module.exports = function(io) {
 
             var eventEngine = {
 
-                // add mappings for namespace
+                // add mappings for event namespace -> attaches server behaviour to events
                 addMappings: function(mappings) {
-                    channelSocket.on('connection', function(socket){
+                    channelSocket.on('connection', function(socket) {
                         console.log('Client connected to channel: ' + channel);
                         addMappings(io, socket, mappings);
                     });
@@ -105,8 +105,9 @@ module.exports = function(io) {
                     return eventEngine;
                 },
 
+                // some events can be forwarded to other clients, without triggering anything on the server
                 forwardEvents: function(events) {
-                    channelSocket.on('connection', function(socket){
+                    channelSocket.on('connection', function(socket) {
                         console.log('Client connected to channel: ' + channel);
                         forwardEvents(io, socket, events);
                     });

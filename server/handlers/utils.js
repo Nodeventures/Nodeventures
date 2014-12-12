@@ -34,5 +34,5 @@ module.exports = {
     wrapWithPromise: wrapWithPromise,
 
     designateEventSocket: designateEventSocket
-    
+
 };
